@@ -11,9 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -25,9 +23,6 @@ public:
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout_5;
     QVBoxLayout *verticalLayout;
-    QLabel *label;
-    QVBoxLayout *verticalLayout_6;
-    QPushButton *pushButton;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -41,29 +36,8 @@ public:
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        label = new QLabel(centralwidget);
-        label->setObjectName(QString::fromUtf8("label"));
-        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy);
-        label->setAlignment(Qt::AlignCenter);
-
-        verticalLayout->addWidget(label);
-
 
         verticalLayout_5->addLayout(verticalLayout);
-
-        verticalLayout_6 = new QVBoxLayout();
-        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-
-        verticalLayout_6->addWidget(pushButton);
-
-
-        verticalLayout_5->addLayout(verticalLayout_6);
 
         MainWindow->setCentralWidget(centralwidget);
 
@@ -75,8 +49,6 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
     } // retranslateUi
 
 };

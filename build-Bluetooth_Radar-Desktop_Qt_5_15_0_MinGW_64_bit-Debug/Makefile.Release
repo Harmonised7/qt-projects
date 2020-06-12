@@ -480,6 +480,11 @@ release/mainevents.o: ../Bluetooth_Radar/mainevents.cpp ../Bluetooth_Radar/mainw
 		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qdesktopwidget.h \
 		../../Qt/5.15.0/mingw81_64/include/QtGui/qguiapplication.h \
 		../../Qt/5.15.0/mingw81_64/include/QtGui/qinputmethod.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/QVBoxLayout \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgridlayout.h \
 		../../Qt/5.15.0/mingw81_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainevents.o ..\Bluetooth_Radar\mainevents.cpp
 
@@ -599,6 +604,11 @@ release/mainfunctions.o: ../Bluetooth_Radar/mainfunctions.cpp ../Bluetooth_Radar
 		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qdesktopwidget.h \
 		../../Qt/5.15.0/mingw81_64/include/QtGui/qguiapplication.h \
 		../../Qt/5.15.0/mingw81_64/include/QtGui/qinputmethod.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/QVBoxLayout \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgridlayout.h \
 		../../Qt/5.15.0/mingw81_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainfunctions.o ..\Bluetooth_Radar\mainfunctions.cpp
 
@@ -718,6 +728,11 @@ release/mainwindow.o: ../Bluetooth_Radar/mainwindow.cpp ../Bluetooth_Radar/mainw
 		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qdesktopwidget.h \
 		../../Qt/5.15.0/mingw81_64/include/QtGui/qguiapplication.h \
 		../../Qt/5.15.0/mingw81_64/include/QtGui/qinputmethod.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/QVBoxLayout \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.15.0/mingw81_64/include/QtWidgets/qgridlayout.h \
 		../../Qt/5.15.0/mingw81_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o ..\Bluetooth_Radar\mainwindow.cpp
 
