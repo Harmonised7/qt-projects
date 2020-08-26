@@ -1,18 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/highgui.hpp"
-
-using namespace cv;
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    _url(QString::fromLocal8Bit("https://secure.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=4151"))
 {
     ui->setupUi(this);
+
+    // Connections
+    connect(&_networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResult(QNetworkReply *)));
 }
 
 MainWindow::~MainWindow()
@@ -20,20 +17,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_pushButton_released()
+void MainWindow::on_pushButton_clicked()
 {
-    Mat image = imread( "cat.jpg" );
-
-    if( !image.data )
-    {
-        QMessageBox box;
-        box.setText( "Shiet" );
-        box.exec();
-    }
-    else
-    {
-        line( image, Point( 10, 20 ), Point( 200, 300 ), Scalar( 255, 0, 255 ), 3, LINE_8, 0 );
-        imshow( "Cat Image", image );
-    }
+    _request.setUrl(_url);
+    _networkManager.get(_request);  // GET
 }
