@@ -4,9 +4,12 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    _url(QString::fromLocal8Bit("https://secure.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=4151"))
+    _urlString("https://secure.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item="),
+    _itemCode(0)
 {
     ui->setupUi(this);
+
+    this->window()->setFixedSize(this->window()->size());
 
     // Connections
     connect(&_networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(onResult(QNetworkReply *)));
@@ -19,6 +22,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    _request.setUrl(_url);
+    _request.setUrl(QUrl(_urlString + QString::number(_itemCode)));
     _networkManager.get(_request);  // GET
+}
+
+void MainWindow::on_spinBox_valueChanged(int arg1)
+{
+    _itemCode = arg1;
 }

@@ -33,15 +33,20 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_spinBox_valueChanged(int arg1);
+
 public slots:
     void onResult(QNetworkReply *reply);
 
 private:
     Ui::MainWindow *ui;
 
+    // Methods
+
     // Objects
+    QString _urlString;
+    int _itemCode;
     QNetworkAccessManager _networkManager;
-    QUrl _url;
     QNetworkRequest _request;
 };
 #endif // MAINWINDOW_H

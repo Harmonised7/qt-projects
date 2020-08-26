@@ -12,10 +12,8 @@ void MainWindow::onResult( QNetworkReply *reply )
     try
     {
         json doc = json::parse(replyString.toStdString().c_str());
-        //qDebug() << QString::fromStdString(doc["item"]["id"]);
 
         qDebug() << doc.dump(4).c_str();
-
         qDebug() << "Item price is:" << QString::fromStdString(doc["item"]["current"]["price"]);
     }
     catch (...)
