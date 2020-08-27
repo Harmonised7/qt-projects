@@ -45,3 +45,8 @@ LIBS += -L/usr/local/lib \
     -lopencv_imgcodecs \
     -lopencv_objdetect
 #OpenCV!
+
+DISTFILES +=
+
+RESOURCES += \
+    resources.qrc

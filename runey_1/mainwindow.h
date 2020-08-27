@@ -8,7 +8,10 @@
 #include <QNetworkReply>
 #include <QNetworkReply>
 #include <QMessageBox>
-#include "QDebug"
+#include <QListWidgetItem>
+#include <QCompleter>
+#include <QFile>
+#include <QDebug>
 
 // OpenCV Includes
 #include "opencv2/imgproc.hpp"
@@ -17,6 +20,8 @@
 
 // Json includes
 #include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,9 +36,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_lineEdit_textChanged(const QString &arg1);
 
-    void on_spinBox_valueChanged(int arg1);
+    void on_listWidget_itemSelectionChanged();
 
 public slots:
     void onResult(QNetworkReply *reply);
@@ -42,11 +47,18 @@ private:
     Ui::MainWindow *ui;
 
     // Methods
+    void init();
 
     // Objects
+    QCompleter *_stringCompleter;
     QString _urlString;
+    QString _resultString;
+    QStringList _itemStringList;
+    QMap<QString, int> idMap;
     int _itemCode;
     QNetworkAccessManager _networkManager;
     QNetworkRequest _request;
+    QFile _jsonFile;
+    json _json;
 };
 #endif // MAINWINDOW_H

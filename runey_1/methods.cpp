@@ -1,7 +1,38 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-using json = nlohmann::json;
+void MainWindow::init()
+{
+    qDebug() << "Init...";
+
+    if( _jsonFile.open( QFile::ReadOnly ) )
+    {
+        qDebug() << "File Exists";
+
+        _json = json::parse( _jsonFile.readAll().toStdString().c_str() );
+
+        if( !_json.empty() )
+        {
+            for( json::iterator it = _json.begin(); it != _json.end(); ++it )
+            {
+                _itemStringList << QString::fromStdString( it.value()[ "name" ] );
+                idMap.insert( QString::fromStdString( it.value()[ "name" ] ), it.value()[ "id" ] );
+            }
+
+            if (!_itemStringList.isEmpty())
+            {
+                ui->listWidget->addItems(_itemStringList);
+
+                _stringCompleter = new QCompleter(_itemStringList);
+                _stringCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+
+                ui->lineEdit->setCompleter(_stringCompleter);
+            }
+        }
+    }
+
+    qDebug() << "Finalized";
+}
 
 void MainWindow::onResult( QNetworkReply *reply )
 {
