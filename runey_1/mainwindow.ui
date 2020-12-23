@@ -26,11 +26,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QPlainTextEdit" name="plainTextEdit">
-      <property name="plainText">
-       <string/>
-      </property>
-     </widget>
+     <widget class="QTreeView" name="treeView"/>
     </item>
    </layout>
   </widget>

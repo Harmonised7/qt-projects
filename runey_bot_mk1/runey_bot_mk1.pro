@@ -17,8 +17,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainevents.cpp \
-    mainfunctions.cpp \
     mainwindow.cpp
 
 HEADERS += \
@@ -31,3 +29,18 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+#OPENCV_START
+INCLUDEPATH += /usr/local/include/opencv4
+LIBS += -L/usr/local/lib \
+    -lopencv_core \
+    -lopencv_highgui \
+    -lopencv_imgproc \
+    -lopencv_features2d \
+    -lopencv_xfeatures2d \
+    -lopencv_calib3d \
+    -lopencv_video \
+    -lopencv_videoio \
+    -lopencv_imgcodecs \
+    -lopencv_objdetect
+#OpenCV_END

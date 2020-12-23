@@ -1,5 +1,4 @@
-QT += core gui
-QT += network
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,13 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    iteminfo.cpp \
     main.cpp \
-    mainwindow.cpp \
-    methods.cpp
+    mainwindow.cpp
 
 HEADERS += \
-    iteminfo.h \
     mainwindow.h
 
 FORMS += \
@@ -33,22 +29,3 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-#OPENCV_START
-INCLUDEPATH += /usr/local/include/opencv4
-LIBS += -L/usr/local/lib \
-    -lopencv_core \
-    -lopencv_highgui \
-    -lopencv_imgproc \
-    -lopencv_features2d \
-    -lopencv_xfeatures2d \
-    -lopencv_calib3d \
-    -lopencv_video \
-    -lopencv_videoio \
-    -lopencv_imgcodecs \
-    -lopencv_objdetect
-#OpenCV_END
-
-DISTFILES +=
-
-RESOURCES += \
-    resources.qrc
