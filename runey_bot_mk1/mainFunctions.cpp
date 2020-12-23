@@ -3,6 +3,24 @@
 
 using namespace cv;
 
+void MainWindow::init()
+{
+    connect( &_refreshTimer, SIGNAL( timeout() ), this, SLOT( handleFrame() ) );
+    _refreshTimer.start( 1000 / FPS );
+}
+
+void MainWindow::handleFrame()
+{
+    _screenPixMap = qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() );
+    Mat frameMat = pixmapToMat( _screenPixMap );
+
+    cv::resize( frameMat, frameMat, Size( ui->videoLabel->width(), ui->videoLabel->width() * _screenPixMap.height() / _screenPixMap.width()) );
+    Rect rect( Point( 10, 10 ), Point( 20, 20 ) );
+    rectangle( frameMat, rect, CV_RGB( 255, 255, 255 ) );
+
+    ui->videoLabel->setPixmap( matToPixmap( frameMat ) );
+}
+
 QPixmap MainWindow::matToPixmap(const Mat &openCVMat)
 {
     return QPixmap::fromImage( QImage(static_cast<const unsigned char*>(openCVMat.data), openCVMat.cols, openCVMat.rows, static_cast<int>(openCVMat.step), QImage::Format_RGB888).rgbSwapped() );

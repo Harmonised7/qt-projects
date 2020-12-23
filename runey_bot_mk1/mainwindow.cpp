@@ -3,11 +3,12 @@
 
 MainWindow::MainWindow( QWidget *parent ) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    _screen( QGuiApplication::primaryScreen() ),
+    _screenGeometry( _screen->geometry() )
 {
     ui->setupUi(this);
-
-
+    init();
 }
 
 MainWindow::~MainWindow()
