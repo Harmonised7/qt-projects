@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../runey_bot_mk1 -I. -isystem /usr/local/include/opencv4 -I../../Qt/5.15.0/gcc_64/include -I../../Qt/5.15.0/gcc_64/include/QtWidgets -I../../Qt/5.15.0/gcc_64/include/QtGui -I../../Qt/5.15.0/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I../../Qt/5.15.0/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../runey_bot_mk1 -I. -isystem /usr/local/include/opencv4 -I/usr/bin -I../../Qt/5.15.0/gcc_64/include -I../../Qt/5.15.0/gcc_64/include/QtWidgets -I../../Qt/5.15.0/gcc_64/include/QtGui -I../../Qt/5.15.0/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I. -I../../Qt/5.15.0/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/harmonised/Qt/5.15.0/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = runey_bot_mk11.0.0
 DISTDIR = /home/harmonised/qt-projects/build-runey_bot_mk1-Desktop_Qt_5_15_0_GCC_64bit-Debug/.tmp/runey_bot_mk11.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/harmonised/Qt/5.15.0/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_features2d -lopencv_xfeatures2d -lopencv_calib3d -lopencv_video -lopencv_videoio -lopencv_imgcodecs -lopencv_objdetect /home/harmonised/Qt/5.15.0/gcc_64/lib/libQt5Widgets.so /home/harmonised/Qt/5.15.0/gcc_64/lib/libQt5Gui.so /home/harmonised/Qt/5.15.0/gcc_64/lib/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_features2d -lopencv_xfeatures2d -lopencv_calib3d -lopencv_video -lopencv_videoio -lopencv_imgcodecs -lopencv_objdetect -L/usr/bin -lxdo /home/harmonised/Qt/5.15.0/gcc_64/lib/libQt5Widgets.so /home/harmonised/Qt/5.15.0/gcc_64/lib/libQt5Gui.so /home/harmonised/Qt/5.15.0/gcc_64/lib/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -54,10 +54,14 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../runey_bot_mk1/main.cpp \
 		../runey_bot_mk1/mainFunctions.cpp \
-		../runey_bot_mk1/mainwindow.cpp moc_mainwindow.cpp
+		../runey_bot_mk1/mainwindow.cpp \
+		../runey_bot_mk1/mouseController.cpp \
+		../runey_bot_mk1/rndcontroller.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainFunctions.o \
 		mainwindow.o \
+		mouseController.o \
+		rndcontroller.o \
 		moc_mainwindow.o
 DIST          = ../../Qt/5.15.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt/5.15.0/gcc_64/mkspecs/common/unix.conf \
@@ -270,9 +274,14 @@ DIST          = ../../Qt/5.15.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt/5.15.0/gcc_64/mkspecs/features/exceptions.prf \
 		../../Qt/5.15.0/gcc_64/mkspecs/features/yacc.prf \
 		../../Qt/5.15.0/gcc_64/mkspecs/features/lex.prf \
-		../runey_bot_mk1/runey_bot_mk1.pro ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/main.cpp \
+		../runey_bot_mk1/runey_bot_mk1.pro ../runey_bot_mk1/mainwindow.h \
+		../runey_bot_mk1/mouseController.h \
+		../runey_bot_mk1/rndcontroller.h \
+		../runey_bot_mk1/sleeper.h ../runey_bot_mk1/main.cpp \
 		../runey_bot_mk1/mainFunctions.cpp \
-		../runey_bot_mk1/mainwindow.cpp
+		../runey_bot_mk1/mainwindow.cpp \
+		../runey_bot_mk1/mouseController.cpp \
+		../runey_bot_mk1/rndcontroller.cpp
 QMAKE_TARGET  = runey_bot_mk1
 DESTDIR       = 
 TARGET        = runey_bot_mk1
@@ -724,8 +733,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../Qt/5.15.0/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/mouseController.h ../runey_bot_mk1/rndcontroller.h ../runey_bot_mk1/sleeper.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/rndcontroller.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../runey_bot_mk1/mainwindow.ui $(DISTDIR)/
 
 
@@ -880,9 +889,14 @@ moc_mainwindow.cpp: ../runey_bot_mk1/mainwindow.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qbasictimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/QDebug \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QDesktopWidget \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/QCursor \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QProcess \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qprocess.h \
 		moc_predefs.h \
 		../../Qt/5.15.0/gcc_64/bin/moc
-	/home/harmonised/Qt/5.15.0/gcc_64/bin/moc $(DEFINES) --include /home/harmonised/qt-projects/build-runey_bot_mk1-Desktop_Qt_5_15_0_GCC_64bit-Debug/moc_predefs.h -I/home/harmonised/Qt/5.15.0/gcc_64/mkspecs/linux-g++ -I/home/harmonised/qt-projects/runey_bot_mk1 -I/usr/local/include/opencv4 -I/home/harmonised/Qt/5.15.0/gcc_64/include -I/home/harmonised/Qt/5.15.0/gcc_64/include/QtWidgets -I/home/harmonised/Qt/5.15.0/gcc_64/include/QtGui -I/home/harmonised/Qt/5.15.0/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../runey_bot_mk1/mainwindow.h -o moc_mainwindow.cpp
+	/home/harmonised/Qt/5.15.0/gcc_64/bin/moc $(DEFINES) --include /home/harmonised/qt-projects/build-runey_bot_mk1-Desktop_Qt_5_15_0_GCC_64bit-Debug/moc_predefs.h -I/home/harmonised/Qt/5.15.0/gcc_64/mkspecs/linux-g++ -I/home/harmonised/qt-projects/runey_bot_mk1 -I/usr/local/include/opencv4 -I/usr/bin -I/home/harmonised/Qt/5.15.0/gcc_64/include -I/home/harmonised/Qt/5.15.0/gcc_64/include/QtWidgets -I/home/harmonised/Qt/5.15.0/gcc_64/include/QtGui -I/home/harmonised/Qt/5.15.0/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../runey_bot_mk1/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1024,11 +1038,15 @@ main.o: ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainwindow.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qbasictimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/QDebug \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QDesktopWidget \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/QCursor \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QProcess \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qprocess.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QApplication \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qcoreapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qeventloop.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../Qt/5.15.0/gcc_64/include/QtGui/qguiapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtGui/qinputmethod.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../runey_bot_mk1/main.cpp
@@ -1152,36 +1170,38 @@ mainFunctions.o: ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.
 		../../Qt/5.15.0/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qbasictimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/QDebug \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QDesktopWidget \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/QCursor \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QProcess \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qprocess.h \
 		ui_mainwindow.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/QVariant \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QApplication \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qcoreapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qeventloop.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../Qt/5.15.0/gcc_64/include/QtGui/qguiapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtGui/qinputmethod.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QLabel \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlabel.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qframe.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QMenuBar \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qmenubar.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qmenu.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qaction.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qactiongroup.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/QProgressBar \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qprogressbar.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qframe.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QPushButton \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qabstractbutton.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/QSlider \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qslider.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qabstractslider.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QStatusBar \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qstatusbar.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qboxlayout.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayout.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayoutitem.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainFunctions.o ../runey_bot_mk1/mainFunctions.cpp
 
@@ -1304,38 +1324,239 @@ mainwindow.o: ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mainwindow.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qbasictimer.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/QDebug \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QDesktopWidget \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/QCursor \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QProcess \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qprocess.h \
 		ui_mainwindow.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/QVariant \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QApplication \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qcoreapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtCore/qeventloop.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../Qt/5.15.0/gcc_64/include/QtGui/qguiapplication.h \
 		../../Qt/5.15.0/gcc_64/include/QtGui/qinputmethod.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QLabel \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlabel.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qframe.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QMenuBar \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qmenubar.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qmenu.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qaction.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qactiongroup.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/QProgressBar \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qprogressbar.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qframe.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QPushButton \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qabstractbutton.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/QSlider \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qslider.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qabstractslider.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QStatusBar \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/qstatusbar.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qboxlayout.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayout.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qlayoutitem.h \
-		../../Qt/5.15.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../Qt/5.15.0/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../runey_bot_mk1/mainwindow.cpp
+
+mouseController.o: ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/mouseController.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QPoint \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qpoint.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qnamespace.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qglobal.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qconfig.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qtcore-config.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsystemdetection.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qprocessordetection.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qtypeinfo.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsysinfo.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qlogging.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qflags.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qbasicatomic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qgenericatomic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qglobalstatic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qmutex.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qnumeric.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qversiontagging.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QRect \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qrect.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qmargins.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsize.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/QCursor \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qcursor.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qtguiglobal.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qtgui-config.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qwindowdefs.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobjectdefs.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QThread \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qthread.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobject.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstring.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qchar.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qbytearray.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qrefcount.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qarraydata.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringliteral.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringview.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringbuilder.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qlist.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qalgorithms.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qiterator.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qhashfunctions.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qpair.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qvector.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qbytearraylist.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringlist.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qregexp.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringmatcher.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcoreevent.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qscopedpointer.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qmetatype.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobject_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qdeadlinetimer.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QApplication \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qapplication.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qeventloop.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qwidget.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qpaintdevice.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qpalette.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qcolor.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qrgb.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qrgba64.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qbrush.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qmatrix.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qpolygon.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qregion.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qdatastream.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qiodevice.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qline.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qtransform.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qimage.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qpixelformat.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qpixmap.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsharedpointer.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qshareddata.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qhash.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qfont.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qfontmetrics.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qfontinfo.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qkeysequence.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qevent.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qvariant.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qmap.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qdebug.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qtextstream.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qlocale.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qset.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qurl.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qurlquery.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qfile.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qfiledevice.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qvector2d.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qtouchdevice.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qguiapplication.h \
+		../../Qt/5.15.0/gcc_64/include/QtGui/qinputmethod.h \
+		../../Qt/5.15.0/gcc_64/include/QtWidgets/QDesktopWidget \
+		../runey_bot_mk1/rndcontroller.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QRandomGenerator \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qrandom.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QDebug \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QTime \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qdatetime.h \
+		../runey_bot_mk1/sleeper.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mouseController.o ../runey_bot_mk1/mouseController.cpp
+
+rndcontroller.o: ../runey_bot_mk1/rndcontroller.cpp ../runey_bot_mk1/rndcontroller.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QRandomGenerator \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qrandom.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qglobal.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qconfig.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qtcore-config.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsystemdetection.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qprocessordetection.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qtypeinfo.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsysinfo.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qlogging.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qflags.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qbasicatomic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qgenericatomic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qglobalstatic.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qmutex.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qnumeric.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qversiontagging.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QDebug \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qdebug.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qalgorithms.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qhash.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qchar.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qiterator.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qlist.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qrefcount.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qarraydata.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qhashfunctions.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstring.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qbytearray.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qnamespace.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringliteral.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringview.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringbuilder.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qpair.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qvector.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qpoint.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qbytearraylist.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringlist.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qregexp.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qstringmatcher.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qmap.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qtextstream.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qiodevice.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobject.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobjectdefs.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcoreevent.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qscopedpointer.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qmetatype.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qobject_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qlocale.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qvariant.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qshareddata.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qset.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsharedpointer.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		../../Qt/5.15.0/gcc_64/include/QtCore/QTime \
+		../../Qt/5.15.0/gcc_64/include/QtCore/qdatetime.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rndcontroller.o ../runey_bot_mk1/rndcontroller.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

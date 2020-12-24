@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[4];
-    char stringdata0[52];
+    char stringdata0[46];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,13 +33,12 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
-QT_MOC_LITERAL(1, 11, 27), // "on_screenshotButton_clicked"
-QT_MOC_LITERAL(2, 39, 0), // ""
-QT_MOC_LITERAL(3, 40, 11) // "handleFrame"
+QT_MOC_LITERAL(1, 11, 11), // "handleFrame"
+QT_MOC_LITERAL(2, 23, 0), // ""
+QT_MOC_LITERAL(3, 24, 21) // "on_testButton_clicked"
 
     },
-    "MainWindow\0on_screenshotButton_clicked\0"
-    "\0handleFrame"
+    "MainWindow\0handleFrame\0\0on_testButton_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -73,8 +72,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         auto *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->on_screenshotButton_clicked(); break;
-        case 1: _t->handleFrame(); break;
+        case 0: _t->handleFrame(); break;
+        case 1: _t->on_testButton_clicked(); break;
         default: ;
         }
     }

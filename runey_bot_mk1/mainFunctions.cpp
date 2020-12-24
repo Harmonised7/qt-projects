@@ -11,14 +11,18 @@ void MainWindow::init()
 
 void MainWindow::handleFrame()
 {
-    _screenPixMap = qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() );
-    Mat frameMat = pixmapToMat( _screenPixMap );
+    _screenPixMat = pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) );
+    _rsMat = _screenPixMat( Rect( BAR_WIDTH + BORDER_SIZE, _screenPixMat.rows - RS_HEIGHT - BORDER_SIZE, RS_WIDTH, RS_HEIGHT ) ).clone();
+    _invMat = _rsMat( Rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 ) ).clone();
+//    cv::resize( _croppedRsMat, _croppedRsMat, Size( ui->videoLabel->width(), ui->videoLabel->width() * _screenPixMap.height() / _screenPixMap.width()) );
 
-    cv::resize( frameMat, frameMat, Size( ui->videoLabel->width(), ui->videoLabel->width() * _screenPixMap.height() / _screenPixMap.width()) );
-    Rect rect( Point( 10, 10 ), Point( 20, 20 ) );
-    rectangle( frameMat, rect, CV_RGB( 255, 255, 255 ) );
+    Rect rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 );
+    rectangle( _rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
-    ui->videoLabel->setPixmap( matToPixmap( frameMat ) );
+    QProcess *process = new QProcess(this);
+    process->start( QString( "xdotool key " ) );
+
+    ui->videoLabel->setPixmap( matToPixmap( _rsMat ) );
 }
 
 QPixmap MainWindow::matToPixmap(const Mat &openCVMat)
@@ -26,7 +30,7 @@ QPixmap MainWindow::matToPixmap(const Mat &openCVMat)
     return QPixmap::fromImage( QImage(static_cast<const unsigned char*>(openCVMat.data), openCVMat.cols, openCVMat.rows, static_cast<int>(openCVMat.step), QImage::Format_RGB888).rgbSwapped() );
 }
 
-Mat MainWindow::pixmapToMat(const QPixmap &QtPixmap)
+Mat MainWindow::pixMapToMat(const QPixmap &QtPixmap)
 {
     QImage _tempImage = pixmapToQImage(QtPixmap);
 

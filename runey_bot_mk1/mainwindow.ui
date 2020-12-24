@@ -21,7 +21,7 @@
        <string>videoLabel</string>
       </property>
       <property name="scaledContents">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -30,7 +30,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="testButton">
           <property name="text">
            <string>PushButton</string>
           </property>

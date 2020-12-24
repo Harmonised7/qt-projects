@@ -30,7 +30,7 @@ public:
     QLabel *videoLabel;
     QVBoxLayout *verticalLayout_4;
     QVBoxLayout *verticalLayout_3;
-    QPushButton *pushButton;
+    QPushButton *testButton;
     QVBoxLayout *verticalLayout_6;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -46,7 +46,7 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         videoLabel = new QLabel(centralwidget);
         videoLabel->setObjectName(QString::fromUtf8("videoLabel"));
-        videoLabel->setScaledContents(true);
+        videoLabel->setScaledContents(false);
 
         horizontalLayout->addWidget(videoLabel);
 
@@ -54,10 +54,10 @@ public:
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        testButton = new QPushButton(centralwidget);
+        testButton->setObjectName(QString::fromUtf8("testButton"));
 
-        verticalLayout_3->addWidget(pushButton);
+        verticalLayout_3->addWidget(testButton);
 
 
         verticalLayout_4->addLayout(verticalLayout_3);
@@ -88,7 +88,7 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         videoLabel->setText(QCoreApplication::translate("MainWindow", "videoLabel", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        testButton->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
     } // retranslateUi
 
 };

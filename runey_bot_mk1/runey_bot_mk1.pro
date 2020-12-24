@@ -18,10 +18,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainFunctions.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    mouseController.cpp \
+    rndcontroller.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    mouseController.h \
+    rndcontroller.h \
+    sleeper.h
 
 FORMS += \
     mainwindow.ui
@@ -43,5 +48,14 @@ LIBS += -L/usr/local/lib \
     -lopencv_video \
     -lopencv_videoio \
     -lopencv_imgcodecs \
-    -lopencv_objdetect
+    -lopencv_objdetect    
 #OpenCV_END
+
+# XDoTool >___ (Local install) sudo make, sudo make install (sudo apt-get install libxkbcommon-dev)
+#
+INCLUDEPATH += /usr/bin
+DEPENDPATH += /usr/bin
+
+LIBS += -L/usr/bin -lxdo
+#XDoTool!
+
