@@ -1,34 +1,31 @@
 #include "rndcontroller.h"
 
-RndController::RndController()
+int RndController::genRand( int min, int max )
 {
-    _time = QTime::currentTime();
-    qsrand(static_cast<uint>(_time.msec()));
-
-    qDebug() << "Initialized Random Controller...";
-}
-
-int RndController::generateRandom(int min, int max)
-{
-    changeRandSeed();
-
-    if (max > min)
-        return static_cast<int>( _rGer.bounded(min, max) );
+    if( min == max )
+        return min;
+    else if( max > min )
+        return QRandomGenerator::global()->bounded( min, max + 1 );
     else
-        return static_cast<int>( _rGer.bounded(max, min) );
+        return QRandomGenerator::global()->bounded( max, min + 1 );
 }
 
-double RndController::generateRandomDouble(double min, double max)
+double RndController::genRandDouble( double min, double max )
 {
-    changeRandSeed();
-
-    if (max > min)
-        return static_cast<double>( _rGer.bounded(max - min) + min );
+    if( min == max )
+        return min;
+    else if( max > min )
+        return min + QRandomGenerator::global()->bounded( max - min + 1 );
     else
-        return static_cast<double>( _rGer.bounded(min - max) + max );
+        return max + QRandomGenerator::global()->bounded( min - max + 1 );
 }
 
-void RndController::changeRandSeed()
+QPoint RndController::genRandPoint( cv::Rect area )
 {
-    _rGer.seed(static_cast<uint>(_time.msec()) + 10);
+    return QPoint( genRand( area.tl().x, area.tl().y ), genRand( area.br().x, area.br().y ) );
+}
+
+QPoint RndController::genRandPoint( QPoint p1, QPoint p2 )
+{
+    return QPoint( genRand( p1.x(), p1.y() ), genRand( p2.x(), p2.y() ) );
 }

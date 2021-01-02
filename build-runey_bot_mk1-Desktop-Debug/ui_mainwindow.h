@@ -15,6 +15,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
@@ -27,7 +28,11 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout;
     QLabel *videoLabel;
+    QProgressBar *progressBar;
+    QLabel *videoLabel_2;
+    QProgressBar *progressBar_2;
     QVBoxLayout *verticalLayout_4;
     QVBoxLayout *verticalLayout_3;
     QPushButton *testButton;
@@ -44,11 +49,38 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         horizontalLayout = new QHBoxLayout(centralwidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         videoLabel = new QLabel(centralwidget);
         videoLabel->setObjectName(QString::fromUtf8("videoLabel"));
+        videoLabel->setMaximumSize(QSize(400, 400));
         videoLabel->setScaledContents(false);
 
-        horizontalLayout->addWidget(videoLabel);
+        verticalLayout->addWidget(videoLabel);
+
+        progressBar = new QProgressBar(centralwidget);
+        progressBar->setObjectName(QString::fromUtf8("progressBar"));
+        progressBar->setMaximum(28);
+        progressBar->setValue(0);
+
+        verticalLayout->addWidget(progressBar);
+
+        videoLabel_2 = new QLabel(centralwidget);
+        videoLabel_2->setObjectName(QString::fromUtf8("videoLabel_2"));
+        videoLabel_2->setMaximumSize(QSize(400, 400));
+        videoLabel_2->setScaledContents(false);
+
+        verticalLayout->addWidget(videoLabel_2);
+
+        progressBar_2 = new QProgressBar(centralwidget);
+        progressBar_2->setObjectName(QString::fromUtf8("progressBar_2"));
+        progressBar_2->setMaximum(28);
+        progressBar_2->setValue(0);
+
+        verticalLayout->addWidget(progressBar_2);
+
+
+        horizontalLayout->addLayout(verticalLayout);
 
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
@@ -59,13 +91,13 @@ public:
 
         verticalLayout_3->addWidget(testButton);
 
-
-        verticalLayout_4->addLayout(verticalLayout_3);
-
         verticalLayout_6 = new QVBoxLayout();
         verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
 
-        verticalLayout_4->addLayout(verticalLayout_6);
+        verticalLayout_3->addLayout(verticalLayout_6);
+
+
+        verticalLayout_4->addLayout(verticalLayout_3);
 
 
         horizontalLayout->addLayout(verticalLayout_4);
@@ -73,7 +105,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 22));
+        menubar->setGeometry(QRect(0, 0, 800, 28));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -88,6 +120,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         videoLabel->setText(QApplication::translate("MainWindow", "videoLabel", nullptr));
+        videoLabel_2->setText(QApplication::translate("MainWindow", "videoLabel", nullptr));
         testButton->setText(QApplication::translate("MainWindow", "PushButton", nullptr));
     } // retranslateUi
 

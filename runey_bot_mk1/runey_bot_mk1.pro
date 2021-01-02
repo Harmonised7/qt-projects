@@ -16,17 +16,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    botinstance.cpp \
     main.cpp \
     mainFunctions.cpp \
     mainwindow.cpp \
     mouseController.cpp \
-    rndcontroller.cpp
+    rndcontroller.cpp \
+    util.cpp
 
 HEADERS += \
+    botinstance.h \
     mainwindow.h \
     mouseController.h \
     rndcontroller.h \
-    sleeper.h
+    sleeper.h \
+    util.h
 
 FORMS += \
     mainwindow.ui

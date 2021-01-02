@@ -24,8 +24,10 @@ enum class MouseStates
 class MouseController
 {
 public:
-    MouseController(const int &jitter, const uint &mouseFPS, const double &minSpeed, const double &maxSpeed, const int &curves, const int &mouseScreen);
+    MouseController( const uint &mouseFPS, const double &minSpeed, const double &maxSpeed, const int &jitter, const int &curves, const int &mouseScreen);
     ~MouseController();
+
+    void changeRandValues();
 
     void pressESC();
 

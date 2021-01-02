@@ -6,7 +6,7 @@ extern "C"
 }
 static xdo_t *xDoTool;
 
-MouseController::MouseController(const int &jitter, const uint &mouseFPS, const double &minSpeed, const double &maxSpeed, const int &curves, const int &mouseScreen) :
+MouseController::MouseController( const uint &mouseFPS, const double &minSpeed, const double &maxSpeed, const int &jitter, const int &curves, const int &mouseScreen) :
     _jitterValue(jitter),
     _mouseFPS(mouseFPS),
     _minSpeed(minSpeed),
@@ -14,8 +14,8 @@ MouseController::MouseController(const int &jitter, const uint &mouseFPS, const 
     _curves(curves),
     _p0(0, 0),
     _p1(0, 0),
-    _p2(0, 0),
     _p1Goal(0, 0),
+    _p2(0, 0),
     _tSpeed( map(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) ),
     _mouseScreen(mouseScreen),
     _randomNumbers(new RndController)
@@ -30,37 +30,43 @@ MouseController::~MouseController()
     xdo_free( xDoTool );
 }
 
+void MouseController::changeRandValues()
+{
+    _jitterValue = RndController::genRandDouble( 1, 100 );
+    _curves = RndController::genRandDouble( 1, 100 );
+}
+
 void MouseController::mouseMove( const int &newX, const int &newY )
 {
-    _randomNumbers->changeRandSeed();
+//    changeRandValues();
 
     _p0 = getMousePos();
     _p2.setX( newX );
     _p2.setY( newY );
-    _p1 = QPoint( _randomNumbers->generateRandom( _p0.x(), _p2.x() ), _randomNumbers->generateRandom( _p0.y(), _p2.y() ) );
+    _p1 = QPoint( RndController::genRand( _p0.x(), _p2.x() ), RndController::genRand( _p0.y(), _p2.y() ) );
 
-    _p1Goal.setX( (_p0.x() + _p2.x()) / 2 + _randomNumbers->generateRandom(-_curves * 5, _curves * 5) );
-    _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + _randomNumbers->generateRandom(-_curves * 5, _curves * 5) );
+    _p1Goal.setX( (_p0.x() + _p2.x()) / 2 + RndController::genRand(-_curves * 5, _curves * 5) );
+    _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + RndController::genRand(-_curves * 5, _curves * 5) );
 
     for (_t = 0; _t <= 1; _t += _tSpeed)
     {
         if (_p1.x() < _p1Goal.x())
-            _p1.setX(_p1.x() + _randomNumbers->generateRandom(_jitterValue));
+            _p1.setX(_p1.x() + RndController::genRand(_jitterValue));
         else
-            _p1.setX(_p1.x() - _randomNumbers->generateRandom(_jitterValue));
+            _p1.setX(_p1.x() - RndController::genRand(_jitterValue));
 
         if (_p1.y() < _p1Goal.y())
-            _p1.setY(_p1.y() + _randomNumbers->generateRandom(_jitterValue));
+            _p1.setY(_p1.y() + RndController::genRand(_jitterValue));
         else
-            _p1.setY(_p1.y() - _randomNumbers->generateRandom(_jitterValue));
+            _p1.setY(_p1.y() - RndController::genRand(_jitterValue));
 
-        if ( floor(_randomNumbers->generateRandom(1, 30)) == 1 )
+        if ( floor(RndController::genRand(1, 30)) == 1 )
         {
-            _p1Goal.setX( (_p0.x() + _p2.x()) / 2 + _randomNumbers->generateRandom(-_curves * 3, _curves * 3) );
-            _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + _randomNumbers->generateRandom(-_curves * 3, _curves * 3) );
+            _p1Goal.setX( (_p0.x() + _p2.x()) / 2 + RndController::genRand(-_curves * 3, _curves * 3) );
+            _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + RndController::genRand(-_curves * 3, _curves * 3) );
         }
 
-        _t += _randomNumbers->generateRandomDouble(_tSpeed, _tSpeed * 1.5);
+        _t += RndController::genRandDouble(_tSpeed, _tSpeed * 1.5);
 
         if (_t > 1)
             _t = 1;
@@ -68,7 +74,7 @@ void MouseController::mouseMove( const int &newX, const int &newY )
         _tSpeed = ( map(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) );
 
         if (_tSpeed < 0.003)
-            _tSpeed = _randomNumbers->generateRandomDouble(_minSpeed, _maxSpeed);
+            _tSpeed = RndController::genRandDouble(_minSpeed, _maxSpeed);
 
         _pFinal.setX( static_cast<int>((pow((1.0 - _t), 2) * (_p0.x()) + (1.0 - _t) * 2.0 * _t * (_p1.x()) + _t * _t * (_p2.x()))) );
         _pFinal.setY( static_cast<int>((pow((1.0 - _t), 2) * (_p0.y()) + (1.0 - _t) * 2.0 * _t * (_p1.y()) + _t * _t * (_p2.y()))) );
@@ -98,19 +104,19 @@ void MouseController::mousePress(const MouseStates &state, const int &newX, cons
     if (state == MouseStates::Left)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
     }
     else if (state == MouseStates::Right)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
     }
     else if (state == MouseStates::Middle)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);
     }
 }
@@ -122,37 +128,38 @@ void MouseController::mousePress(const MouseStates &state, const QPoint &newPoin
 
 void MouseController::mouseDrag(const MouseStates &state, const int &newX, const int &newY, const int &timeSleepMin, const int &timeSleepMax)
 {
+    qDebug() << "Dragging to x:" << newX << " y:" << newY;
     if (state == MouseStates::Left)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
     }
     else if (state == MouseStates::Right)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
     }
     else if (state == MouseStates::Middle)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
     }
 
     mouseMove(newX, newY);
 
     if (state == MouseStates::Left)
     {
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
     }
     else if (state == MouseStates::Right)
     {
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
     }
     else if (state == MouseStates::Middle)
     {
-        Sleeper::msleep( static_cast<uint>(_randomNumbers->generateRandom(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(RndController::genRand(timeSleepMin, timeSleepMax)) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);
     }
 }
