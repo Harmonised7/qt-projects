@@ -16,7 +16,7 @@ MouseController::MouseController( const uint &mouseFPS, const double &minSpeed, 
     _p1(0, 0),
     _p1Goal(0, 0),
     _p2(0, 0),
-    _tSpeed( map(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) ),
+    _tSpeed( Util::mapCapped(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) ),
     _mouseScreen(mouseScreen),
     _randomNumbers(new RndController)
 {
@@ -71,7 +71,9 @@ void MouseController::mouseMove( const int &newX, const int &newY )
         if (_t > 1)
             _t = 1;
 
-        _tSpeed = ( map(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) );
+        _tSpeed = ( Util::mapCapped(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) );
+
+        qDebug() << _t;
 
         if (_tSpeed < 0.003)
             _tSpeed = RndController::genRandDouble(_minSpeed, _maxSpeed);
@@ -198,9 +200,4 @@ void MouseController::changeSpeed(const double &newMaxSpeedVal, const double &ne
 double MouseController::measureDistance(const QPoint &pA, const QPoint &pB)
 {
     return sqrt( pow((pB.x() - pA.x()), 2) + pow((pB.y() - pA.y()), 2) );
-}
-
-double MouseController::map(const double &x, const double &in_min, const double &in_max, const double &out_min, const double &out_max)
-{
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }

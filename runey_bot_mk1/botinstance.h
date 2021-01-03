@@ -18,10 +18,11 @@
 
 //Qt Stuff
 #include <QMap>
+#include <QList>
 
 //Mouse Controller
 #define MOUSE_JITTER    5
-#define MOUSE_FPS       90
+#define MOUSE_FPS       120
 #define MOUSE_MIN       0.015
 #define MOUSE_MAX       0.035
 #define MOUSE_CURVES    2
@@ -37,30 +38,40 @@
 #include "mouseController.h"
 #include "util.h"
 
+typedef QList<QList<int>> DropPatterns;
+typedef QMap<int, int> Inventory;
+
 class BotInstance
 {
 public:
     BotInstance();
     BotInstance( const int &x, const int &y );
 
+    ~BotInstance();
+
     //Methods
-    QPixmap handleFrame( cv::Mat );
+    QPixmap handleFrame( const cv::Mat &screen );
+
     static cv::Rect getInvSlotRect( int index );
+    static int getInvSlotIndex( const cv::Rect &rect );
+    static int getInvSlotIndex( const QPoint &point );
+
+    void dropItems();
 
     //Objects n stuff
-    int matches;
+    static DropPatterns _dropPatterns;
 
 private:
-    //Objects n stuff
+    //Objects
     cv::Mat _rsMat;
     cv::Mat _invMat;
 
     int _x, _y;
 
-    RndController *_randomNumbers;
+    RndController _randomNumbers;
     static MouseController _mc;
 
-    QMap<int, int> invItems;
+    Inventory _invItems;
 
     //Methods
     void updateInventory();

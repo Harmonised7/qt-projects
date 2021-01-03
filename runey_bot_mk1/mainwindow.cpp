@@ -9,8 +9,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 {
     ui->setupUi(this);
 
-    _botInstances.push_back( BotInstance( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT ) );
-    _botInstances.push_back( BotInstance( BAR_WIDTH + BORDER_SIZE, _screen->size().height() - RS_HEIGHT - BORDER_SIZE ) );
+    _botInstances.push_back( new BotInstance( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT ) );
+//    _botInstances.push_back( BotInstance( BAR_WIDTH + BORDER_SIZE, _screen->size().height() - RS_HEIGHT - BORDER_SIZE ) );
     init();
 }
 
@@ -21,5 +21,5 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_testButton_clicked()
 {
-
+    _botInstances[0]->dropItems();
 }

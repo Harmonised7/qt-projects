@@ -12,17 +12,16 @@ void MainWindow::init()
 void MainWindow::handleFrame()
 {
     int i = 0;
-    for( BotInstance botInstance : _botInstances )
+
+    for( BotInstance *bot : _botInstances )
     {
         if( i++ == 0 )
         {
-            ui->videoLabel->setPixmap( botInstance.handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) ) );
-            ui->progressBar->setValue( botInstance.matches );
+            ui->videoLabel->setPixmap( bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) ) );
         }
-        else
-        {
-            ui->videoLabel_2->setPixmap( botInstance.handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) ) );
-            ui->progressBar_2->setValue( botInstance.matches );
-        }
+//        else
+//        {
+//            ui->videoLabel_2->setPixmap( botInstance.handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) ) );
+//        }
     }
 }

@@ -21,8 +21,8 @@
        <widget class="QLabel" name="videoLabel">
         <property name="maximumSize">
          <size>
-          <width>400</width>
-          <height>400</height>
+          <width>800</width>
+          <height>500</height>
          </size>
         </property>
         <property name="text">
@@ -35,32 +35,6 @@
       </item>
       <item>
        <widget class="QProgressBar" name="progressBar">
-        <property name="maximum">
-         <number>28</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="videoLabel_2">
-        <property name="maximumSize">
-         <size>
-          <width>400</width>
-          <height>400</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>videoLabel</string>
-        </property>
-        <property name="scaledContents">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QProgressBar" name="progressBar_2">
         <property name="maximum">
          <number>28</number>
         </property>

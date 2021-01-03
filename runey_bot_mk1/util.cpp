@@ -2,6 +2,12 @@
 
 using namespace cv;
 
+Point Util::QPointToPoint( QPoint point )
+{
+    return Point( point.x(), point.y() );
+}
+
+
 QPoint Util::getMidPoint( cv::Rect area )
 {
     return QPoint( area.tl().x + area.width / 2, area.tl().y + area.height / 2 );
@@ -35,4 +41,22 @@ Mat Util::pixMapToMat(const QPixmap &QtPixmap)
 QImage Util::pixmapToQImage(const QPixmap &QtPixmap)
 {
     return QtPixmap.toImage();
+}
+
+double Util::map(const double &x, const double &in_min, const double &in_max, const double &out_min, const double &out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+double Util::mapCapped(const double &x, const double &in_min, const double &in_max, const double &out_min, const double &out_max)
+{
+    return cap( (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min, in_min, in_max );
+}
+
+double Util::cap( const double &x, const double &min_bound, const double &max_bound )
+{
+    if( max_bound > min_bound )
+        return max( min_bound, min( max_bound, x ) );
+    else
+        return max( max_bound, min( min_bound, x ) );
 }

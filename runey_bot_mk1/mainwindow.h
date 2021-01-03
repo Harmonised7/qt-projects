@@ -47,8 +47,7 @@ private:
     void init();
 
     //ObjectDeclarations
-    QList<BotInstance> _botInstances;
-    BotInstance _botInstance;
+    QList<BotInstance *> _botInstances;
 
     QScreen *_screen;
     QRect _screenGeometry;

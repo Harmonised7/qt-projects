@@ -13,6 +13,7 @@
 // User written Includes //
 #include "rndcontroller.h"
 #include "sleeper.h"
+#include "util.h"
 
 enum class MouseStates
 {
@@ -50,7 +51,6 @@ public:
 
     static QPoint getMousePos();
     static double measureDistance(const QPoint &pA, const QPoint &pB);
-    static double map(const double &x, const double &in_min, const double &in_max, const double &out_min, const double &out_max);
 
 private:
     int _jitterValue;
