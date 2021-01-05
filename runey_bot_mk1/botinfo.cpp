@@ -9,5 +9,6 @@ DropPatterns BotInfo::_dropPatterns = DropPatterns
 
 BotInfo::BotInfo()
 {
-
+    Inventory inv;
+    _invItems = &inv;
 }

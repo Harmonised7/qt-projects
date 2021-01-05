@@ -6,7 +6,7 @@ DropItemsTask::DropItemsTask( BotInfo *info )
     _itemsToDrop = info->getItems();
 }
 
-void execute()
+void DropItemsTask::execute( BotInfo *info )
 {
     //drop items
 }

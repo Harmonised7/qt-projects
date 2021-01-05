@@ -66,17 +66,17 @@ void MouseController::mouseMove( const int &newX, const int &newY )
             _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + RndController::genRand(-_curves * 3, _curves * 3) );
         }
 
+        _tSpeed = ( Util::mapCapped(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) );
+
+        if (_tSpeed < 0.003)
+            _tSpeed = RndController::genRandDouble(_minSpeed, _maxSpeed);
+
         _t += RndController::genRandDouble(_tSpeed, _tSpeed * 1.5);
 
         if (_t > 1)
             _t = 1;
 
-        _tSpeed = ( Util::mapCapped(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) );
-
         qDebug() << _t;
-
-        if (_tSpeed < 0.003)
-            _tSpeed = RndController::genRandDouble(_minSpeed, _maxSpeed);
 
         _pFinal.setX( static_cast<int>((pow((1.0 - _t), 2) * (_p0.x()) + (1.0 - _t) * 2.0 * _t * (_p1.x()) + _t * _t * (_p2.x()))) );
         _pFinal.setY( static_cast<int>((pow((1.0 - _t), 2) * (_p0.y()) + (1.0 - _t) * 2.0 * _t * (_p1.y()) + _t * _t * (_p2.y()))) );

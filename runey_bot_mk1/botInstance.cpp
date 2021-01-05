@@ -4,36 +4,33 @@ using namespace cv;
 
 MouseController BotInstance::_mc = MouseController( MOUSE_FPS, MOUSE_MIN, MOUSE_MAX, (double) MOUSE_JITTER, MOUSE_CURVES, MOUSE_SCREEN );
 
-BotInstance::BotInstance() :
-    _info( new BotInfo() )
+BotInstance::BotInstance()
 {
+    _info = new BotInfo;
     _info->x = BAR_WIDTH + BORDER_SIZE,
     _info->y = 0;
 }
 
-BotInstance::BotInstance( const int &x, const int &y ) :
-    _info( new BotInfo() )
+BotInstance::BotInstance( const int &x, const int &y )
 {
+    _info = new BotInfo;
     _info->x = x,
     _info->y = y;
 }
 
 QPixmap BotInstance::handleFrame( const cv::Mat &screen )
 {
+    BotInfo info = *_info;
     _info->rsMat = screen( Rect( _info->x, _info->y, RS_WIDTH, RS_HEIGHT ) ).clone();
     _info->invMat = _info->rsMat( Rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 ) ).clone();
     Rect rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 );
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
-//    for( int i = 0; i < 4; i++ )
-//    {
-//        for( int j = 0; j < 7; j++ )
-//        {
-//            _mc.mouseMove( rect.x, rect.y );
-//        }
-//    }
-
-    rectangle( _info->rsMat, getInvSlotRect( RndController::genRand( 1, 28 ) ), CV_RGB( 255, 255, 255 ) );
+    updateInventory();
+    for( int item : _info->getItems()->keys() )
+    {
+        rectangle( _info->rsMat, getInvSlotRect( item ), CV_RGB( 255, 0, 255 ) );
+    }
 
     for( Condition *condition : _conditions )
     {
@@ -56,8 +53,8 @@ void BotInstance::updateInventory()
         return;
     }
 
-    imshow("file", ref);
-    imshow("template", tpl);
+//    imshow("file", ref);
+//    imshow("template", tpl);
 
     Mat res_32f(ref.rows - tpl.rows + 1, ref.cols - tpl.cols + 1, CV_32FC1);
     matchTemplate( ref, tpl, res_32f, TM_CCOEFF_NORMED );
@@ -90,13 +87,14 @@ void BotInstance::updateInventory()
             break;
     }
     qDebug() << (*_info->getItems()).size();
-    imshow("final", ref);
+//    imshow("final", ref);
 }
 
 void BotInstance::dropItems()
 {
-    updateInventory();
+//    updateInventory();
 
+    _mc.mousePress( MouseStates::Left, Util::getMidPoint( Rect( _info->x + INV_X, _info->y + INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 ) ), 50, 75 );
     for( int i : BotInfo::_dropPatterns[ _randomNumbers.genRand( BotInfo::_dropPatterns.length() - 1 ) ] )
     {
         if( (*_info->getItems())[ i ] )

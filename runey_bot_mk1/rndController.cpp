@@ -15,9 +15,9 @@ double RndController::genRandDouble( double min, double max )
     if( min == max )
         return min;
     else if( max > min )
-        return min + QRandomGenerator::global()->bounded( max - min + 1 );
+        return min + QRandomGenerator::global()->bounded( max - min );
     else
-        return max + QRandomGenerator::global()->bounded( min - max + 1 );
+        return max + QRandomGenerator::global()->bounded( min - max );
 }
 
 QPoint RndController::genRandPoint( cv::Rect area )
