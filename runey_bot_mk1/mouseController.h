@@ -11,7 +11,7 @@
 #include <QCursor>
 
 // User written Includes //
-#include "rndcontroller.h"
+#include "rndController.h"
 #include "sleeper.h"
 #include "util.h"
 

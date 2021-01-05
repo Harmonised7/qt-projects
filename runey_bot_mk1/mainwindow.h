@@ -19,9 +19,11 @@
 #include "opencv2/core.hpp"
 
 //Other Includes
-#include "rndcontroller.h"
+#include "rndController.h"
 #include "mouseController.h"
-#include "botinstance.h"
+#include "botInstance.h"
+#include "task.h"
+#include "condition.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

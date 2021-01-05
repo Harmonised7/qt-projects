@@ -1,4 +1,4 @@
-#include "rndcontroller.h"
+#include "rndController.h"
 
 int RndController::genRand( int min, int max )
 {

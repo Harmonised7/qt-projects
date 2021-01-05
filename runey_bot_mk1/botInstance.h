@@ -16,10 +16,6 @@
 #define INV_SLOT_X 42
 #define INV_SLOT_Y 36
 
-//Qt Stuff
-#include <QMap>
-#include <QList>
-
 //Mouse Controller
 #define MOUSE_JITTER    5
 #define MOUSE_FPS       120
@@ -28,18 +24,20 @@
 #define MOUSE_CURVES    2
 #define MOUSE_SCREEN    0
 
+//Qt
+#include <QList>
+
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
 //Other Includes
-#include "rndcontroller.h"
+#include "rndController.h"
 #include "mouseController.h"
 #include "util.h"
-
-typedef QList<QList<int>> DropPatterns;
-typedef QMap<int, int> Inventory;
+#include "botinfo.h"
+#include "condition.h"
 
 class BotInstance
 {
@@ -50,28 +48,23 @@ public:
     ~BotInstance();
 
     //Methods
-    QPixmap handleFrame( const cv::Mat &screen );
-
     static cv::Rect getInvSlotRect( int index );
     static int getInvSlotIndex( const cv::Rect &rect );
     static int getInvSlotIndex( const QPoint &point );
 
-    void dropItems();
+    void addCondition( Condition *condition );
 
-    //Objects n stuff
-    static DropPatterns _dropPatterns;
+    QPixmap handleFrame( const cv::Mat &screen );
+
+    void dropItems();
 
 private:
     //Objects
-    cv::Mat _rsMat;
-    cv::Mat _invMat;
-
-    int _x, _y;
-
     RndController _randomNumbers;
     static MouseController _mc;
 
-    Inventory _invItems;
+    BotInfo *_info;
+    QList<Condition *> _conditions;
 
     //Methods
     void updateInventory();
