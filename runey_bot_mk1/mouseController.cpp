@@ -4,6 +4,8 @@ extern "C"
 {
 #include "xdo.h"
 }
+
+MouseController MouseController::_mc = MouseController( MOUSE_FPS, MOUSE_MIN, MOUSE_MAX, (double) MOUSE_JITTER, MOUSE_CURVES, MOUSE_SCREEN );
 static xdo_t *xDoTool;
 
 MouseController::MouseController( const uint &mouseFPS, const double &minSpeed, const double &maxSpeed, const int &jitter, const int &curves, const int &mouseScreen) :

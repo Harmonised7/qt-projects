@@ -1,6 +1,14 @@
 #ifndef MOUSECONTROLLER_H
 #define MOUSECONTROLLER_H
 
+//Mouse Controller
+#define MOUSE_JITTER    5
+#define MOUSE_FPS       120
+#define MOUSE_MIN       0.015
+#define MOUSE_MAX       0.035
+#define MOUSE_CURVES    2
+#define MOUSE_SCREEN    0
+
 // Qt Native Includes //
 #include <QPoint>
 #include <QRect>
@@ -51,6 +59,8 @@ public:
 
     static QPoint getMousePos();
     static double measureDistance(const QPoint &pA, const QPoint &pB);
+
+    static MouseController _mc;
 
 private:
     int _jitterValue;

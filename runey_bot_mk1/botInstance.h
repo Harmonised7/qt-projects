@@ -16,14 +16,6 @@
 #define INV_SLOT_X 42
 #define INV_SLOT_Y 36
 
-//Mouse Controller
-#define MOUSE_JITTER    5
-#define MOUSE_FPS       120
-#define MOUSE_MIN       0.015
-#define MOUSE_MAX       0.035
-#define MOUSE_CURVES    2
-#define MOUSE_SCREEN    0
-
 //Qt
 #include <QList>
 
@@ -48,23 +40,15 @@ public:
     ~BotInstance();
 
     //Methods
-    static cv::Rect getInvSlotRect( int index );
-    static int getInvSlotIndex( const cv::Rect &rect );
-    static int getInvSlotIndex( const QPoint &point );
-
-    void addCondition( Condition *condition );
+    BotInstance *addCondition( Condition *condition );
 
     QPixmap handleFrame( const cv::Mat &screen );
-
-    void dropItems();
-
 private:
     //Objects
     RndController _randomNumbers;
-    static MouseController _mc;
 
-    BotInfo *_info;
     QList<Condition *> _conditions;
+    BotInfo *_info;
 
     //Methods
     void updateInventory();

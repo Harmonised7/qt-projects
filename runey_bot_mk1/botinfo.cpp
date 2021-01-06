@@ -9,6 +9,10 @@ DropPatterns BotInfo::_dropPatterns = DropPatterns
 
 BotInfo::BotInfo()
 {
-    Inventory inv;
-    _invItems = &inv;
+    _invItems = Inventory();
+}
+
+BotInfo::~BotInfo()
+{
+    qDebug() << "botInfo killed";
 }

@@ -2,8 +2,6 @@
 
 using namespace cv;
 
-MouseController BotInstance::_mc = MouseController( MOUSE_FPS, MOUSE_MIN, MOUSE_MAX, (double) MOUSE_JITTER, MOUSE_CURVES, MOUSE_SCREEN );
-
 BotInstance::BotInstance()
 {
     _info = new BotInfo;
@@ -20,16 +18,17 @@ BotInstance::BotInstance( const int &x, const int &y )
 
 QPixmap BotInstance::handleFrame( const cv::Mat &screen )
 {
-    BotInfo info = *_info;
     _info->rsMat = screen( Rect( _info->x, _info->y, RS_WIDTH, RS_HEIGHT ) ).clone();
     _info->invMat = _info->rsMat( Rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 ) ).clone();
     Rect rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 );
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
     updateInventory();
+
+    //draw stuff
     for( int item : _info->getItems()->keys() )
     {
-        rectangle( _info->rsMat, getInvSlotRect( item ), CV_RGB( 255, 0, 255 ) );
+        rectangle( _info->rsMat, Util::getInvSlotRect( item ), CV_RGB( 255, 0, 255 ) );
     }
 
     for( Condition *condition : _conditions )
@@ -67,7 +66,7 @@ void BotInstance::updateInventory()
     adaptiveThreshold(res, res, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, size, -128);
 //    imshow("result_thresh", res);
 
-    (*_info->getItems()).clear();
+    _info->getItems()->clear();
     while (true)
     {
         double minval, maxval, threshold = 0.9;
@@ -77,7 +76,7 @@ void BotInstance::updateInventory()
         if (maxval >= threshold)
         {
             Rect match = Rect( maxloc, Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows) );
-            int slot = getInvSlotIndex( match );
+            int slot = Util::getInvSlotIndex( match );
             (*_info->getItems())[ slot ] = 1;
             cv::putText( ref, QString::number( slot ).toStdString(), Util::QPointToPoint( Util::getMidPoint( match ) ), FONT_HERSHEY_DUPLEX, 1.0, CV_RGB( 255, 255, 255 ) );
             rectangle(ref, match, CV_RGB(0,255,0), 2);
@@ -86,45 +85,14 @@ void BotInstance::updateInventory()
         else
             break;
     }
-    qDebug() << (*_info->getItems()).size();
+    qDebug() << _info->getItems()->size();
 //    imshow("final", ref);
 }
 
-void BotInstance::dropItems()
-{
-//    updateInventory();
-
-    _mc.mousePress( MouseStates::Left, Util::getMidPoint( Rect( _info->x + INV_X, _info->y + INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 ) ), 50, 75 );
-    for( int i : BotInfo::_dropPatterns[ _randomNumbers.genRand( BotInfo::_dropPatterns.length() - 1 ) ] )
-    {
-        if( (*_info->getItems())[ i ] )
-        {
-            _mc.mousePress( MouseStates::Left, Util::getMidPoint( getInvSlotRect( i ) ) + QPoint( _info->x, _info->y ), 50, 75 );
-        }
-    }
-}
-
-void BotInstance::addCondition( Condition *condition )
+BotInstance* BotInstance::addCondition( Condition *condition )
 {
     _conditions.push_back( condition );
-}
-
-cv::Rect BotInstance::getInvSlotRect( int index )
-{
-    if( index < 1 || index > 28 )
-        qDebug() << "getInvSlotRect Index out of bounds!" << index;
-    --index;
-    return Rect( INV_X + (INV_SLOT_X * ( index % 4 ) ), INV_Y + (INV_SLOT_Y * ( index / 4 ) ), INV_SLOT_X, INV_SLOT_Y );
-}
-
-int BotInstance::getInvSlotIndex( const cv::Rect &rect )
-{
-    return getInvSlotIndex( Util::getMidPoint( rect ) ) + 1;
-}
-
-int BotInstance::getInvSlotIndex(const QPoint &point )
-{
-    return point.x() / INV_SLOT_X + (point.y() / INV_SLOT_Y) * 4;
+    return this;
 }
 
 BotInstance::~BotInstance()

@@ -24,6 +24,8 @@
 #include "botInstance.h"
 #include "task.h"
 #include "condition.h"
+#include "inventoryCondition.h"
+#include "dropItemsTask.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

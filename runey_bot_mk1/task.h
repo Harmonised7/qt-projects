@@ -2,6 +2,8 @@
 #define TASK_H
 
 #include "botinfo.h"
+#include "mouseController.h"
+#include "util.h"
 
 class Task
 {

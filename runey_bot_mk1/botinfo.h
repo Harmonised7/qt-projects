@@ -4,6 +4,7 @@
 //Qt
 #include <QMap>
 #include <QList>
+#include <QDebug>
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
@@ -16,7 +17,8 @@ typedef QMap<int, int> Inventory;
 
 class BotInfo
 {
-public:
+public: 
+    ~BotInfo();
     BotInfo();
 
     cv::Mat rsMat;
@@ -26,14 +28,14 @@ public:
 
     Inventory *getItems()
     {
-        return _invItems;
+        return &_invItems;
     }
 
     static DropPatterns _dropPatterns;
 
 private:
     //Objects
-    Inventory *_invItems;
+    Inventory _invItems;
 };
 
 #endif // BOTINFO_H

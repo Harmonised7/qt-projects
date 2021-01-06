@@ -9,7 +9,8 @@ InventoryCondition::InventoryCondition( Task *task, const int &item, const int &
 
 bool InventoryCondition::checkCondition( BotInfo *info )
 {
-    return info->getItems()->keys().contains( _item ) && (*info->getItems())[ _item ] >= _amount;
+    return info->getItems()->size() >= _amount;
+//    return info->getItems()->keys().contains( _item ) && (*info->getItems())[ _item ] >= _amount;
 }
 
 void InventoryCondition::execute( BotInfo *info )

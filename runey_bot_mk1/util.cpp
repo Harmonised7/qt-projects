@@ -13,6 +13,24 @@ QPoint Util::getMidPoint( cv::Rect area )
     return QPoint( area.tl().x + area.width / 2, area.tl().y + area.height / 2 );
 }
 
+cv::Rect Util::getInvSlotRect( int index )
+{
+    if( index < 1 || index > 28 )
+        qDebug() << "getInvSlotRect Index out of bounds!" << index;
+    --index;
+    return Rect( INV_X + (INV_SLOT_X * ( index % 4 ) ), INV_Y + (INV_SLOT_Y * ( index / 4 ) ), INV_SLOT_X, INV_SLOT_Y );
+}
+
+int Util::getInvSlotIndex( const cv::Rect &rect )
+{
+    return getInvSlotIndex( Util::getMidPoint( rect ) ) + 1;
+}
+
+int Util::getInvSlotIndex(const QPoint &point )
+{
+    return point.x() / INV_SLOT_X + (point.y() / INV_SLOT_Y) * 4;
+}
+
 int Util::makeAbsolute( int value )
 {
     return value > 0 ? value : -value;

@@ -11,12 +11,10 @@ typedef QMap<int, int> Inventory;
 class DropItemsTask : public Task
 {
 public:
-    DropItemsTask( BotInfo *info );
+    DropItemsTask();
     void execute( BotInfo *info ) override;
 
 private:
-    BotInfo *_info;
-    Inventory *_itemsToDrop;
 };
 
 #endif // DROPITEMSTASK_H
