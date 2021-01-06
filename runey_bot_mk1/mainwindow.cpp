@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QTime>
+
 MainWindow::MainWindow( QWidget *parent ) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -9,8 +11,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 {
     ui->setupUi(this);
 
-    InventoryCondition *fullInvCondition = new InventoryCondition( 1, 5 );
-    DropItemsTask *dropItemsTask = new DropItemsTask();
+    InventoryCondition *fullInvCondition = new InventoryCondition( 1, true, 5 );
+    DropItemsTask *dropItemsTask = new DropItemsTask( 1, 3 );
 
     Module *fullInvDropItemsModule = new Module( fullInvCondition, dropItemsTask );
 

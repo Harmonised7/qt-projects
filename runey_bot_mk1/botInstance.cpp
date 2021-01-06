@@ -23,7 +23,7 @@ QPixmap BotInstance::handleFrame( const cv::Mat &screen )
     Rect rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 );
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
-    updateInventory();
+    updateInventory( _info );
 
     //draw stuff
     for( int item : _info->getItems()->keys() )
@@ -55,9 +55,9 @@ QPixmap BotInstance::handleFrame( const cv::Mat &screen )
     return Util::matToPixmap( _info->rsMat );
 }
 
-void BotInstance::updateInventory()
+void BotInstance::updateInventory( BotInfo *info )
 {
-    Mat ref = _info->invMat.clone();
+    Mat ref = info->invMat.clone();
     Mat tpl = ref( Rect( 0, 0, INV_SLOT_X, INV_SLOT_Y ) ).clone();
 
     if (ref.empty() || tpl.empty())
@@ -80,7 +80,7 @@ void BotInstance::updateInventory()
     adaptiveThreshold(res, res, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, size, -128);
 //    imshow("result_thresh", res);
 
-    _info->getItems()->clear();
+    info->getItems()->clear();
     while (true)
     {
         double minval, maxval, threshold = 0.9;
@@ -91,7 +91,7 @@ void BotInstance::updateInventory()
         {
             Rect match = Rect( maxloc, Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows) );
             int slot = Util::getInvSlotIndex( match );
-            (*_info->getItems())[ slot ] = 1;
+            info->getItems()->insert( slot, 1 ); //1 IS ITEM TYPE
             cv::putText( ref, QString::number( slot ).toStdString(), Util::QPointToPoint( Util::getMidPoint( match ) ), FONT_HERSHEY_DUPLEX, 1.0, CV_RGB( 255, 255, 255 ) );
             rectangle(ref, match, CV_RGB(0,255,0), 2);
             floodFill(res, maxloc, 0); //mark drawn blob

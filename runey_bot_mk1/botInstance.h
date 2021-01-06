@@ -55,7 +55,7 @@ private:
     BotInfo *_info;
 
     //Methods
-    void updateInventory();
+    static void updateInventory( BotInfo *info );
 };
 
 #endif // BOTINSTANCE_H
