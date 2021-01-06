@@ -4,7 +4,7 @@
 //Qt
 #include <QList>
 
-#include "task.h"
+#include "Tasks/task.h"
 
 typedef QMap<int, int> Inventory;
 

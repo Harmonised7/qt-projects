@@ -6,12 +6,10 @@
 class InventoryCondition : public Condition
 {
 public:
-    InventoryCondition( Task *task, const int &item, const int &amount = 1 );
+    InventoryCondition( const int &item, const int &amount = 1 );
     bool checkCondition( BotInfo *info );
-    void execute( BotInfo *info );
 
 private:
-    Task *_task;
     int _item;
     int _amount;
 };

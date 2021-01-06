@@ -31,10 +31,24 @@ QPixmap BotInstance::handleFrame( const cv::Mat &screen )
         rectangle( _info->rsMat, Util::getInvSlotRect( item ), CV_RGB( 255, 0, 255 ) );
     }
 
-    for( Condition *condition : _conditions )
+    for( Module *module : _modules )
     {
-        if( condition->checkCondition( _info ) )
-            condition->execute( _info );
+        bool passedConditions = true;
+        for( Condition *condition : module->getConditions() )
+        {
+            if( !condition->checkCondition( _info ) )
+            {
+                passedConditions = false;
+                break;
+            }
+        }
+        if( passedConditions )
+        {
+            for( Task *task : module->getTasks() )
+            {
+                task->execute( _info );
+            }
+        }
     }
 //    updateInventory();
 
@@ -85,14 +99,13 @@ void BotInstance::updateInventory()
         else
             break;
     }
-    qDebug() << _info->getItems()->size();
+//    qDebug() << _info->getItems()->size();
 //    imshow("final", ref);
 }
 
-BotInstance* BotInstance::addCondition( Condition *condition )
+void BotInstance::addModule( Module *module )
 {
-    _conditions.push_back( condition );
-    return this;
+    _modules.push_back( module );
 }
 
 BotInstance::~BotInstance()

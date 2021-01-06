@@ -16,10 +16,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Modules/module.cpp \
     botInstance.cpp \
     botinfo.cpp \
-    dropItemsTask.cpp \
-    inventoryCondition.cpp \
+    Tasks/dropItemsTask.cpp \
+    Conditions/inventoryCondition.cpp \
     main.cpp \
     mainFunctions.cpp \
     mainwindow.cpp \
@@ -28,16 +29,17 @@ SOURCES += \
     util.cpp
 
 HEADERS += \
+    Conditions/condition.h \
+    Modules/module.h \
     botInstance.h \
     botinfo.h \
-    condition.h \
-    dropItemsTask.h \
-    inventoryCondition.h \
+    Tasks/dropItemsTask.h \
+    Conditions/inventoryCondition.h \
     mainwindow.h \
     mouseController.h \
     rndController.h \
     sleeper.h \
-    task.h \
+    Tasks/task.h \
     util.h
 
 FORMS += \

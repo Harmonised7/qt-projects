@@ -18,14 +18,20 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
+//Module Includes
+
+//Condition Includes
+#include "Conditions/condition.h"
+#include "Conditions/inventoryCondition.h"
+
+//Task Includes
+#include "Tasks/task.h"
+#include "Tasks/dropItemsTask.h"
+
 //Other Includes
 #include "rndController.h"
 #include "mouseController.h"
 #include "botInstance.h"
-#include "task.h"
-#include "condition.h"
-#include "inventoryCondition.h"
-#include "dropItemsTask.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -7,6 +7,8 @@
 #define INV_SLOT_X 42
 #define INV_SLOT_Y 36
 
+#define INV_SLOT_SHRINK 6
+
 #include <QPoint>
 
 //Qt Stuff

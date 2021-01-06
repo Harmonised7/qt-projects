@@ -18,7 +18,10 @@ cv::Rect Util::getInvSlotRect( int index )
     if( index < 1 || index > 28 )
         qDebug() << "getInvSlotRect Index out of bounds!" << index;
     --index;
-    return Rect( INV_X + (INV_SLOT_X * ( index % 4 ) ), INV_Y + (INV_SLOT_Y * ( index / 4 ) ), INV_SLOT_X, INV_SLOT_Y );
+    return Rect( INV_SLOT_SHRINK + INV_X + (INV_SLOT_X * ( index % 4 ) ),
+                 INV_SLOT_SHRINK + INV_Y + (INV_SLOT_Y * ( index / 4 ) ),
+                 INV_SLOT_X - INV_SLOT_SHRINK,
+                 INV_SLOT_Y - INV_SLOT_SHRINK );
 }
 
 int Util::getInvSlotIndex( const cv::Rect &rect )

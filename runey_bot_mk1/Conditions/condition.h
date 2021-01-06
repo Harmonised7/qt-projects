@@ -1,7 +1,7 @@
 #ifndef CONDITION_H
 #define CONDITION_H
 
-#include "task.h"
+#include "Tasks/task.h"
 
 //Qt
 #include <QList>
@@ -14,7 +14,6 @@ class Condition
 public:
     virtual ~Condition() {};
     virtual bool checkCondition( BotInfo *info ) = 0;
-    virtual void execute( BotInfo *info ) = 0;
 
 private:
     QList<Task *> tasks;

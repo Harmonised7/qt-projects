@@ -22,10 +22,10 @@ double RndController::genRandDouble( double min, double max )
 
 QPoint RndController::genRandPoint( cv::Rect area )
 {
-    return QPoint( genRand( area.tl().x, area.tl().y ), genRand( area.br().x, area.br().y ) );
+    return genRandPoint( QPoint( area.tl().x, area.tl().y ), QPoint( area.br().x, area.br().y ) );
 }
 
 QPoint RndController::genRandPoint( QPoint p1, QPoint p2 )
 {
-    return QPoint( genRand( p1.x(), p1.y() ), genRand( p2.x(), p2.y() ) );
+    return QPoint( p1.x() + genRand( p2.x() - p1.x() ), p1.y() + genRand( p2.y() - p1.y() ) );
 }

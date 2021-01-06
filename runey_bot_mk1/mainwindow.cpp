@@ -9,10 +9,14 @@ MainWindow::MainWindow( QWidget *parent ) :
 {
     ui->setupUi(this);
 
-    InventoryCondition *condition = new InventoryCondition( new DropItemsTask, 1, 5 );
+    InventoryCondition *fullInvCondition = new InventoryCondition( 1, 5 );
+    DropItemsTask *dropItemsTask = new DropItemsTask();
+
+    Module *fullInvDropItemsModule = new Module( fullInvCondition, dropItemsTask );
 
     BotInstance *bot = new BotInstance( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT );
-    bot->addCondition( condition );
+    bot->addModule( fullInvDropItemsModule );
+
     _botInstances.push_back( bot );
 //    _botInstances.push_back( BotInstance( BAR_WIDTH + BORDER_SIZE, _screen->size().height() - RS_HEIGHT - BORDER_SIZE ) );
     init();

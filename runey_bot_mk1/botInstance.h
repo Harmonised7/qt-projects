@@ -24,12 +24,16 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
+//Bot Includes
+#include "Modules/module.h"
+#include "Conditions/condition.h"
+#include "Tasks/task.h"
+
 //Other Includes
 #include "rndController.h"
 #include "mouseController.h"
 #include "util.h"
 #include "botinfo.h"
-#include "condition.h"
 
 class BotInstance
 {
@@ -40,14 +44,14 @@ public:
     ~BotInstance();
 
     //Methods
-    BotInstance *addCondition( Condition *condition );
+    void addModule( Module *module );
 
     QPixmap handleFrame( const cv::Mat &screen );
 private:
     //Objects
     RndController _randomNumbers;
 
-    QList<Condition *> _conditions;
+    QList<Module *> _modules;
     BotInfo *_info;
 
     //Methods

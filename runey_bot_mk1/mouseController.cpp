@@ -78,7 +78,7 @@ void MouseController::mouseMove( const int &newX, const int &newY )
         if (_t > 1)
             _t = 1;
 
-        qDebug() << _t;
+//        qDebug() << _t;
 
         _pFinal.setX( static_cast<int>((pow((1.0 - _t), 2) * (_p0.x()) + (1.0 - _t) * 2.0 * _t * (_p1.x()) + _t * _t * (_p2.x()))) );
         _pFinal.setY( static_cast<int>((pow((1.0 - _t), 2) * (_p0.y()) + (1.0 - _t) * 2.0 * _t * (_p1.y()) + _t * _t * (_p2.y()))) );

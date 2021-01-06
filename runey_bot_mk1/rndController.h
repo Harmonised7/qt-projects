@@ -16,8 +16,6 @@
 class RndController
 {
 public:
-    void changeRandSeed();
-
     static int genRand( int bound1, int bound2 = 0 );
     static double genRandDouble( double bound1, double bound2 = 0 );
     static QPoint genRandPoint( cv::Rect area );
