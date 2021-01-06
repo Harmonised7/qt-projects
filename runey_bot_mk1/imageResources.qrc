@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>Images/Beer.png</file>
+        <file>Images/Jug_of_water.png</file>
+        <file>Images/Grapes.png</file>
+    </qresource>
+</RCC>

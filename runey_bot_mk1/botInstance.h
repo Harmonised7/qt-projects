@@ -45,6 +45,7 @@ public:
 
     //Methods
     void addModule( Module *module );
+    void addImage( int id, cv::Mat image );
 
     QPixmap handleFrame( const cv::Mat &screen );
 private:

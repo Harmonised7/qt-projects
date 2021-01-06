@@ -17,9 +17,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Modules/module.cpp \
+    Tasks/clickItemsTask.cpp \
+    Tasks/useItemsTask.cpp \
     botInstance.cpp \
     botinfo.cpp \
-    Tasks/dropItemsTask.cpp \
     Conditions/inventoryCondition.cpp \
     main.cpp \
     mainFunctions.cpp \
@@ -31,9 +32,10 @@ SOURCES += \
 HEADERS += \
     Conditions/condition.h \
     Modules/module.h \
+    Tasks/clickItemsTask.h \
+    Tasks/useItemsTask.h \
     botInstance.h \
     botinfo.h \
-    Tasks/dropItemsTask.h \
     Conditions/inventoryCondition.h \
     mainwindow.h \
     mouseController.h \
@@ -72,4 +74,7 @@ DEPENDPATH += /usr/bin
 
 LIBS += -L/usr/bin -lxdo
 #XDoTool!
+
+RESOURCES += \
+    imageResources.qrc
 

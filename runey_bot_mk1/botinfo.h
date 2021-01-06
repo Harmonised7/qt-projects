@@ -21,21 +21,25 @@ public:
     ~BotInfo();
     BotInfo();
 
+    static DropPatterns _dropPatterns;
+
     cv::Mat rsMat;
     cv::Mat invMat;
 
     int x, y;
 
+    //Methods
     Inventory *getItems()
     {
-        return &_invItems;
+        return _invItems;
     }
-
-    static DropPatterns _dropPatterns;
+    void addImage( const int &id, const cv::Mat image );
+    QMap<int, cv::Mat> getImages();
 
 private:
     //Objects
-    Inventory _invItems;
+    Inventory *_invItems;
+    QMap<int, cv::Mat> _images;
 };
 
 #endif // BOTINFO_H

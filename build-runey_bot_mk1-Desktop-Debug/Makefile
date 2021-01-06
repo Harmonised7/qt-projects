@@ -53,20 +53,23 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../runey_bot_mk1/Modules/module.cpp \
+		../runey_bot_mk1/Tasks/clickItemsTask.cpp \
+		../runey_bot_mk1/Tasks/useItemsTask.cpp \
 		../runey_bot_mk1/botInstance.cpp \
 		../runey_bot_mk1/botinfo.cpp \
-		../runey_bot_mk1/Tasks/dropItemsTask.cpp \
 		../runey_bot_mk1/Conditions/inventoryCondition.cpp \
 		../runey_bot_mk1/main.cpp \
 		../runey_bot_mk1/mainFunctions.cpp \
 		../runey_bot_mk1/mainwindow.cpp \
 		../runey_bot_mk1/mouseController.cpp \
 		../runey_bot_mk1/rndController.cpp \
-		../runey_bot_mk1/util.cpp moc_mainwindow.cpp
+		../runey_bot_mk1/util.cpp qrc_imageResources.cpp \
+		moc_mainwindow.cpp
 OBJECTS       = module.o \
+		clickItemsTask.o \
+		useItemsTask.o \
 		botInstance.o \
 		botinfo.o \
-		dropItemsTask.o \
 		inventoryCondition.o \
 		main.o \
 		mainFunctions.o \
@@ -74,6 +77,7 @@ OBJECTS       = module.o \
 		mouseController.o \
 		rndController.o \
 		util.o \
+		qrc_imageResources.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -152,9 +156,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../runey_bot_mk1/runey_bot_mk1.pro ../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/Modules/module.h \
+		../runey_bot_mk1/Tasks/clickItemsTask.h \
+		../runey_bot_mk1/Tasks/useItemsTask.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/Tasks/dropItemsTask.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
 		../runey_bot_mk1/mainwindow.h \
 		../runey_bot_mk1/mouseController.h \
@@ -162,9 +167,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/util.h ../runey_bot_mk1/Modules/module.cpp \
+		../runey_bot_mk1/Tasks/clickItemsTask.cpp \
+		../runey_bot_mk1/Tasks/useItemsTask.cpp \
 		../runey_bot_mk1/botInstance.cpp \
 		../runey_bot_mk1/botinfo.cpp \
-		../runey_bot_mk1/Tasks/dropItemsTask.cpp \
 		../runey_bot_mk1/Conditions/inventoryCondition.cpp \
 		../runey_bot_mk1/main.cpp \
 		../runey_bot_mk1/mainFunctions.cpp \
@@ -258,7 +264,8 @@ Makefile: ../runey_bot_mk1/runey_bot_mk1.pro /usr/lib/x86_64-linux-gnu/qt5/mkspe
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../runey_bot_mk1/runey_bot_mk1.pro
+		../runey_bot_mk1/runey_bot_mk1.pro \
+		../runey_bot_mk1/imageResources.qrc
 	$(QMAKE) -o Makefile ../runey_bot_mk1/runey_bot_mk1.pro -spec linux-g++ CONFIG+=debug
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf:
@@ -336,6 +343,7 @@ Makefile: ../runey_bot_mk1/runey_bot_mk1.pro /usr/lib/x86_64-linux-gnu/qt5/mkspe
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 ../runey_bot_mk1/runey_bot_mk1.pro:
+../runey_bot_mk1/imageResources.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../runey_bot_mk1/runey_bot_mk1.pro -spec linux-g++ CONFIG+=debug
 
@@ -350,9 +358,10 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/imageResources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/condition.h ../runey_bot_mk1/Modules/module.h ../runey_bot_mk1/botInstance.h ../runey_bot_mk1/botinfo.h ../runey_bot_mk1/Tasks/dropItemsTask.h ../runey_bot_mk1/Conditions/inventoryCondition.h ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/mouseController.h ../runey_bot_mk1/rndController.h ../runey_bot_mk1/sleeper.h ../runey_bot_mk1/Tasks/task.h ../runey_bot_mk1/util.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/Tasks/dropItemsTask.cpp ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/rndController.cpp ../runey_bot_mk1/util.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/condition.h ../runey_bot_mk1/Modules/module.h ../runey_bot_mk1/Tasks/clickItemsTask.h ../runey_bot_mk1/Tasks/useItemsTask.h ../runey_bot_mk1/botInstance.h ../runey_bot_mk1/botinfo.h ../runey_bot_mk1/Conditions/inventoryCondition.h ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/mouseController.h ../runey_bot_mk1/rndController.h ../runey_bot_mk1/sleeper.h ../runey_bot_mk1/Tasks/task.h ../runey_bot_mk1/util.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/Tasks/clickItemsTask.cpp ../runey_bot_mk1/Tasks/useItemsTask.cpp ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/rndController.cpp ../runey_bot_mk1/util.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../runey_bot_mk1/mainwindow.ui $(DISTDIR)/
 
 
@@ -377,8 +386,16 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_imageResources.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_imageResources.cpp
+qrc_imageResources.cpp: ../runey_bot_mk1/imageResources.qrc \
+		/usr/lib/qt5/bin/rcc \
+		../runey_bot_mk1/Images/Jug_of_water.png \
+		../runey_bot_mk1/Images/Grapes.png \
+		../runey_bot_mk1/Images/Beer.png
+	/usr/lib/qt5/bin/rcc -name imageResources ../runey_bot_mk1/imageResources.qrc -o qrc_imageResources.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
@@ -397,7 +414,7 @@ moc_mainwindow.cpp: ../runey_bot_mk1/mainwindow.h \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
-		../runey_bot_mk1/Tasks/dropItemsTask.h \
+		../runey_bot_mk1/Tasks/clickItemsTask.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		moc_predefs.h \
@@ -421,7 +438,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -434,6 +451,24 @@ module.o: ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/Modules/module.h 
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o module.o ../runey_bot_mk1/Modules/module.cpp
+
+clickItemsTask.o: ../runey_bot_mk1/Tasks/clickItemsTask.cpp ../runey_bot_mk1/Tasks/clickItemsTask.h \
+		../runey_bot_mk1/Tasks/task.h \
+		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/mouseController.h \
+		../runey_bot_mk1/rndController.h \
+		../runey_bot_mk1/sleeper.h \
+		../runey_bot_mk1/util.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o clickItemsTask.o ../runey_bot_mk1/Tasks/clickItemsTask.cpp
+
+useItemsTask.o: ../runey_bot_mk1/Tasks/useItemsTask.cpp ../runey_bot_mk1/Tasks/useItemsTask.h \
+		../runey_bot_mk1/Tasks/task.h \
+		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/mouseController.h \
+		../runey_bot_mk1/rndController.h \
+		../runey_bot_mk1/sleeper.h \
+		../runey_bot_mk1/util.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o useItemsTask.o ../runey_bot_mk1/Tasks/useItemsTask.cpp
 
 botInstance.o: ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
@@ -448,15 +483,6 @@ botInstance.o: ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botInstance.h \
 
 botinfo.o: ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/botinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o botinfo.o ../runey_bot_mk1/botinfo.cpp
-
-dropItemsTask.o: ../runey_bot_mk1/Tasks/dropItemsTask.cpp ../runey_bot_mk1/Tasks/dropItemsTask.h \
-		../runey_bot_mk1/Tasks/task.h \
-		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/mouseController.h \
-		../runey_bot_mk1/rndController.h \
-		../runey_bot_mk1/sleeper.h \
-		../runey_bot_mk1/util.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dropItemsTask.o ../runey_bot_mk1/Tasks/dropItemsTask.cpp
 
 inventoryCondition.o: ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/Conditions/inventoryCondition.h \
 		../runey_bot_mk1/Conditions/condition.h \
@@ -477,7 +503,7 @@ main.o: ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainwindow.h \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
-		../runey_bot_mk1/Tasks/dropItemsTask.h \
+		../runey_bot_mk1/Tasks/clickItemsTask.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../runey_bot_mk1/main.cpp
@@ -491,7 +517,7 @@ mainFunctions.o: ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
-		../runey_bot_mk1/Tasks/dropItemsTask.h \
+		../runey_bot_mk1/Tasks/clickItemsTask.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		ui_mainwindow.h
@@ -506,7 +532,7 @@ mainwindow.o: ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mainwindow.h \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
-		../runey_bot_mk1/Tasks/dropItemsTask.h \
+		../runey_bot_mk1/Tasks/clickItemsTask.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		ui_mainwindow.h
@@ -524,6 +550,9 @@ rndController.o: ../runey_bot_mk1/rndController.cpp ../runey_bot_mk1/rndControll
 util.o: ../runey_bot_mk1/util.cpp ../runey_bot_mk1/util.h \
 		../runey_bot_mk1/rndController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o util.o ../runey_bot_mk1/util.cpp
+
+qrc_imageResources.o: qrc_imageResources.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_imageResources.o qrc_imageResources.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

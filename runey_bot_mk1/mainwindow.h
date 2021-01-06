@@ -12,6 +12,7 @@
 #include <QCursor>
 #include <QProcess>
 #include <QSet>
+#include <QPixmap>
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
@@ -26,7 +27,7 @@
 
 //Task Includes
 #include "Tasks/task.h"
-#include "Tasks/dropItemsTask.h"
+#include "Tasks/clickItemsTask.h"
 
 //Other Includes
 #include "rndController.h"

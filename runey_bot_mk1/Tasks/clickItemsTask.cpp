@@ -1,17 +1,17 @@
-#include "Tasks/dropItemsTask.h"
+#include "Tasks/clickItemsTask.h"
 
-DropItemsTask::DropItemsTask( Inventory *items )
+ClickItemsTask::ClickItemsTask( Inventory *items )
 {
     _items = items;
 }
 
-DropItemsTask::DropItemsTask( const int &item, const int &amount )
+ClickItemsTask::ClickItemsTask( const int &item, const int &amount )
 {
     _items = new Inventory();
     _items->insert( item, amount );
 }
 
-void DropItemsTask::execute( BotInfo *info )
+void ClickItemsTask::execute( BotInfo *info )
 {    
     Inventory *items = info->getItems();
     Inventory *itemsToDrop = new Inventory();

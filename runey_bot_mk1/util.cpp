@@ -20,8 +20,8 @@ cv::Rect Util::getInvSlotRect( int index )
     --index;
     return Rect( INV_SLOT_SHRINK + INV_X + (INV_SLOT_X * ( index % 4 ) ),
                  INV_SLOT_SHRINK + INV_Y + (INV_SLOT_Y * ( index / 4 ) ),
-                 INV_SLOT_X - INV_SLOT_SHRINK,
-                 INV_SLOT_Y - INV_SLOT_SHRINK );
+                 INV_SLOT_X - INV_SLOT_SHRINK*2,
+                 INV_SLOT_Y - INV_SLOT_SHRINK*2 );
 }
 
 int Util::getInvSlotIndex( const cv::Rect &rect )

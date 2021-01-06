@@ -9,10 +9,20 @@ DropPatterns BotInfo::_dropPatterns = DropPatterns
 
 BotInfo::BotInfo()
 {
-    _invItems = Inventory();
+    _invItems = new Inventory();
 }
 
 BotInfo::~BotInfo()
 {
     qDebug() << "botInfo killed";
+}
+
+void BotInfo::addImage( const int &id, const cv::Mat image )
+{
+    _images.insert( id, image );
+}
+
+QMap<int, cv::Mat> BotInfo::getImages()
+{
+    return _images;
 }
