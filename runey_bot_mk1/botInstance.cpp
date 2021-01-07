@@ -131,38 +131,13 @@ void BotInstance::updateFlood( BotInfo *info )
         for(int j = 0; j < inputMat.cols; j++)
         {
             Vec3b pixel = inputMat.at<Vec3b>(i, j);
-            if( pixel[0] >= 200 && pixel[1] <= 10 && pixel[2] <= 10 )
+            if( pixel[0] >= 150 && pixel[1] <= 10 && pixel[2] <= 10 )
                 filteredMat.at<Vec3b>(i, j) = Vec3b( 255, 0, 0 );
         }
     }
 
     int matWidth = filteredMat.cols;
     int matHeight = filteredMat.rows;
-
-    for(int i = 0; i < matHeight; i++)
-    {
-        for(int j = 0; j < matWidth; j++)
-        {
-            Vec3b midPixel = filteredMat.at<Vec3b>( i, j );
-            if( midPixel[0] < 255 )
-                continue;
-            rectangle( filteredMat, Rect( j-1, i-1, 2, 2 ), Scalar( 255, 0, 0 ) );
-
-            for( int y = -2; y <= 2; y++ )
-            {
-                for( int x = -2; x <= 2; x++ )
-                {
-                    if( j + x < 0 || j + x > matWidth || i + y < 0 || i + y > matHeight )
-                    {
-//                        rectangle( filteredMat, Point( j - 2, i - 2 ), Point( j + 2, i + 2 ), Scalar( 0, 255, 255 ) );
-                        strayPixels.push_back( Point( j, i ) );
-                        goto in_loop_end;
-                    }
-                }
-            }
-            in_loop_end:;
-        }
-    }
 
     int x = 0, y = 0, lines = 0;
     for( Point p1 : strayPixels )
@@ -178,26 +153,16 @@ void BotInstance::updateFlood( BotInfo *info )
         }
     }
 
-    if( strayPixels.size() > 0 )
+    Mat testMat = filteredMat.clone();
+    floodFill( filteredMat, Point( 0, 0 ), Scalar( 255, 0, 0 ) );
+    for(int i = 0; i < matHeight; i++)
     {
-        x /= strayPixels.size();
-        y /= strayPixels.size();
-
-        floodFill( filteredMat, Point( x, y ), Scalar( 255, 0, 0 ) );
-    }
-//    else
-    {
-        Mat testMat = filteredMat.clone();
-        floodFill( filteredMat, Point( RS_INNER_WIDTH/2, RS_INNER_HEIGHT/2 ), Scalar( 255, 0, 0 ) );
-        for(int i = 0; i < matHeight; i++)
+        for(int j = 0; j < matWidth; j++)
         {
-            for(int j = 0; j < matWidth; j++)
-            {
-                if( filteredMat.at<Vec3b>( i, j )[0] == 0 )
-                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 255, 0, 0 );
-                else
-                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
-            }
+            if( filteredMat.at<Vec3b>( i, j )[0] == 0 )
+                filteredMat.at<Vec3b>( i, j ) = Vec3b( 255, 0, 0 );
+            else
+                filteredMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
         }
     }
 
