@@ -12,18 +12,17 @@
 #include <QPoint>
 
 //Qt Stuff
-#include <QImage>
-#include <QPixmap>
-#include <QDebug>
-#include <qmath.h>
+#include "QImage"
+#include "QPixmap"
+#include "QDebug"
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
-//My Includes
-#include "rndController.h"
+////My Includes
+//#include "rndController.h"
 
 class Util
 {
@@ -44,9 +43,6 @@ public:
     static cv::Rect getInvSlotRect( int index );
     static int getInvSlotIndex( const cv::Rect &rect );
     static int getInvSlotIndex( const QPoint &point );
-
-    static double getDistance( QPoint &p1, QPoint &p2 );
-    static double getDistance( cv::Point &p1, cv::Point &p2 );
 };
 
 #endif // UTIL_H

@@ -1,5 +1,5 @@
-#ifndef ClickItemsTask_H
-#define ClickItemsTask_H
+#ifndef CLICKITEMSTASK_H
+#define CLICKITEMSTASK_H
 
 //Qt
 #include <QList>
@@ -19,4 +19,4 @@ private:
     Inventory *_items;
 };
 
-#endif // ClickItemsTask_H
+#endif // CLICKITEMSTASK_H

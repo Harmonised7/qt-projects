@@ -81,13 +81,3 @@ double Util::cap( const double &x, const double &min_bound, const double &max_bo
     else
         return max( max_bound, min( min_bound, x ) );
 }
-
-double Util::getDistance( Point &p1, Point &p2 )
-{
-    return qSqrt( qPow( p2.x - p1.x, 2 ) + qPow( p2.y - p1.y, 2 ) );
-}
-
-double Util::getDistance( QPoint &p1, QPoint &p2 )
-{
-    return qSqrt( qPow( p2.x() - p1.x(), 2 ) + qPow( p2.y() - p1.y(), 2 ) );
-}

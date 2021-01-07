@@ -4,6 +4,9 @@
 #define RS_WIDTH 765
 #define RS_HEIGHT 503
 
+#define RS_INNER_WIDTH 512
+#define RS_INNER_HEIGHT 333
+
 #define BAR_WIDTH 72
 #define BAR_HEIGHT 34
 
@@ -57,6 +60,7 @@ private:
 
     //Methods
     static void updateInventory( BotInfo *info );
+    static void updateFlood( BotInfo *info );
 };
 
 #endif // BOTINSTANCE_H

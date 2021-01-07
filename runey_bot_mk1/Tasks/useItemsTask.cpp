@@ -13,7 +13,8 @@ void UseItemsTask::execute( BotInfo *info )
     Inventory *items = info->getItems();
     QList<int> *itemsGroup1 = new QList<int>();
     QList<int> *itemsGroup2 = new QList<int>();
-    int item, availableTimes;
+    int item, times, slot1, slot2;
+
 
     for( int slot : items->keys() )
     {
@@ -25,7 +26,19 @@ void UseItemsTask::execute( BotInfo *info )
             itemsGroup2->push_back( slot );
     }
 
-    availableTimes = cv::min( itemsGroup1->size(), itemsGroup2->size() );
+    if( itemsGroup1->size() > itemsGroup2->size() )
+    {
+        QList<int> *temp = itemsGroup1;
+        itemsGroup2 = itemsGroup1;
+        itemsGroup1 = temp;
+    }
 
-    MouseController::_mc.mousePress( MouseStates::Left, RndController::genRandPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ), 50, 75 );
+    times = cv::min( _times, itemsGroup1->size() );
+
+    for( int i = 0; i < times; i++ )
+    {
+        slot1 = itemsGroup1->value( RndController::genRand( itemsGroup1->size() - 1 ) );
+    }
+
+//    MouseController::_mc.mousePress( MouseStates::Left, RndController::genRandPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ), 50, 75 );
 }

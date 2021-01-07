@@ -25,6 +25,7 @@ public:
 
     cv::Mat rsMat;
     cv::Mat invMat;
+    cv::Mat floodMat;
 
     int x, y;
 

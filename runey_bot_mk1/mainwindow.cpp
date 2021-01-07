@@ -19,9 +19,9 @@ MainWindow::MainWindow( QWidget *parent ) :
     cv::Mat jugOfWater = Util::pixMapToMat( QPixmap( ":/icons/Images/Jug_of_water.png" ) );
 
     InventoryCondition *fullInvCondition = new InventoryCondition( 1, true, 1 );
-    ClickItemsTask *ClickItemsTask = new ClickItemsTask( 1, 1 );
+    ClickItemsTask *clickItemsTask = new ClickItemsTask( 1, 1 );
 
-    Module *fullInvDropItemsModule = new Module( fullInvCondition, ClickItemsTask );
+    Module *fullInvDropItemsModule = new Module( fullInvCondition, clickItemsTask );
 
     BotInstance *bot = new BotInstance( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT );
 //    bot->addModule( fullInvDropItemsModule );

@@ -24,6 +24,7 @@ QPixmap BotInstance::handleFrame( const cv::Mat &screen )
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
     updateInventory( _info );
+    updateFlood( _info );
 
     Inventory *items = _info->getItems();
 
@@ -115,6 +116,92 @@ void BotInstance::updateInventory( BotInfo *info )
         //    qDebug() << _info->getItems()->size();
         //    imshow("final", ref);
     }
+}
+
+void BotInstance::updateFlood( BotInfo *info )
+{
+    Mat inputMat = info->rsMat( Rect( 4, 4, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone();
+    Mat filteredMat = Mat( inputMat.rows, inputMat.cols, CV_8UC3, Scalar( 0, 0, 0 ) );
+    QList<Point> strayPixels;
+
+//    imshow( "raw", inputMat );
+
+    for(int i = 0; i < inputMat.rows; i++)
+    {
+        for(int j = 0; j < inputMat.cols; j++)
+        {
+            Vec3b pixel = inputMat.at<Vec3b>(i, j);
+            if( pixel[0] >= 200 && pixel[1] <= 10 && pixel[2] <= 10 )
+                filteredMat.at<Vec3b>(i, j) = Vec3b( 255, 0, 0 );
+        }
+    }
+
+    int matWidth = filteredMat.cols;
+    int matHeight = filteredMat.rows;
+
+    for(int i = 0; i < matHeight; i++)
+    {
+        for(int j = 0; j < matWidth; j++)
+        {
+            Vec3b midPixel = filteredMat.at<Vec3b>( i, j );
+            if( midPixel[0] < 255 )
+                continue;
+            rectangle( filteredMat, Rect( j-1, i-1, 2, 2 ), Scalar( 255, 0, 0 ) );
+
+            for( int y = -2; y <= 2; y++ )
+            {
+                for( int x = -2; x <= 2; x++ )
+                {
+                    if( j + x < 0 || j + x > matWidth || i + y < 0 || i + y > matHeight )
+                    {
+//                        rectangle( filteredMat, Point( j - 2, i - 2 ), Point( j + 2, i + 2 ), Scalar( 0, 255, 255 ) );
+                        strayPixels.push_back( Point( j, i ) );
+                        goto in_loop_end;
+                    }
+                }
+            }
+            in_loop_end:;
+        }
+    }
+
+    int x = 0, y = 0, lines = 0;
+    for( Point p1 : strayPixels )
+    {
+        x += p1.x;
+        y += p1.y;
+        for( Point p2 : strayPixels )
+        {
+            if( ++lines < 100 && Util::getDistance( p1, p2 ) < 100 )
+            {
+                line( filteredMat, p1, p2, Scalar( 255, 0, 0 ), 3 );
+            }
+        }
+    }
+
+    if( strayPixels.size() > 0 )
+    {
+        x /= strayPixels.size();
+        y /= strayPixels.size();
+
+        floodFill( filteredMat, Point( x, y ), Scalar( 255, 0, 0 ) );
+    }
+//    else
+    {
+        Mat testMat = filteredMat.clone();
+        floodFill( filteredMat, Point( RS_INNER_WIDTH/2, RS_INNER_HEIGHT/2 ), Scalar( 255, 0, 0 ) );
+        for(int i = 0; i < matHeight; i++)
+        {
+            for(int j = 0; j < matWidth; j++)
+            {
+                if( filteredMat.at<Vec3b>( i, j )[0] == 0 )
+                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 255, 0, 0 );
+                else
+                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
+            }
+        }
+    }
+
+    imshow( "filter", filteredMat );
 }
 
 void BotInstance::addModule( Module *module )
