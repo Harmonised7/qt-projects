@@ -153,18 +153,34 @@ void BotInstance::updateFlood( BotInfo *info )
         }
     }
 
-    Mat testMat = filteredMat.clone();
-    floodFill( filteredMat, Point( 0, 0 ), Scalar( 255, 0, 0 ) );
-    for(int i = 0; i < matHeight; i++)
+    Mat backupMat = filteredMat.clone();
+    int bluePixels, attempts = 0;
+    QPoint fillPoint = QPoint( 0, 0 );
+
+    do
     {
-        for(int j = 0; j < matWidth; j++)
+        if( attempts > 0 )
+            fillPoint = RndController::genRandPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH-5, RS_INNER_HEIGHT-5 ) );
+
+        bluePixels = 0;
+        filteredMat = backupMat.clone();
+        floodFill( filteredMat, Point( fillPoint.x(), fillPoint.y() ), Scalar( 255, 0, 0 ) );
+        for(int i = 0; i < matHeight; i++)
         {
-            if( filteredMat.at<Vec3b>( i, j )[0] == 0 )
-                filteredMat.at<Vec3b>( i, j ) = Vec3b( 255, 0, 0 );
-            else
-                filteredMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
+            for(int j = 0; j < matWidth; j++)
+            {
+                if( filteredMat.at<Vec3b>( i, j )[0] == 0 )
+                {
+                    ++bluePixels;
+                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 255, 0, 0 );
+                }
+                else
+                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
+            }
         }
+        ++attempts;
     }
+    while( attempts <= 5 && bluePixels > 0.7*matHeight*matWidth );
 
     imshow( "filter", filteredMat );
 }
