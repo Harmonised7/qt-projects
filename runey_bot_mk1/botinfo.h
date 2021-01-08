@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QList>
 #include <QDebug>
+#include <QElapsedTimer>
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
@@ -25,21 +26,26 @@ public:
 
     cv::Mat rsMat;
     cv::Mat invMat;
-    cv::Mat floodMat;
 
     int x, y;
+    QSet<QPoint *> rsFloodMatches;
 
     //Methods
-    Inventory *getItems()
+    QPoint tl()
     {
-        return _invItems;
+        return QPoint( x, y );
     }
     void addImage( const int &id, const cv::Mat image );
     QMap<int, cv::Mat> getImages();
+    QElapsedTimer *timer;
+    bool wcState;
+    bool miningState;
+
+    Inventory *invItems;
+    QMap<char, int> *colorItems;
 
 private:
     //Objects
-    Inventory *_invItems;
     QMap<int, cv::Mat> _images;
 };
 

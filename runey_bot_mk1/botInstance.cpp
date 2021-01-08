@@ -2,21 +2,16 @@
 
 using namespace cv;
 
-BotInstance::BotInstance()
-{
-    _info = new BotInfo;
-    _info->x = BAR_WIDTH + BORDER_SIZE,
-    _info->y = 0;
-}
-
 BotInstance::BotInstance( const int &x, const int &y )
 {
     _info = new BotInfo;
+    _info->timer = new QElapsedTimer;
     _info->x = x,
     _info->y = y;
+    _info->timer->start();
 }
 
-QPixmap BotInstance::handleFrame( const cv::Mat &screen )
+Mat BotInstance::handleFrame( const cv::Mat &screen )
 {
     _info->rsMat = screen( Rect( _info->x, _info->y, RS_WIDTH, RS_HEIGHT ) ).clone();
     _info->invMat = _info->rsMat( Rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 ) ).clone();
@@ -24,9 +19,9 @@ QPixmap BotInstance::handleFrame( const cv::Mat &screen )
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
     updateInventory( _info );
-    updateFlood( _info );
+    updateFlood( _info->rsMat( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &_info->rsFloodMatches );
 
-    Inventory *items = _info->getItems();
+    Inventory *items = _info->invItems;
 
     //draw stuff
     for( int item : items->keys() )
@@ -38,8 +33,15 @@ QPixmap BotInstance::handleFrame( const cv::Mat &screen )
             color = CV_RGB( 255, 0, 255 );
         else if( items->value( item ) == 3 )
             color = CV_RGB( 255, 255, 0 );
+        else if( items->value( item ) == 4 )
+            color = CV_RGB( 255, 255, 255 );
         rectangle( _info->rsMat, Util::getInvSlotRect( item ), color );
     }
+
+    _info->wcState = _info->rsMat.at<Vec3b>( WC_STATE_Y, WC_STATE_X )[1] == 255;
+    _info->miningState = _info->rsMat.at<Vec3b>( MINING_STATE_Y, MINING_STATE_X )[1] == 255;
+
+    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_X, INV_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
 
     for( Module *module : _modules )
     {
@@ -61,16 +63,40 @@ QPixmap BotInstance::handleFrame( const cv::Mat &screen )
         }
     }
 
-    return Util::matToPixmap( _info->rsMat );
+//    imshow( "filter", info->floodMat );
+
+    return _info->rsMat;
 }
 
 void BotInstance::updateInventory( BotInfo *info )
 {
     Mat ref = info->invMat.clone();
+    Vec3b pixel;
+
+    info->invItems->clear();
+    //Color In Slot Finder
+    for( int y = 0; y < 7; y++ )
+    {
+        for( int x = 0; x < 4; x++ )
+        {
+            for( int i = 0; i < INV_SLOT_Y; i++ )
+            {
+                for( int j = 0; j < INV_SLOT_X; j++ )
+                {
+                    pixel = ref.at<Vec3b>( y*INV_SLOT_Y+i, x*INV_SLOT_X+j );
+                    if( pixel[0] == 255 )
+                    {
+                        info->invItems->insert( 1+y*4+x, info->colorItems->value( 'b' ) );
+                        goto exit_pixel_loop;
+                    }
+                }
+            }
+            exit_pixel_loop:;
+        }
+    }
+
+    //Set Images
     QMap<int, cv::Mat> images = info->getImages();
-
-    info->getItems()->clear();
-
     for( int item : images.keys() )
     {
         Mat tpl = images.value( item ).clone();
@@ -105,7 +131,7 @@ void BotInstance::updateInventory( BotInfo *info )
             {
                 Rect match = Rect( maxloc, Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows) );
                 int slot = Util::getInvSlotIndex( match );
-                info->getItems()->insert( slot, item );
+                info->invItems->insert( slot, item );
                 cv::putText( ref, QString::number( slot ).toStdString(), Util::QPointToPoint( Util::getMidPoint( match ) ), FONT_HERSHEY_DUPLEX, 1.0, CV_RGB( 255, 255, 255 ) );
                 rectangle(ref, match, CV_RGB(0,255,0), 2);
                 floodFill(res, maxloc, 0); //mark drawn blob
@@ -113,15 +139,14 @@ void BotInstance::updateInventory( BotInfo *info )
             else
                 break;
         }
-        //    qDebug() << _info->getItems()->size();
+        //    qDebug() << _info->invItems->size();
         //    imshow("final", ref);
     }
 }
 
-void BotInstance::updateFlood( BotInfo *info )
+void BotInstance::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches )
 {
-    Mat inputMat = info->rsMat( Rect( 4, 4, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone();
-    Mat filteredMat = Mat( inputMat.rows, inputMat.cols, CV_8UC3, Scalar( 0, 0, 0 ) );
+    Mat floodMat = Mat( inputMat.rows, inputMat.cols, CV_8UC3, Scalar( 0, 0, 0 ) );
     QList<Point> strayPixels;
 
 //    imshow( "raw", inputMat );
@@ -132,57 +157,41 @@ void BotInstance::updateFlood( BotInfo *info )
         {
             Vec3b pixel = inputMat.at<Vec3b>(i, j);
             if( pixel[0] >= 150 && pixel[1] <= 10 && pixel[2] <= 10 )
-                filteredMat.at<Vec3b>(i, j) = Vec3b( 255, 0, 0 );
+                floodMat.at<Vec3b>(i, j) = Vec3b( 255, 255, 255 );
         }
     }
 
-    int matWidth = filteredMat.cols;
-    int matHeight = filteredMat.rows;
+    int matWidth = floodMat.cols;
+    int matHeight = floodMat.rows;
 
-    int x = 0, y = 0, lines = 0;
-    for( Point p1 : strayPixels )
-    {
-        x += p1.x;
-        y += p1.y;
-        for( Point p2 : strayPixels )
-        {
-            if( ++lines < 100 && Util::getDistance( p1, p2 ) < 100 )
-            {
-                line( filteredMat, p1, p2, Scalar( 255, 0, 0 ), 3 );
-            }
-        }
-    }
-
-    Mat backupMat = filteredMat.clone();
-    int bluePixels, attempts = 0;
+    Mat backupMat = floodMat.clone();
+    int attempts = 0;
     QPoint fillPoint = QPoint( 0, 0 );
 
     do
     {
         if( attempts > 0 )
-            fillPoint = RndController::genRandPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH-5, RS_INNER_HEIGHT-5 ) );
+            fillPoint = Util::genRandPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH-5, RS_INNER_HEIGHT-5 ) );
 
-        bluePixels = 0;
-        filteredMat = backupMat.clone();
-        floodFill( filteredMat, Point( fillPoint.x(), fillPoint.y() ), Scalar( 255, 0, 0 ) );
+        floodMatches->clear();
+        floodMat = backupMat.clone();
+        floodFill( floodMat, Point( fillPoint.x(), fillPoint.y() ), Scalar( 255, 255, 255 ) );
         for(int i = 0; i < matHeight; i++)
         {
             for(int j = 0; j < matWidth; j++)
             {
-                if( filteredMat.at<Vec3b>( i, j )[0] == 0 )
+                if( floodMat.at<Vec3b>( i, j )[0] == 0 )
                 {
-                    ++bluePixels;
-                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 255, 0, 0 );
+                    floodMatches->insert( new QPoint( j, i ) );
+                    floodMat.at<Vec3b>( i, j ) = Vec3b( 255, 255, 255 );
                 }
                 else
-                    filteredMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
+                    floodMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
             }
         }
         ++attempts;
     }
-    while( attempts <= 5 && bluePixels > 0.7*matHeight*matWidth );
-
-    imshow( "filter", filteredMat );
+    while( attempts <= 5 && floodMatches->size() > 0.7*matHeight*matWidth );
 }
 
 void BotInstance::addModule( Module *module )
@@ -193,6 +202,11 @@ void BotInstance::addModule( Module *module )
 void BotInstance::addImage( int id, cv::Mat image )
 {
     _info->addImage( id, image );
+}
+
+void BotInstance::addColorItem( char color, int item )
+{
+    _info->colorItems->insert( color, item );
 }
 
 BotInstance::~BotInstance()

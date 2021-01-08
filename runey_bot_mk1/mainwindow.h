@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#define FPS 10
+#define FPS 1
 
 //Qt Stuff
 #include <QMainWindow>
@@ -19,20 +19,10 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
-//Module Includes
-
-//Condition Includes
-#include "Conditions/condition.h"
-#include "Conditions/inventoryCondition.h"
-
-//Task Includes
-#include "Tasks/task.h"
-#include "Tasks/clickItemsTask.h"
-
 //Other Includes
-#include "rndController.h"
 #include "mouseController.h"
 #include "botInstance.h"
+#include "botFactory.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -45,6 +35,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    BotInstance *makeWcBot();
 
 private slots:
     //Screen Stuff

@@ -10,7 +10,7 @@ UseItemsTask::UseItemsTask( const int &item1, const int &item2, const int &times
 
 void UseItemsTask::execute( BotInfo *info )
 {
-    Inventory *items = info->getItems();
+    Inventory *items = info->invItems;
     QList<int> *itemsGroup1 = new QList<int>();
     QList<int> *itemsGroup2 = new QList<int>();
     int item, times, slot1, slot2;
@@ -37,7 +37,7 @@ void UseItemsTask::execute( BotInfo *info )
 
     for( int i = 0; i < times; i++ )
     {
-        slot1 = itemsGroup1->value( RndController::genRand( itemsGroup1->size() - 1 ) );
+        slot1 = itemsGroup1->value( Util::genRand( itemsGroup1->size() - 1 ) );
     }
 
 //    MouseController::_mc.mousePress( MouseStates::Left, RndController::genRandPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ), 50, 75 );

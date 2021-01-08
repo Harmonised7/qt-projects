@@ -91,3 +91,58 @@ double Util::getDistance( QPoint &p1, QPoint &p2 )
 {
     return qSqrt( qPow( p2.x() - p1.x(), 2 ) + qPow( p2.y() - p1.y(), 2 ) );
 }
+
+int Util::genRand( int min, int max )
+{
+    if( min == max )
+        return min;
+    else if( max > min )
+        return QRandomGenerator::global()->bounded( min, max + 1 );
+    else
+        return QRandomGenerator::global()->bounded( max, min + 1 );
+}
+
+double Util::genRandDouble( double min, double max )
+{
+    if( min == max )
+        return min;
+    else if( max > min )
+        return min + QRandomGenerator::global()->bounded( max - min );
+    else
+        return max + QRandomGenerator::global()->bounded( min - max );
+}
+
+QPoint Util::genRandPoint( cv::Rect area )
+{
+    return genRandPoint( QPoint( area.tl().x, area.tl().y ), QPoint( area.br().x, area.br().y ) );
+}
+
+QPoint Util::genRandPoint( cv::Mat mat )
+{
+    return genRandPoint( QPoint( 0, 0 ), QPoint( mat.cols, mat.rows ) );
+}
+
+//QPoint Util::genRandPointOfColor( cv::Mat mat, cv::Vec3b color, int attempts )
+//{
+//    int x, y;
+//    int cols = mat.cols;
+//    int rows = mat.rows;
+//    Vec3b *tempColor;
+
+//    for( int i = 0; i < attempts; i++ )
+//    {
+//        x = genRand( cols );
+//        y = genRand( rows );
+//        tempColor = &mat.at<Vec3b>( x, y );
+//        if( *tempColor == color )
+//            return QPoint( x, y );
+//    }
+
+//    qDebug() << "Could not find a point in" << attempts << "attempts";
+//    return QPoint( -1, -1 );
+//}
+
+QPoint Util::genRandPoint( QPoint p1, QPoint p2 )
+{
+    return QPoint( p1.x() + genRand( p2.x() - p1.x() ), p1.y() + genRand( p2.y() - p1.y() ) );
+}

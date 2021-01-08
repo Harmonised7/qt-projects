@@ -3,5 +3,8 @@
         <file>Images/Beer.png</file>
         <file>Images/Jug_of_water.png</file>
         <file>Images/Grapes.png</file>
+        <file>Images/Logs.png</file>
+        <file>Images/Tin_ore.png</file>
+        <file>Images/Copper_ore.png</file>
     </qresource>
 </RCC>

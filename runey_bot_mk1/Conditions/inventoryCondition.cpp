@@ -25,7 +25,7 @@ bool InventoryCondition::checkCondition( BotInfo *info )
     }
 
     //count relevant items
-    for( int item : info->getItems()->values() )
+    for( int item : info->invItems->values() )
     {
         if( _items->contains( item ) )
             ++itemsFound[ item ];

@@ -16,14 +16,12 @@
 #include <QPixmap>
 #include <QDebug>
 #include <qmath.h>
+#include <QRandomGenerator>
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
-
-//My Includes
-#include "rndController.h"
 
 class Util
 {
@@ -44,9 +42,14 @@ public:
     static cv::Rect getInvSlotRect( int index );
     static int getInvSlotIndex( const cv::Rect &rect );
     static int getInvSlotIndex( const QPoint &point );
-
     static double getDistance( QPoint &p1, QPoint &p2 );
     static double getDistance( cv::Point &p1, cv::Point &p2 );
+    static int genRand( int bound1, int bound2 = 0 );
+    static double genRandDouble( double bound1, double bound2 = 0 );
+    static QPoint genRandPoint( cv::Rect area );
+    static QPoint genRandPoint( cv::Mat mat );
+//    static QPoint genRandPointOfColor( cv::Mat mat, cv::Vec3b color, int attempts = 10000 );
+    static QPoint genRandPoint( QPoint p1, QPoint p2 );
 };
 
 #endif // UTIL_H

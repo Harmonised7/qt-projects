@@ -4,8 +4,8 @@
 //Mouse Controller
 #define MOUSE_JITTER    5
 #define MOUSE_FPS       120
-#define MOUSE_MIN       0.015
-#define MOUSE_MAX       0.035
+#define MOUSE_MIN       0.01
+#define MOUSE_MAX       0.025
 #define MOUSE_CURVES    2
 #define MOUSE_SCREEN    0
 
@@ -19,7 +19,6 @@
 #include <QCursor>
 
 // User written Includes //
-#include "rndController.h"
 #include "sleeper.h"
 #include "util.h"
 
@@ -53,14 +52,16 @@ public:
     uint getFPS();
 
     void changeJitter(const int &newJitterVal);
+    void resetJitter();
     int getJitterVal();
 
     void changeSpeed(const double &newSpeedVal, const double &newMinSpeedVal);
+    void resetSpeed();
 
     static QPoint getMousePos();
     static double measureDistance(const QPoint &pA, const QPoint &pB);
 
-    static MouseController _mc;
+    static MouseController mc;
 
 private:
     int _jitterValue;
@@ -81,8 +82,6 @@ private:
     double _tSpeed;
 
     int _mouseScreen;
-
-    RndController *_randomNumbers;
 };
 
 #endif // MOUSECONTROLLER_H

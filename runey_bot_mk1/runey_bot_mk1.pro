@@ -16,9 +16,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Conditions/stateCondition.cpp \
+    Conditions/timeoutCondition.cpp \
     Modules/module.cpp \
+    Tasks/antiBanTask.cpp \
+    Tasks/clickHighlightTask.cpp \
     Tasks/clickItemsTask.cpp \
     Tasks/useItemsTask.cpp \
+    botFactory.cpp \
     botInstance.cpp \
     botinfo.cpp \
     Conditions/inventoryCondition.cpp \
@@ -26,20 +31,24 @@ SOURCES += \
     mainFunctions.cpp \
     mainwindow.cpp \
     mouseController.cpp \
-    rndController.cpp \
     util.cpp
 
 HEADERS += \
     Conditions/condition.h \
+    Conditions/stateCondition.h \
+    Conditions/timeoutCondition.h \
     Modules/module.h \
+    Tasks/antiBanTask.h \
+    Tasks/clickHighlightTask.h \
     Tasks/clickItemsTask.h \
     Tasks/useItemsTask.h \
+    botFactory.h \
     botInstance.h \
     botinfo.h \
     Conditions/inventoryCondition.h \
+    defines.h \
     mainwindow.h \
     mouseController.h \
-    rndController.h \
     sleeper.h \
     Tasks/task.h \
     util.h
