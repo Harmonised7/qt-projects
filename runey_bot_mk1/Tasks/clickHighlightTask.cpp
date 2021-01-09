@@ -11,12 +11,12 @@ void ClickHighlightTask::execute( BotInfo *info )
 {
     BotInfo::updateFlood( info->rsMat( Rect( 0, 0, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &info->rsFloodMatches );
 
-    for( QPoint *p : info->rsFloodMatches )
-    {
-        info->rsMat.at<Vec3b>( p->y(), p->x() ) = Vec3b( 255, 255, 255 );
-    }
+//    for( QPoint *p : info->rsFloodMatches )
+//    {
+//        info->rsMat.at<Vec3b>( p->y(), p->x() ) = Vec3b( 255, 255, 255 );
+//    }
 
-    imshow( "flood result", info->rsMat );
+//    imshow( "flood result", info->rsMat );
 
     int matchNumber = Util::genRand( info->rsFloodMatches.size() );
 
@@ -36,7 +36,7 @@ void ClickHighlightTask::execute( BotInfo *info )
 
     rectangle( info->rsMat, Rect( clickPoint->x() - 3, clickPoint->y() - 3, 6, 6 ), Scalar( 255, 255, 255 ) );
 
-    MouseController::mc.setClickDelay( 1000, 2000 );
+    MouseController::mc.setClickDelay( 750, 1250 );
     MouseController::mc.mousePress( MouseStates::Left, info->x + 4 + clickPoint->x(), info->y + 4 + clickPoint->y() );
     MouseController::mc.resetClickDelay();
 

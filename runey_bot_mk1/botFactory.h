@@ -8,12 +8,16 @@
 #include "Conditions/inventoryCondition.h"
 #include "Conditions/timeoutCondition.h"
 #include "Conditions/stateCondition.h"
+#include "Conditions/tabCondition.h"
 
 //Task Includes
 #include "Tasks/task.h"
 #include "Tasks/clickItemsTask.h"
 #include "Tasks/clickHighlightTask.h"
 #include "Tasks/antiBanTask.h"
+#include "Tasks/changeTabTask.h"
+
+typedef QPair<int, int> IntPair;
 
 class BotFactory
 {

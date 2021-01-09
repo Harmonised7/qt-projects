@@ -40,13 +40,14 @@ public:
     void addImage( const int &id, const cv::Mat image );
     QMap<int, cv::Mat> getImages();
     static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches );
+    static void updateInventory( BotInfo *info );
 
     //Objects
     Inventory *invItems;
     QMap<char, int> *colorItems;
     QElapsedTimer *timer;
     bool gatherState;
-    int tabId;
+    int tabId = 4;
 
 private:
     //Objects

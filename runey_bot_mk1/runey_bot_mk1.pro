@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Conditions/stateCondition.cpp \
+    Conditions/tabCondition.cpp \
     Conditions/timeoutCondition.cpp \
     Modules/module.cpp \
     Tasks/antiBanTask.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 HEADERS += \
     Conditions/condition.h \
     Conditions/stateCondition.h \
+    Conditions/tabCondition.h \
     Conditions/timeoutCondition.h \
     Modules/module.h \
     Tasks/antiBanTask.h \

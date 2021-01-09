@@ -13,6 +13,7 @@
 #include "Modules/module.h"
 #include "Conditions/condition.h"
 #include "Tasks/task.h"
+#include "Conditions/tabCondition.h"
 
 //Other Includes
 #include "defines.h"
@@ -28,18 +29,18 @@ public:
     ~BotInstance();
 
     //Methods
-    void addModule( Module *module );
+    void addModule( Module *module, bool initModule = false );
     void addImage( int id, cv::Mat image );
     void addColorItem( char color, int item );
+    void runModules( QList<Module *> modules );
 
     cv::Mat handleFrame( const cv::Mat &screen );
 private:
     //Objects
+    QList<Module *> _initModules;
     QList<Module *> _modules;
     BotInfo *_info;
-
-    //Methods
-    static void updateInventory( BotInfo *info );
+    bool _init = false;
 };
 
 #endif // BOTINSTANCE_H

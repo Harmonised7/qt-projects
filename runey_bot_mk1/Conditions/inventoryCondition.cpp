@@ -7,7 +7,7 @@ InventoryCondition::InventoryCondition( Inventory *items, bool up ) :
     _itemRanges = new RangedInventory;
     for( int item : items->keys() )
     {
-        _itemRanges->insert( item, Range( items->value( item ), items->value( item ) ) );
+        _itemRanges->insert( item, IntPair( items->value( item ), items->value( item ) ) );
     }
 }
 
@@ -28,7 +28,7 @@ InventoryCondition::InventoryCondition( int item, bool up, int amount) :
     _items = new Inventory();
     _itemRanges = new RangedInventory;
     _items->insert( item, amount );
-    _itemRanges->insert( item, Range( amount, amount ) );
+    _itemRanges->insert( item, IntPair( amount, amount ) );
 }
 
 InventoryCondition::InventoryCondition( int item, bool up, int minAmount, int maxAmount ) :
@@ -37,11 +37,12 @@ InventoryCondition::InventoryCondition( int item, bool up, int minAmount, int ma
     _items = new Inventory();
     _itemRanges = new RangedInventory;
     _items->insert( item, Util::genRand( minAmount, maxAmount ) );
-    _itemRanges->insert( item, Range( minAmount, maxAmount ) );
+    _itemRanges->insert( item, IntPair( minAmount, maxAmount ) );
 }
 
 bool InventoryCondition::checkCondition( BotInfo *info )
 {
+    BotInfo::updateInventory( info );
     Inventory itemsFound;
 
     //init items found

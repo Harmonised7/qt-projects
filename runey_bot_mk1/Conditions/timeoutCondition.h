@@ -12,7 +12,7 @@ public:
     bool checkCondition( QElapsedTimer *timer );
 
 private:
-    unsigned long _minWaitTime, _maxWaitTime, _timeToWait, _lastTrigger;
+    unsigned long _minWaitTime, _maxWaitTime, _timeToWait, _lastTrigger = 0;
 };
 
 #endif // TIMEOUTCONDITION_H

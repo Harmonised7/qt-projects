@@ -2,13 +2,17 @@
 
 using namespace cv;
 
-AntiBanTask::AntiBanTask()
+AntiBanTask::AntiBanTask( int region ) :
+    _region( region )
 {
 }
 
 void AntiBanTask::execute( BotInfo *info )
 {
-    doAntiBan( info );
+    if( _region == 2 )
+        doAntiBan( Util::RectFromTwoQPoints( info->tl(), info->br() ) );
+    else
+        doAntiBan( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH*4, INV_SLOT_HEIGHT*7 ) );
 }
 
 void AntiBanTask::doAntiBan( BotInfo *info )

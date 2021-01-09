@@ -11,6 +11,7 @@ class Module
 public:
     Module( QList<Condition *> conditions, QList<Task *> tasks );
     Module( Condition *condition, Task *task );
+    Module( Task *task );
 
     void addCondition( Condition *condition );
     void addTask( Task *task );

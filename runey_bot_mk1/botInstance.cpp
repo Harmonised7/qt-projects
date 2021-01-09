@@ -13,28 +13,12 @@ BotInstance::BotInstance( const int &x, const int &y )
 
 Mat BotInstance::handleFrame( const cv::Mat &screen )
 {
+    //Prepare stuff for Modules
     _info->rsMat = screen( Rect( _info->x, _info->y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
     _info->invMat = _info->rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
     Rect rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 );
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
-
-    updateInventory( _info );
-    Inventory *items = _info->invItems;
-
-    //draw stuff
-    for( int item : items->keys() )
-    {
-        Scalar color;
-        if( items->value( item ) == 1 )
-            color = CV_RGB( 0, 255, 255 );
-        else if( items->value( item ) == 2 )
-            color = CV_RGB( 255, 0, 255 );
-        else if( items->value( item ) == 3 )
-            color = CV_RGB( 255, 255, 0 );
-        else if( items->value( item ) == 4 )
-            color = CV_RGB( 255, 255, 255 );
-        rectangle( _info->rsMat, Util::getInvSlotRect( item ), color );
-    }
+    _info->tabId = TabCondition::getCurrentTab( _info );
 
     _info->gatherState = false;
 
@@ -47,9 +31,43 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
         }
     }
 
-    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_SLOTS_X, INV_SLOTS_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
+    //Init
+    if( !_init )
+    {
+        runModules( _initModules );
+        _init = true;
+    }
 
-    for( Module *module : _modules )
+    //Draw stuff
+//    Inventory *items = _info->invItems;
+//    for( int item : items->keys() )
+//    {
+//        Scalar color;
+//        if( items->value( item ) == 1 )
+//            color = CV_RGB( 0, 255, 255 );
+//        else if( items->value( item ) == 2 )
+//            color = CV_RGB( 255, 0, 255 );
+//        else if( items->value( item ) == 3 )
+//            color = CV_RGB( 255, 255, 0 );
+//        else if( items->value( item ) == 4 )
+//            color = CV_RGB( 255, 255, 255 );
+//        rectangle( _info->rsMat, Util::getInvSlotRect( item ), color );
+//    }
+
+//    updateInventory( _info );
+//    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_SLOTS_X, INV_SLOTS_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
+
+    runModules( _modules );
+
+//    imshow( "filter", info->floodMat );
+    rectangle( _info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
+
+    return _info->rsMat;
+}
+
+void BotInstance::runModules( QList<Module *> modules )
+{
+    for( Module *module : modules )
     {
         bool passedConditions = true;
         for( Condition *condition : module->getConditions() )
@@ -68,92 +86,14 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
             }
         }
     }
-
-//    imshow( "filter", info->floodMat );
-    rectangle( _info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
-
-    return _info->rsMat;
 }
 
-void BotInstance::updateInventory( BotInfo *info )
+void BotInstance::addModule( Module *module, bool initModule )
 {
-    Mat ref = info->invMat.clone();
-    Vec3b pixel;
-
-    info->invItems->clear();
-    //Color In Slot Finder
-    for( int y = 0; y < 7; y++ )
-    {
-        for( int x = 0; x < 4; x++ )
-        {
-            for( int i = 0; i < INV_SLOT_HEIGHT; i++ )
-            {
-                for( int j = 0; j < INV_SLOT_WIDTH; j++ )
-                {
-                    pixel = ref.at<Vec3b>( y*INV_SLOT_HEIGHT+i, x*INV_SLOT_WIDTH+j );
-                    if( pixel[0] == 255 )
-                    {
-                        info->invItems->insert( 1+y*4+x, info->colorItems->value( 'b' ) );
-                        goto exit_pixel_loop;
-                    }
-                }
-            }
-            exit_pixel_loop:;
-        }
-    }
-
-    //Set Images
-    QMap<int, cv::Mat> images = info->getImages();
-    for( int item : images.keys() )
-    {
-        Mat tpl = images.value( item ).clone();
-
-        if (ref.empty() || tpl.empty())
-        {
-            qDebug() << "Error reading file(s)!" << endl;
-            return;
-        }
-
-        //    imshow("file", ref);
-        //    imshow("template", tpl);
-
-        Mat res_32f(ref.rows - tpl.rows + 1, ref.cols - tpl.cols + 1, CV_32FC1);
-        matchTemplate( ref, tpl, res_32f, TM_CCOEFF_NORMED );
-
-        Mat res;
-        res_32f.convertTo(res, CV_8U, 255.0);
-        //    imshow("result", res);
-
-        int size = ((tpl.cols + tpl.rows) / 4) * 2 + 1; //force size to be odd
-        adaptiveThreshold(res, res, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, size, -128);
-        //    imshow("result_thresh", res);
-
-        while (true)
-        {
-            double minval, maxval, threshold = 0.9;
-            Point minloc, maxloc;
-            minMaxLoc(res, &minval, &maxval, &minloc, &maxloc);
-
-            if (maxval >= threshold)
-            {
-                Rect match = Rect( maxloc, Point(maxloc.x + tpl.cols, maxloc.y + tpl.rows) );
-                int slot = Util::getInvSlotIndex( match );
-                info->invItems->insert( slot, item );
-                cv::putText( ref, QString::number( slot ).toStdString(), Util::QPointToPoint( Util::getMidPoint( match ) ), FONT_HERSHEY_DUPLEX, 1.0, CV_RGB( 255, 255, 255 ) );
-                rectangle(ref, match, CV_RGB(0,255,0), 2);
-                floodFill(res, maxloc, 0); //mark drawn blob
-            }
-            else
-                break;
-        }
-        //    qDebug() << _info->invItems->size();
-        //    imshow("final", ref);
-    }
-}
-
-void BotInstance::addModule( Module *module )
-{
-    _modules.push_back( module );
+    if( initModule )
+        _initModules.push_back( module );
+    else
+        _modules.push_back( module );
 }
 
 void BotInstance::addImage( int id, cv::Mat image )

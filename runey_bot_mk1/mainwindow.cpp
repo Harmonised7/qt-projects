@@ -16,10 +16,12 @@ MainWindow::MainWindow( QWidget *parent ) :
     _timer->start();
     _timeoutCondition = new TimeoutCondition( 3000, 30000 );
 
+//    _botInstances.push_back( new BotInstance( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT ) );
+
     _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT ) );
-//    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT + 510 ) );
-//    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT ) );
-//    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT + 510 ) );
+    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT + 510 ) );
+    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT ) );
+    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT + 510 ) );
     init();
 }
 

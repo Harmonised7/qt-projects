@@ -6,15 +6,20 @@
 
 #include "Tasks/task.h"
 
+typedef QPair<int, int> IntPair;
+
 class ChangeTabTask : public Task
 {
 public:
-    ChangeTabTask( int tab, bool goBack = true );
+    ChangeTabTask( int tab, bool goBack = false );
+    ChangeTabTask( IntPair tabRange, bool goBack = false );
+    ChangeTabTask( QSet<int> tabRange, bool goBack = false );
 
     void execute( BotInfo *info ) override;
 
 private:
-    int _tab, _originTab;
+    QSet<int> *_tabs = new QSet<int>();
+    int _originTab;
     bool _goBack;
 };
 

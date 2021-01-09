@@ -27,10 +27,10 @@ cv::Rect Util:: getInvTabRect(int index)
     if( index < 1 || index > 14 )
         qDebug() << "getInvTabRect Index out of bounds!" << index;
     --index;
-    return Rect( INV_TAB_SHRINK + INV_TABS_X + (INV_TAB_WIDTH * ( index % 7 ) ),
-                 INV_TAB_SHRINK + INV_TABS_Y + (INV_TABS_GAP * ( index / 7 ) ),
-                 INV_TABS_X - INV_SLOT_SHRINK*2,
-                 INV_TABS_Y - INV_SLOT_SHRINK*2 );
+    return Rect( INV_TABS_X + INV_TAB_SHRINK + (INV_TAB_WIDTH * ( index % 7 ) ),
+                 INV_TABS_Y + INV_TAB_SHRINK + (INV_TABS_GAP * ( index / 7 ) ),
+                 INV_TAB_WIDTH - INV_TAB_SHRINK*2,
+                 INV_TAB_HEIGHT - INV_TAB_SHRINK*2 );
 }
 
 
@@ -39,8 +39,8 @@ cv::Rect Util::getInvSlotRect( int index )
     if( index < 1 || index > 28 )
         qDebug() << "getInvSlotRect Index out of bounds!" << index;
     --index;
-    return Rect( INV_SLOT_SHRINK + INV_SLOTS_X + (INV_SLOT_WIDTH * ( index % 4 ) ),
-                 INV_SLOT_SHRINK + INV_SLOTS_Y + (INV_SLOT_HEIGHT * ( index / 4 ) ),
+    return Rect( INV_SLOTS_X + INV_SLOT_SHRINK + (INV_SLOT_WIDTH * ( index % 4 ) ),
+                 INV_SLOTS_Y + INV_SLOT_SHRINK + (INV_SLOT_HEIGHT * ( index / 4 ) ),
                  INV_SLOT_WIDTH - INV_SLOT_SHRINK*2,
                  INV_SLOT_HEIGHT - INV_SLOT_SHRINK*2 );
 }

@@ -9,11 +9,14 @@
 class AntiBanTask : public Task
 {
 public:
-    AntiBanTask();
+    AntiBanTask( int region = 1 );
 
     void execute( BotInfo *info ) override;
     static void doAntiBan( BotInfo *info );
     static void doAntiBan( cv::Rect area );
+
+private:
+    int _region;
 };
 
 #endif // ANTIBANTASK_H

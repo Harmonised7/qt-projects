@@ -18,14 +18,14 @@
 #define INV_SLOTS_Y 211
 #define INV_SLOT_WIDTH 42
 #define INV_SLOT_HEIGHT 36
-#define INV_SLOT_SHRINK 6
+#define INV_SLOT_SHRINK 4
 
 //Inventory Tabs
 #define INV_TABS_X 527
 #define INV_TABS_Y 168
 #define INV_TAB_WIDTH  33
 #define INV_TAB_HEIGHT 36
-#define INV_TAB_SHRINK 0
+#define INV_TAB_SHRINK 3
 #define INV_TABS_GAP 298
 
 //Locations

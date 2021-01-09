@@ -9,20 +9,20 @@ ClickItemsTask::ClickItemsTask( Inventory *items )
 {
     for( int item : items->keys() )
     {
-        _items->insert( item, Range( items->value( item ), items->value( item ) ) );
+        _items->insert( item, IntPair( items->value( item ), items->value( item ) ) );
     }
 }
 
 ClickItemsTask::ClickItemsTask( int item, int amount )
 {
     _items = new RangedInventory();
-    _items->insert( item, Range( amount, amount ) );
+    _items->insert( item, IntPair( amount, amount ) );
 }
 
 ClickItemsTask::ClickItemsTask( int item, int minAmount, int maxAmount )
 {
     _items = new RangedInventory();
-    _items->insert( item, Range( minAmount, maxAmount ) );
+    _items->insert( item, IntPair( minAmount, maxAmount ) );
 }
 
 void ClickItemsTask::setFailRate( int failRate )
@@ -32,6 +32,8 @@ void ClickItemsTask::setFailRate( int failRate )
 
 void ClickItemsTask::execute( BotInfo *info )
 {
+    BotInfo::updateInventory( info );
+
     Inventory *items = info->invItems;
     Inventory *itemsToDrop = new Inventory();
     int item;

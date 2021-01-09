@@ -15,6 +15,14 @@ Module::Module( Condition *condition, Task *task )
     _tasks.push_back( task );
 }
 
+Module::Module( Task *task )
+{
+    _conditions = QList<Condition *>();
+
+    _tasks = QList<Task *>();
+    _tasks.push_back( task );
+}
+
 void Module::addCondition( Condition *condition )
 {
     _conditions.push_back( condition );
