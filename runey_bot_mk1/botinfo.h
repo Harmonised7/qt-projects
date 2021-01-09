@@ -36,7 +36,7 @@ public:
 
     //Methods
     QPoint tl(){ return QPoint( x, y ); };
-    QPoint br(){ return QPoint( x + RS_WIDTH, y + RS_HEIGHT ); };
+    QPoint br(){ return QPoint( x + RUNELITE_WIDTH, y + RUNELITE_HEIGHT ); };
     void addImage( const int &id, const cv::Mat image );
     QMap<int, cv::Mat> getImages();
     static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches );
@@ -46,6 +46,7 @@ public:
     QMap<char, int> *colorItems;
     QElapsedTimer *timer;
     bool gatherState;
+    int tabId;
 
 private:
     //Objects

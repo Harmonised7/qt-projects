@@ -13,14 +13,12 @@ BotInstance::BotInstance( const int &x, const int &y )
 
 Mat BotInstance::handleFrame( const cv::Mat &screen )
 {
-    _info->rsMat = screen( Rect( _info->x, _info->y, RS_WIDTH, RS_HEIGHT ) ).clone();
-    _info->invMat = _info->rsMat( Rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 ) ).clone();
-    Rect rect( INV_X, INV_Y, INV_SLOT_X * 4, INV_SLOT_Y * 7 );
+    _info->rsMat = screen( Rect( _info->x, _info->y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
+    _info->invMat = _info->rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
+    Rect rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 );
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
     updateInventory( _info );
-    BotInfo::updateFlood( _info->rsMat( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &_info->rsFloodMatches );
-
     Inventory *items = _info->invItems;
 
     //draw stuff
@@ -49,7 +47,7 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
         }
     }
 
-    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_X, INV_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
+    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_SLOTS_X, INV_SLOTS_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
 
     for( Module *module : _modules )
     {
@@ -72,6 +70,7 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
     }
 
 //    imshow( "filter", info->floodMat );
+    rectangle( _info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
 
     return _info->rsMat;
 }
@@ -87,11 +86,11 @@ void BotInstance::updateInventory( BotInfo *info )
     {
         for( int x = 0; x < 4; x++ )
         {
-            for( int i = 0; i < INV_SLOT_Y; i++ )
+            for( int i = 0; i < INV_SLOT_HEIGHT; i++ )
             {
-                for( int j = 0; j < INV_SLOT_X; j++ )
+                for( int j = 0; j < INV_SLOT_WIDTH; j++ )
                 {
-                    pixel = ref.at<Vec3b>( y*INV_SLOT_Y+i, x*INV_SLOT_X+j );
+                    pixel = ref.at<Vec3b>( y*INV_SLOT_HEIGHT+i, x*INV_SLOT_WIDTH+j );
                     if( pixel[0] == 255 )
                     {
                         info->invItems->insert( 1+y*4+x, info->colorItems->value( 'b' ) );

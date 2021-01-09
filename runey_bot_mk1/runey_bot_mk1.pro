@@ -20,6 +20,7 @@ SOURCES += \
     Conditions/timeoutCondition.cpp \
     Modules/module.cpp \
     Tasks/antiBanTask.cpp \
+    Tasks/changeTabTask.cpp \
     Tasks/clickHighlightTask.cpp \
     Tasks/clickItemsTask.cpp \
     Tasks/useItemsTask.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     Conditions/timeoutCondition.h \
     Modules/module.h \
     Tasks/antiBanTask.h \
+    Tasks/changeTabTask.h \
     Tasks/clickHighlightTask.h \
     Tasks/clickItemsTask.h \
     Tasks/useItemsTask.h \

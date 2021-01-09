@@ -56,6 +56,7 @@ SOURCES       = ../runey_bot_mk1/Conditions/stateCondition.cpp \
 		../runey_bot_mk1/Conditions/timeoutCondition.cpp \
 		../runey_bot_mk1/Modules/module.cpp \
 		../runey_bot_mk1/Tasks/antiBanTask.cpp \
+		../runey_bot_mk1/Tasks/changeTabTask.cpp \
 		../runey_bot_mk1/Tasks/clickHighlightTask.cpp \
 		../runey_bot_mk1/Tasks/clickItemsTask.cpp \
 		../runey_bot_mk1/Tasks/useItemsTask.cpp \
@@ -74,6 +75,7 @@ OBJECTS       = stateCondition.o \
 		timeoutCondition.o \
 		module.o \
 		antiBanTask.o \
+		changeTabTask.o \
 		clickHighlightTask.o \
 		clickItemsTask.o \
 		useItemsTask.o \
@@ -169,6 +171,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../runey_bot_mk1/Conditions/timeoutCondition.h \
 		../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Tasks/antiBanTask.h \
+		../runey_bot_mk1/Tasks/changeTabTask.h \
 		../runey_bot_mk1/Tasks/clickHighlightTask.h \
 		../runey_bot_mk1/Tasks/clickItemsTask.h \
 		../runey_bot_mk1/Tasks/useItemsTask.h \
@@ -186,6 +189,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../runey_bot_mk1/Conditions/timeoutCondition.cpp \
 		../runey_bot_mk1/Modules/module.cpp \
 		../runey_bot_mk1/Tasks/antiBanTask.cpp \
+		../runey_bot_mk1/Tasks/changeTabTask.cpp \
 		../runey_bot_mk1/Tasks/clickHighlightTask.cpp \
 		../runey_bot_mk1/Tasks/clickItemsTask.cpp \
 		../runey_bot_mk1/Tasks/useItemsTask.cpp \
@@ -381,8 +385,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../runey_bot_mk1/imageResources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/condition.h ../runey_bot_mk1/Conditions/stateCondition.h ../runey_bot_mk1/Conditions/timeoutCondition.h ../runey_bot_mk1/Modules/module.h ../runey_bot_mk1/Tasks/antiBanTask.h ../runey_bot_mk1/Tasks/clickHighlightTask.h ../runey_bot_mk1/Tasks/clickItemsTask.h ../runey_bot_mk1/Tasks/useItemsTask.h ../runey_bot_mk1/botFactory.h ../runey_bot_mk1/botInstance.h ../runey_bot_mk1/botinfo.h ../runey_bot_mk1/Conditions/inventoryCondition.h ../runey_bot_mk1/defines.h ../runey_bot_mk1/keyboardController.h ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/mouseController.h ../runey_bot_mk1/sleeper.h ../runey_bot_mk1/Tasks/task.h ../runey_bot_mk1/util.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/stateCondition.cpp ../runey_bot_mk1/Conditions/timeoutCondition.cpp ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/Tasks/antiBanTask.cpp ../runey_bot_mk1/Tasks/clickHighlightTask.cpp ../runey_bot_mk1/Tasks/clickItemsTask.cpp ../runey_bot_mk1/Tasks/useItemsTask.cpp ../runey_bot_mk1/botFactory.cpp ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/keyboardController.cpp ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/util.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/condition.h ../runey_bot_mk1/Conditions/stateCondition.h ../runey_bot_mk1/Conditions/timeoutCondition.h ../runey_bot_mk1/Modules/module.h ../runey_bot_mk1/Tasks/antiBanTask.h ../runey_bot_mk1/Tasks/changeTabTask.h ../runey_bot_mk1/Tasks/clickHighlightTask.h ../runey_bot_mk1/Tasks/clickItemsTask.h ../runey_bot_mk1/Tasks/useItemsTask.h ../runey_bot_mk1/botFactory.h ../runey_bot_mk1/botInstance.h ../runey_bot_mk1/botinfo.h ../runey_bot_mk1/Conditions/inventoryCondition.h ../runey_bot_mk1/defines.h ../runey_bot_mk1/keyboardController.h ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/mouseController.h ../runey_bot_mk1/sleeper.h ../runey_bot_mk1/Tasks/task.h ../runey_bot_mk1/util.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/stateCondition.cpp ../runey_bot_mk1/Conditions/timeoutCondition.cpp ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/Tasks/antiBanTask.cpp ../runey_bot_mk1/Tasks/changeTabTask.cpp ../runey_bot_mk1/Tasks/clickHighlightTask.cpp ../runey_bot_mk1/Tasks/clickItemsTask.cpp ../runey_bot_mk1/Tasks/useItemsTask.cpp ../runey_bot_mk1/botFactory.cpp ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/keyboardController.cpp ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/util.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../runey_bot_mk1/mainwindow.ui $(DISTDIR)/
 
 
@@ -433,12 +437,12 @@ moc_mainwindow.cpp: ../runey_bot_mk1/mainwindow.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/keyboardController.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/botFactory.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
@@ -475,43 +479,56 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 stateCondition.o: ../runey_bot_mk1/Conditions/stateCondition.cpp ../runey_bot_mk1/Conditions/stateCondition.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/util.h \
-		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h
+		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o stateCondition.o ../runey_bot_mk1/Conditions/stateCondition.cpp
 
 timeoutCondition.o: ../runey_bot_mk1/Conditions/timeoutCondition.cpp ../runey_bot_mk1/Conditions/timeoutCondition.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/util.h \
-		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h
+		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o timeoutCondition.o ../runey_bot_mk1/Conditions/timeoutCondition.cpp
 
 module.o: ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/util.h \
-		../runey_bot_mk1/botinfo.h \
 		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/mouseController.h \
-		../runey_bot_mk1/sleeper.h
+		../runey_bot_mk1/sleeper.h \
+		../runey_bot_mk1/keyboardController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o module.o ../runey_bot_mk1/Modules/module.cpp
 
 antiBanTask.o: ../runey_bot_mk1/Tasks/antiBanTask.cpp ../runey_bot_mk1/Tasks/antiBanTask.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
-		../runey_bot_mk1/util.h
+		../runey_bot_mk1/keyboardController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o antiBanTask.o ../runey_bot_mk1/Tasks/antiBanTask.cpp
+
+changeTabTask.o: ../runey_bot_mk1/Tasks/changeTabTask.cpp ../runey_bot_mk1/Tasks/changeTabTask.h \
+		../runey_bot_mk1/Tasks/task.h \
+		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/mouseController.h \
+		../runey_bot_mk1/sleeper.h \
+		../runey_bot_mk1/keyboardController.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o changeTabTask.o ../runey_bot_mk1/Tasks/changeTabTask.cpp
 
 clickHighlightTask.o: ../runey_bot_mk1/Tasks/clickHighlightTask.cpp ../runey_bot_mk1/Tasks/clickHighlightTask.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
-		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/keyboardController.h \
 		../runey_bot_mk1/Tasks/antiBanTask.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o clickHighlightTask.o ../runey_bot_mk1/Tasks/clickHighlightTask.cpp
 
@@ -519,18 +536,20 @@ clickItemsTask.o: ../runey_bot_mk1/Tasks/clickItemsTask.cpp ../runey_bot_mk1/Tas
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
-		../runey_bot_mk1/util.h
+		../runey_bot_mk1/keyboardController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o clickItemsTask.o ../runey_bot_mk1/Tasks/clickItemsTask.cpp
 
 useItemsTask.o: ../runey_bot_mk1/Tasks/useItemsTask.cpp ../runey_bot_mk1/Tasks/useItemsTask.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/util.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
-		../runey_bot_mk1/util.h
+		../runey_bot_mk1/keyboardController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o useItemsTask.o ../runey_bot_mk1/Tasks/useItemsTask.cpp
 
 botFactory.o: ../runey_bot_mk1/botFactory.cpp ../runey_bot_mk1/botFactory.h \
@@ -538,11 +557,12 @@ botFactory.o: ../runey_bot_mk1/botFactory.cpp ../runey_bot_mk1/botFactory.h \
 		../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/util.h \
-		../runey_bot_mk1/botinfo.h \
 		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
+		../runey_bot_mk1/keyboardController.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
 		../runey_bot_mk1/Conditions/timeoutCondition.h \
 		../runey_bot_mk1/Conditions/stateCondition.h \
@@ -555,22 +575,24 @@ botInstance.o: ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/util.h \
-		../runey_bot_mk1/botinfo.h \
 		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/mouseController.h \
-		../runey_bot_mk1/sleeper.h
+		../runey_bot_mk1/sleeper.h \
+		../runey_bot_mk1/keyboardController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o botInstance.o ../runey_bot_mk1/botInstance.cpp
 
 botinfo.o: ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h
+		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/util.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o botinfo.o ../runey_bot_mk1/botinfo.cpp
 
 inventoryCondition.o: ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/Conditions/inventoryCondition.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/util.h \
-		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h
+		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o inventoryCondition.o ../runey_bot_mk1/Conditions/inventoryCondition.cpp
 
 keyboardController.o: ../runey_bot_mk1/keyboardController.cpp ../runey_bot_mk1/keyboardController.h
@@ -580,12 +602,12 @@ main.o: ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainwindow.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/keyboardController.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/botFactory.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
@@ -600,12 +622,12 @@ mainFunctions.o: ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/keyboardController.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/botFactory.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
@@ -621,12 +643,12 @@ mainwindow.o: ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mainwindow.h \
 		../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
 		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/keyboardController.h \
 		../runey_bot_mk1/botInstance.h \
 		../runey_bot_mk1/Modules/module.h \
 		../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/botinfo.h \
-		../runey_bot_mk1/defines.h \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/botFactory.h \
 		../runey_bot_mk1/Conditions/inventoryCondition.h \
@@ -640,10 +662,12 @@ mainwindow.o: ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mainwindow.h \
 
 mouseController.o: ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/mouseController.h \
 		../runey_bot_mk1/sleeper.h \
-		../runey_bot_mk1/util.h
+		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/defines.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mouseController.o ../runey_bot_mk1/mouseController.cpp
 
-util.o: ../runey_bot_mk1/util.cpp ../runey_bot_mk1/util.h
+util.o: ../runey_bot_mk1/util.cpp ../runey_bot_mk1/util.h \
+		../runey_bot_mk1/defines.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o util.o ../runey_bot_mk1/util.cpp
 
 qrc_imageResources.o: qrc_imageResources.cpp 

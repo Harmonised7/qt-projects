@@ -73,7 +73,7 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches )
             {
                 if( floodMat.at<Vec3b>( i, j )[0] == 0 )
                 {
-                    floodMatches->insert( new QPoint( j, i ) );
+                    floodMatches->insert( new QPoint( BORDER_SIZE + j, BORDER_SIZE + i ) );
                     floodMat.at<Vec3b>( i, j ) = Vec3b( 255, 255, 255 );
                 }
                 else

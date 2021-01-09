@@ -22,15 +22,27 @@ QPoint Util::getMidPoint( Rect area )
     return QPoint( area.tl().x + area.width / 2, area.tl().y + area.height / 2 );
 }
 
+cv::Rect Util:: getInvTabRect(int index)
+{
+    if( index < 1 || index > 14 )
+        qDebug() << "getInvTabRect Index out of bounds!" << index;
+    --index;
+    return Rect( INV_TAB_SHRINK + INV_TABS_X + (INV_TAB_WIDTH * ( index % 7 ) ),
+                 INV_TAB_SHRINK + INV_TABS_Y + (INV_TABS_GAP * ( index / 7 ) ),
+                 INV_TABS_X - INV_SLOT_SHRINK*2,
+                 INV_TABS_Y - INV_SLOT_SHRINK*2 );
+}
+
+
 cv::Rect Util::getInvSlotRect( int index )
 {
     if( index < 1 || index > 28 )
         qDebug() << "getInvSlotRect Index out of bounds!" << index;
     --index;
-    return Rect( INV_SLOT_SHRINK + INV_X + (INV_SLOT_X * ( index % 4 ) ),
-                 INV_SLOT_SHRINK + INV_Y + (INV_SLOT_Y * ( index / 4 ) ),
-                 INV_SLOT_X - INV_SLOT_SHRINK*2,
-                 INV_SLOT_Y - INV_SLOT_SHRINK*2 );
+    return Rect( INV_SLOT_SHRINK + INV_SLOTS_X + (INV_SLOT_WIDTH * ( index % 4 ) ),
+                 INV_SLOT_SHRINK + INV_SLOTS_Y + (INV_SLOT_HEIGHT * ( index / 4 ) ),
+                 INV_SLOT_WIDTH - INV_SLOT_SHRINK*2,
+                 INV_SLOT_HEIGHT - INV_SLOT_SHRINK*2 );
 }
 
 int Util::getInvSlotIndex( const cv::Rect &rect )
@@ -40,7 +52,7 @@ int Util::getInvSlotIndex( const cv::Rect &rect )
 
 int Util::getInvSlotIndex(const QPoint &point )
 {
-    return point.x() / INV_SLOT_X + (point.y() / INV_SLOT_Y) * 4;
+    return point.x() / INV_SLOT_WIDTH + (point.y() / INV_SLOT_HEIGHT) * 4;
 }
 
 int Util::makeAbsolute( int value )

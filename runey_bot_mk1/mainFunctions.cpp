@@ -12,11 +12,10 @@ void MainWindow::init()
 
 void MainWindow::handleFrame()
 {
-    int i = 0;
     for( BotInstance *bot : _botInstances )
     {
         Mat mat = bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) );
-//        imshow( "bot" + ++i, mat );
+        imshow( "bot", mat );
     }
 
     if( _timeoutCondition->checkCondition( _timer ) )

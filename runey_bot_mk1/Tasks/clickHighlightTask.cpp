@@ -9,7 +9,17 @@ ClickHighlightTask::ClickHighlightTask()
 
 void ClickHighlightTask::execute( BotInfo *info )
 {
+    imshow( "rsMat", info->rsMat );
+
     BotInfo::updateFlood( info->rsMat( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &info->rsFloodMatches );
+
+    for( QPoint *p : info->rsFloodMatches )
+    {
+        info->rsMat.at<Vec3b>( p->y(), p->x() ) = Vec3b( 255, 255, 255 );
+    }
+
+    imshow( "flood result", info->rsMat );
+
     int matchNumber = Util::genRand( info->rsFloodMatches.size() );
 
     if( matchNumber == 0 )
