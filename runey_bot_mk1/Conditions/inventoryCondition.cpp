@@ -1,17 +1,43 @@
 #include "Conditions/inventoryCondition.h"
 
-InventoryCondition::InventoryCondition( Inventory *items, const bool &up ) :
+InventoryCondition::InventoryCondition( Inventory *items, bool up ) :
     _items( items ),
     _up( up )
 {
-
+    _itemRanges = new RangedInventory;
+    for( int item : items->keys() )
+    {
+        _itemRanges->insert( item, Range( items->value( item ), items->value( item ) ) );
+    }
 }
 
-InventoryCondition::InventoryCondition( const int &item, const bool &up, const int &amount ) :
+InventoryCondition::InventoryCondition( RangedInventory *itemRanges, bool up ) :
+    _itemRanges( itemRanges ),
+    _up( up )
+{
+    _itemRanges = new RangedInventory;
+    for( int item : itemRanges->keys() )
+    {
+        _items->insert( item, Util::genRand( itemRanges->value( item ).first, itemRanges->value( item ).second ) );
+    }
+}
+
+InventoryCondition::InventoryCondition( int item, bool up, int amount) :
     _up( up )
 {
     _items = new Inventory();
+    _itemRanges = new RangedInventory;
     _items->insert( item, amount );
+    _itemRanges->insert( item, Range( amount, amount ) );
+}
+
+InventoryCondition::InventoryCondition( int item, bool up, int minAmount, int maxAmount ) :
+    _up( up )
+{
+    _items = new Inventory();
+    _itemRanges = new RangedInventory;
+    _items->insert( item, Util::genRand( minAmount, maxAmount ) );
+    _itemRanges->insert( item, Range( minAmount, maxAmount ) );
 }
 
 bool InventoryCondition::checkCondition( BotInfo *info )
@@ -39,6 +65,12 @@ bool InventoryCondition::checkCondition( BotInfo *info )
         if( (  _up && itemsFound[ item ] < _items->value( item ) ) ||
             ( !_up && itemsFound[ item ] > _items->value( item ) ) )
             return false;
+    }
+
+    //Look for new item amounts now
+    for( int item : _itemRanges->keys() )
+    {
+        _items->insert( item, Util::genRand( _itemRanges->value( item ).first, _itemRanges->value( item ).second ) );
     }
 
     return true;

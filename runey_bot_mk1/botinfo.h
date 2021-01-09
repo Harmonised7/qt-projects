@@ -12,6 +12,10 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
+//Other Includes
+#include "defines.h"
+#include "util.h"
+
 //typeDefs
 typedef QList<QList<int>> DropPatterns;
 typedef QMap<int, int> Inventory;
@@ -31,18 +35,17 @@ public:
     QSet<QPoint *> rsFloodMatches;
 
     //Methods
-    QPoint tl()
-    {
-        return QPoint( x, y );
-    }
+    QPoint tl(){ return QPoint( x, y ); };
+    QPoint br(){ return QPoint( x + RS_WIDTH, y + RS_HEIGHT ); };
     void addImage( const int &id, const cv::Mat image );
     QMap<int, cv::Mat> getImages();
-    QElapsedTimer *timer;
-    bool wcState;
-    bool miningState;
+    static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches );
 
+    //Objects
     Inventory *invItems;
     QMap<char, int> *colorItems;
+    QElapsedTimer *timer;
+    bool gatherState;
 
 private:
     //Objects

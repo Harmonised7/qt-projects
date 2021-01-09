@@ -27,6 +27,7 @@ SOURCES += \
     botInstance.cpp \
     botinfo.cpp \
     Conditions/inventoryCondition.cpp \
+    keyboardController.cpp \
     main.cpp \
     mainFunctions.cpp \
     mainwindow.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     botinfo.h \
     Conditions/inventoryCondition.h \
     defines.h \
+    keyboardController.h \
     mainwindow.h \
     mouseController.h \
     sleeper.h \

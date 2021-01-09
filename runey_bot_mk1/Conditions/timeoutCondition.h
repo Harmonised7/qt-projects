@@ -9,6 +9,7 @@ public:
     TimeoutCondition( unsigned int minWaitTime, unsigned int maxWaitTime );
 
     bool checkCondition( BotInfo *info ) override;
+    bool checkCondition( QElapsedTimer *timer );
 
 private:
     unsigned long _minWaitTime, _maxWaitTime, _timeToWait, _lastTrigger;

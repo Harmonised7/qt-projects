@@ -4,6 +4,7 @@
 #include "defines.h"
 #include "botinfo.h"
 #include "mouseController.h"
+#include "keyboardController.h"
 #include "util.h"
 #include "sleeper.h"
 

@@ -2,12 +2,15 @@
 #define MOUSECONTROLLER_H
 
 //Mouse Controller
-#define MOUSE_JITTER    5
-#define MOUSE_FPS       120
-#define MOUSE_MIN       0.01
-#define MOUSE_MAX       0.025
-#define MOUSE_CURVES    2
-#define MOUSE_SCREEN    0
+#define MOUSE_JITTER        4
+#define MOUSE_CURVES_MIN    3
+#define MOUSE_CURVES_MAX    60
+#define MOUSE_FPS           120
+#define MOUSE_SPEED_MIN     0.0025
+#define MOUSE_SPEED_MAX     0.0075
+#define SCREEN              0
+#define MOUSE_DELAY_MIN     50
+#define MOUSE_DELAY_MAX     85
 
 // Qt Native Includes //
 #include <QPoint>
@@ -32,34 +35,43 @@ enum class MouseStates
 class MouseController
 {
 public:
-    MouseController( const uint &mouseFPS, const double &minSpeed, const double &maxSpeed, const int &jitter, const int &curves, const int &mouseScreen);
+    MouseController( int screen );
     ~MouseController();
 
     void changeRandValues();
 
     void pressESC();
 
-    void mouseMove(const int &newX, const int &newY);
-    void mouseMove(const QPoint &newPoint);
+    void mouseMoveRelative( QPoint p );
+    void mouseMoveRelative( int relativeX, int relativeY );
+    void mouseMove(QPoint newPoint);
+    void mouseMove(int newX, int newY);
 
-    void mousePress(const MouseStates &state, const int &newX, const int &newY, const int &timeSleepMin, const int &timeSleepMax);
-    void mousePress(const MouseStates &state, const QPoint &newPoint, const int &timeSleepMin, const int &timeSleepMax);
+    void mousePressRelative( MouseStates state, QPoint p );
+    void mousePressRelative( MouseStates state, int relativeX, int relativeY );
+    void mousePress( MouseStates state, QPoint newPoint );
+    void mousePress( MouseStates state, int newX, int newY );
 
-    void mouseDrag(const MouseStates &state, const int &newX, const int &newY, const int &timeSleepMin, const int &timeSleepMax);
-    void mouseDrag(const MouseStates &state, const QPoint &newPoint, const int &timeSleepMin, const int &timeSleepMax);
+    void mouseDragRelative( MouseStates state, QPoint p );
+    void mouseDragRelative( MouseStates state, int relativeX, int relativeY );
+    void mouseDrag( MouseStates state, QPoint newPoint );
+    void mouseDrag( MouseStates state, int newX, int newY );
 
-    void changeFPS(const uint &newFPS);
+    void setFPS(uint newFPS);
     uint getFPS();
 
-    void changeJitter(const int &newJitterVal);
+    void setJitter(int newJitterVal);
     void resetJitter();
     int getJitterVal();
 
-    void changeSpeed(const double &newSpeedVal, const double &newMinSpeedVal);
+    void setSpeed( double newSpeed, double newMinSpeed );
     void resetSpeed();
 
+    void setClickDelay(double newMaxDelay, double newMinDelay );
+    void resetClickDelay();
+
     static QPoint getMousePos();
-    static double measureDistance(const QPoint &pA, const QPoint &pB);
+    static double measureDistance(QPoint pA, QPoint pB);
 
     static MouseController mc;
 
@@ -70,7 +82,11 @@ private:
     double _minSpeed;
     double _maxSpeed;
 
-    int _curves;
+    int _minDelay;
+    int _maxDelay;
+
+    int _minCurves;
+    int _maxCurves;
 
     QPoint _p0;
     QPoint _p1;
@@ -81,7 +97,7 @@ private:
     double _t;
     double _tSpeed;
 
-    int _mouseScreen;
+    int _screen;
 };
 
 #endif // MOUSECONTROLLER_H

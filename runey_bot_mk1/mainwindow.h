@@ -21,6 +21,7 @@
 
 //Other Includes
 #include "mouseController.h"
+#include "keyboardController.h"
 #include "botInstance.h"
 #include "botFactory.h"
 
@@ -36,12 +37,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    BotInstance *makeWcBot();
-
 private slots:
     //Screen Stuff
     void handleFrame();
-    void on_testButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -57,5 +55,10 @@ private:
     QTimer _refreshTimer;
 
     cv::Mat _screenPixMat;
+
+    cv::Rect _clickSafeArea;
+
+    QElapsedTimer *_timer;
+    TimeoutCondition *_timeoutCondition;
 };
 #endif // MAINWINDOW_H

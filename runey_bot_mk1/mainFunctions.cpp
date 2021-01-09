@@ -18,4 +18,7 @@ void MainWindow::handleFrame()
         Mat mat = bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) );
 //        imshow( "bot" + ++i, mat );
     }
+
+    if( _timeoutCondition->checkCondition( _timer ) )
+        AntiBanTask::doAntiBan( _clickSafeArea );
 }

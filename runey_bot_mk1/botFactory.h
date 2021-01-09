@@ -18,8 +18,7 @@
 class BotFactory
 {
 public:
-    static BotInstance *makeWcBot( int botX, int botY );
-    static BotInstance *makeMiningBot( int botX, int botY );
+    static BotInstance *makeGathererBot( int botX, int botY );
 
 };
 

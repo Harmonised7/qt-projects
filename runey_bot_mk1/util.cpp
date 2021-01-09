@@ -7,8 +7,17 @@ Point Util::QPointToPoint( QPoint point )
     return Point( point.x(), point.y() );
 }
 
+QPoint Util::PointToQPoint( Point point )
+{
+    return QPoint( point.x, point.y );
+}
 
-QPoint Util::getMidPoint( cv::Rect area )
+Rect Util::RectFromTwoQPoints( QPoint p1, QPoint p2 )
+{
+    return Rect( QPointToPoint( p1 ), QPointToPoint( p2 ) );
+}
+
+QPoint Util::getMidPoint( Rect area )
 {
     return QPoint( area.tl().x + area.width / 2, area.tl().y + area.height / 2 );
 }
@@ -112,14 +121,24 @@ double Util::genRandDouble( double min, double max )
         return max + QRandomGenerator::global()->bounded( min - max );
 }
 
-QPoint Util::genRandPoint( cv::Rect area )
+QPoint Util::genRandQPoint( cv::Rect area )
 {
-    return genRandPoint( QPoint( area.tl().x, area.tl().y ), QPoint( area.br().x, area.br().y ) );
+    return genRandQPoint( QPoint( area.tl().x, area.tl().y ), QPoint( area.br().x, area.br().y ) );
 }
 
-QPoint Util::genRandPoint( cv::Mat mat )
+Point Util::genRandPoint( cv::Rect area )
 {
-    return genRandPoint( QPoint( 0, 0 ), QPoint( mat.cols, mat.rows ) );
+    return genRandPoint( Point( area.tl().x, area.tl().y ), Point( area.br().x, area.br().y ) );
+}
+
+QPoint Util::genRandQPoint( cv::Mat mat )
+{
+    return genRandQPoint( QPoint( 0, 0 ), QPoint( mat.cols, mat.rows ) );
+}
+
+Point Util::genRandPoint( cv::Mat mat )
+{
+    return genRandPoint( Point( 0, 0 ), Point( mat.cols, mat.rows ) );
 }
 
 //QPoint Util::genRandPointOfColor( cv::Mat mat, cv::Vec3b color, int attempts )
@@ -142,7 +161,22 @@ QPoint Util::genRandPoint( cv::Mat mat )
 //    return QPoint( -1, -1 );
 //}
 
-QPoint Util::genRandPoint( QPoint p1, QPoint p2 )
+QPoint Util::genRandQPoint( QPoint p1, QPoint p2 )
 {
     return QPoint( p1.x() + genRand( p2.x() - p1.x() ), p1.y() + genRand( p2.y() - p1.y() ) );
+}
+
+Point Util::genRandPoint( Point p1, Point p2 )
+{
+    return Point( p1.x + genRand( p2.x - p1.x ), p1.y + genRand( p2.y - p1.y ) );
+}
+
+QPoint Util::genRandQPointOffset( QPoint p, int offset )
+{
+    return p + QPoint( genRand( -offset, offset ), genRand( -offset, offset ) );
+}
+
+Point Util::genRandPointOffset( Point p, int offset )
+{
+    return p + Point( genRand( -offset, offset ), genRand( -offset, offset ) );
 }

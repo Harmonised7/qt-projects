@@ -9,6 +9,7 @@ ClickHighlightTask::ClickHighlightTask()
 
 void ClickHighlightTask::execute( BotInfo *info )
 {
+    BotInfo::updateFlood( info->rsMat( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &info->rsFloodMatches );
     int matchNumber = Util::genRand( info->rsFloodMatches.size() );
 
     if( matchNumber == 0 )
@@ -27,14 +28,17 @@ void ClickHighlightTask::execute( BotInfo *info )
 
     rectangle( info->rsMat, Rect( clickPoint->x() - 3, clickPoint->y() - 3, 6, 6 ), Scalar( 255, 255, 255 ) );
 
-    MouseController::mc.mousePress( MouseStates::Left, info->x + 4 + clickPoint->x(), info->y + 4 + clickPoint->y(), 50, 75 );
+    MouseController::mc.setClickDelay( 1000, 2000 );
+    MouseController::mc.mousePress( MouseStates::Left, info->x + 4 + clickPoint->x(), info->y + 4 + clickPoint->y() );
+    MouseController::mc.resetClickDelay();
 
-    int rand = Util::genRand( 1, 5 );
-    if( rand == 1 )
+    if( Util::genRand( 1, 20 ) == 1 )
         AntiBanTask::doAntiBan( info );
-    else if( rand > 2 )
+    else if( Util::genRand( 1, 21 ) < 18 )
     {
         QPoint mousePos = MouseController::mc.getMousePos();
-        MouseController::mc.mouseMove( mousePos.x() + Util::genRand( -20, 20 ), mousePos.y() + Util::genRand( -20, 20 ) );
+        MouseController::mc.setJitter( 1 );
+        MouseController::mc.mouseMove( Util::genRandQPointOffset( mousePos, 20 ) );
+        MouseController::mc.resetJitter();
     }
 }

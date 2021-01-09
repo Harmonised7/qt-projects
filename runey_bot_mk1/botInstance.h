@@ -40,7 +40,6 @@ private:
 
     //Methods
     static void updateInventory( BotInfo *info );
-    static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches );
 };
 
 #endif // BOTINSTANCE_H

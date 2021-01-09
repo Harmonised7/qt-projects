@@ -1,5 +1,7 @@
 #include "botinfo.h"
 
+using namespace cv;
+
 DropPatterns BotInfo::_dropPatterns = DropPatterns
 {
     {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28},
@@ -31,4 +33,54 @@ void BotInfo::addImage( const int &id, const cv::Mat image )
 QMap<int, cv::Mat> BotInfo::getImages()
 {
     return _images;
+}
+
+void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches )
+{
+    Mat floodMat = Mat( inputMat.rows, inputMat.cols, CV_8UC3, Scalar( 0, 0, 0 ) );
+    QList<Point> strayPixels;
+
+//    imshow( "raw", inputMat );
+
+    for(int i = 0; i < inputMat.rows; i++)
+    {
+        for(int j = 0; j < inputMat.cols; j++)
+        {
+            Vec3b pixel = inputMat.at<Vec3b>(i, j);
+            if( pixel[0] >= 150 && pixel[1] <= 10 && pixel[2] <= 10 )
+                floodMat.at<Vec3b>(i, j) = Vec3b( 255, 255, 255 );
+        }
+    }
+
+    int matWidth = floodMat.cols;
+    int matHeight = floodMat.rows;
+
+    Mat backupMat = floodMat.clone();
+    int attempts = 0;
+    QPoint fillPoint = QPoint( 0, 0 );
+
+    do
+    {
+        if( attempts > 0 )
+            fillPoint = Util::genRandQPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH-5, RS_INNER_HEIGHT-5 ) );
+
+        floodMatches->clear();
+        floodMat = backupMat.clone();
+        floodFill( floodMat, Point( fillPoint.x(), fillPoint.y() ), Scalar( 255, 255, 255 ) );
+        for(int i = 0; i < matHeight; i++)
+        {
+            for(int j = 0; j < matWidth; j++)
+            {
+                if( floodMat.at<Vec3b>( i, j )[0] == 0 )
+                {
+                    floodMatches->insert( new QPoint( j, i ) );
+                    floodMat.at<Vec3b>( i, j ) = Vec3b( 255, 255, 255 );
+                }
+                else
+                    floodMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
+            }
+        }
+        ++attempts;
+    }
+    while( attempts <= 5 && floodMatches->size() > 0.7*matHeight*matWidth );
 }

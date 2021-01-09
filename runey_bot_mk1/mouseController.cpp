@@ -5,21 +5,24 @@ extern "C"
 #include "xdo.h"
 }
 
-MouseController MouseController::mc = MouseController( MOUSE_FPS, MOUSE_MIN, MOUSE_MAX, (double) MOUSE_JITTER, MOUSE_CURVES, MOUSE_SCREEN );
+MouseController MouseController::mc = MouseController( SCREEN );
 static xdo_t *xDoTool;
 
-MouseController::MouseController( const uint &mouseFPS, const double &minSpeed, const double &maxSpeed, const int &jitter, const int &curves, const int &mouseScreen) :
-    _jitterValue(jitter),
-    _mouseFPS(mouseFPS),
-    _minSpeed(minSpeed),
-    _maxSpeed(maxSpeed),
-    _curves(curves),
+MouseController::MouseController( int screen ) :
+    _jitterValue( MOUSE_JITTER ),
+    _mouseFPS( MOUSE_FPS ),
+    _minSpeed( MOUSE_SPEED_MIN ),
+    _maxSpeed( MOUSE_SPEED_MAX ),
+    _minDelay( MOUSE_DELAY_MIN ),
+    _maxDelay( MOUSE_DELAY_MAX ),
+    _minCurves( MOUSE_CURVES_MIN ),
+    _maxCurves( MOUSE_CURVES_MAX ),
     _p0(0, 0),
     _p1(0, 0),
     _p1Goal(0, 0),
     _p2(0, 0),
-    _tSpeed( Util::mapCapped(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) ),
-    _mouseScreen(mouseScreen)
+    _tSpeed( Util::mapCapped( Util::getDistance( _p0, _p2 ), 0, 500, _maxSpeed, _minSpeed) ),
+    _screen( screen )
 {
     xDoTool = xdo_new(nullptr);
 
@@ -33,21 +36,38 @@ MouseController::~MouseController()
 
 void MouseController::changeRandValues()
 {
-    _jitterValue = Util::genRandDouble( 1, 100 );
-    _curves = Util::genRandDouble( 1, 100 );
+//    _jitterValue = Util::genRandDouble( 1, 100 );
+//    _curves = Util::genRandDouble( 1, 100 );
 }
 
-void MouseController::mouseMove( const int &newX, const int &newY )
+void MouseController::mouseMoveRelative( QPoint p )
+{
+    mouseMove( getMousePos() + p );
+}
+
+void MouseController::mouseMoveRelative( int relativeX, int relativeY )
+{
+    mouseMove( getMousePos() + QPoint( relativeX, relativeY ) );
+}
+
+void MouseController::mouseMove( QPoint newPoint )
+{
+    mouseMove( newPoint.x(), newPoint.y() );
+}
+
+void MouseController::mouseMove( int newX, int newY )
 {
 //    changeRandValues();
 
     _p0 = getMousePos();
     _p2.setX( newX );
     _p2.setY( newY );
-    _p1 = QPoint( Util::genRand( _p0.x(), _p2.x() ), Util::genRand( _p0.y(), _p2.y() ) );
 
-    _p1Goal.setX( (_p0.x() + _p2.x()) / 2 + Util::genRand(-_curves * 5, _curves * 5) );
-    _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + Util::genRand(-_curves * 5, _curves * 5) );
+    int curves = Util::map( Util::getDistance( _p0, _p2 ), 0, 1000, MOUSE_CURVES_MIN, MOUSE_CURVES_MAX );
+
+    _p1 = Util::genRandQPointOffset( Util::getMidPoint( _p0, _p2 ), curves * 5 );
+
+    _p1Goal = Util::genRandQPointOffset( Util::getMidPoint( _p0, _p2 ), curves * 5 );
 
     for (_t = 0; _t <= 1; _t += _tSpeed)
     {
@@ -63,11 +83,11 @@ void MouseController::mouseMove( const int &newX, const int &newY )
 
         if ( floor(Util::genRand(1, 30)) == 1 )
         {
-            _p1Goal.setX( (_p0.x() + _p2.x()) / 2 + Util::genRand(-_curves * 3, _curves * 3) );
-            _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + Util::genRand(-_curves * 3, _curves * 3) );
+            _p1Goal.setX( (_p0.x() + _p2.x()) / 2 + Util::genRand(-curves * 3, curves * 3) );
+            _p1Goal.setY( (_p0.y() + _p2.y()) / 2 + Util::genRand(-curves * 3, curves * 3) );
         }
 
-        _tSpeed = ( Util::mapCapped(measureDistance(_p0, _p2), 0, 500, _maxSpeed, _minSpeed) );
+        _tSpeed = ( Util::mapCapped( Util::getDistance( _p0, _p2 ), 0, 1000, _maxSpeed, _minSpeed) );
 
         if (_tSpeed < 0.003)
             _tSpeed = Util::genRandDouble(_minSpeed, _maxSpeed);
@@ -95,84 +115,99 @@ QPoint MouseController::getMousePos()
     return QPoint(x, y);
 }
 
-void MouseController::mouseMove(const QPoint &newPoint)
+void MouseController::mousePressRelative( MouseStates state, QPoint p )
 {
-    mouseMove(newPoint.x(), newPoint.y());
+    mousePress( state, getMousePos() + p );
 }
 
-void MouseController::mousePress(const MouseStates &state, const int &newX, const int &newY, const int &timeSleepMin, const int &timeSleepMax)
+void MouseController::mousePressRelative( MouseStates state, int relativeX, int relativeY )
+{
+    mousePress( state, getMousePos() + QPoint( relativeX, relativeY ) );
+}
+
+void MouseController::mousePress( MouseStates state, QPoint newPoint )
+{
+    mousePress( state, newPoint.x(), newPoint.y() );
+}
+
+void MouseController::mousePress( MouseStates state, int newX, int newY)
 {
     mouseMove(newX, newY);
 
     if (state == MouseStates::Left)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
     }
     else if (state == MouseStates::Right)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
     }
     else if (state == MouseStates::Middle)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);
     }
 }
 
-void MouseController::mousePress(const MouseStates &state, const QPoint &newPoint, const int &timeSleepMin, const int &timeSleepMax)
+void MouseController::mouseDragRelative( MouseStates state, QPoint p )
 {
-    mousePress(state, newPoint.x(), newPoint.y(), timeSleepMin, timeSleepMax);
+    mouseDrag( state, getMousePos() + p );
 }
 
-void MouseController::mouseDrag(const MouseStates &state, const int &newX, const int &newY, const int &timeSleepMin, const int &timeSleepMax)
+void MouseController::mouseDragRelative( MouseStates state, int relativeX, int relativeY )
+{
+    mouseDrag( state, getMousePos() + QPoint( relativeX, relativeY ) );
+}
+
+void MouseController::mouseDrag( MouseStates state, QPoint newPoint )
+{
+    mouseDrag( state, newPoint.x(), newPoint.y() );
+}
+
+void MouseController::mouseDrag( MouseStates state, int newX, int newY )
 {
     qDebug() << "Dragging to x:" << newX << " y:" << newY;
     if (state == MouseStates::Left)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
     }
     else if (state == MouseStates::Right)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
     }
     else if (state == MouseStates::Middle)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
     }
 
     mouseMove(newX, newY);
 
     if (state == MouseStates::Left)
     {
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
     }
     else if (state == MouseStates::Right)
     {
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
     }
     else if (state == MouseStates::Middle)
     {
-        Sleeper::msleep( static_cast<uint>(Util::genRand(timeSleepMin, timeSleepMax)) );
+        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);
     }
 }
 
-void MouseController::mouseDrag(const MouseStates &state, const QPoint &newPoint, const int &timeSleepMin, const int &timeSleepMax)
-{
-    mouseDrag(state, newPoint.x(), newPoint.y(), timeSleepMin, timeSleepMax);
-}
-
-void MouseController::changeFPS(const uint &newFPS)
+void MouseController::setFPS( uint newFPS )
 {
     _mouseFPS = newFPS;
 }
@@ -182,7 +217,7 @@ uint MouseController::getFPS()
     return _mouseFPS;
 }
 
-void MouseController::changeJitter(const int &newJitterVal)
+void MouseController::setJitter(int newJitterVal )
 {
     _jitterValue = newJitterVal;
 }
@@ -197,19 +232,42 @@ int MouseController::getJitterVal()
     return _jitterValue;
 }
 
-void MouseController::changeSpeed(const double &newMaxSpeedVal, const double &newMinSpeedVal)
+void MouseController::setSpeed( double newMinSpeed, double newMaxSpeed )
 {
-    _maxSpeed = newMaxSpeedVal;
-    _minSpeed = newMinSpeedVal;
+    if( newMinSpeed > newMaxSpeed )
+    {
+        _maxSpeed = newMinSpeed;
+        _minSpeed = newMaxSpeed;
+    }
+    else
+    {
+        _maxSpeed = newMaxSpeed;
+        _minSpeed = newMinSpeed;
+    }
 }
 
 void MouseController::resetSpeed()
 {
-    _maxSpeed = MOUSE_MAX;
-    _minSpeed = MOUSE_MIN;
+    _maxSpeed = MOUSE_SPEED_MIN;
+    _minSpeed = MOUSE_SPEED_MAX;
 }
 
-double MouseController::measureDistance(const QPoint &pA, const QPoint &pB)
+void MouseController::setClickDelay( double newMinDelay, double newMaxDelay )
 {
-    return sqrt( pow((pB.x() - pA.x()), 2) + pow((pB.y() - pA.y()), 2) );
+    if( newMinDelay > newMaxDelay )
+    {
+        _maxDelay = newMinDelay;
+        _minDelay = newMaxDelay;
+    }
+    else
+    {
+        _maxDelay = newMaxDelay;
+        _minDelay = newMinDelay;
+    }
+}
+
+void MouseController::resetClickDelay()
+{
+    _maxDelay = MOUSE_DELAY_MIN;
+    _minDelay = MOUSE_DELAY_MAX;
 }

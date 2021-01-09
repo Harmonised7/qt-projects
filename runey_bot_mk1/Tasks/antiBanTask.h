@@ -13,6 +13,7 @@ public:
 
     void execute( BotInfo *info ) override;
     static void doAntiBan( BotInfo *info );
+    static void doAntiBan( cv::Rect area );
 };
 
 #endif // ANTIBANTASK_H

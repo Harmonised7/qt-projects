@@ -9,27 +9,34 @@ ClickItemsTask::ClickItemsTask( Inventory *items )
 {
     for( int item : items->keys() )
     {
-        _items->insert( item, QPair<int, int>( items->value( item ), items->value( item ) ) );
+        _items->insert( item, Range( items->value( item ), items->value( item ) ) );
     }
 }
 
 ClickItemsTask::ClickItemsTask( int item, int amount )
 {
     _items = new RangedInventory();
-    _items->insert( item, QPair<int, int>( amount, amount ) );
+    _items->insert( item, Range( amount, amount ) );
 }
 
 ClickItemsTask::ClickItemsTask( int item, int minAmount, int maxAmount )
 {
     _items = new RangedInventory();
-    _items->insert( item, QPair<int, int>( minAmount, maxAmount ) );
+    _items->insert( item, Range( minAmount, maxAmount ) );
+}
+
+void ClickItemsTask::setFailRate( int failRate )
+{
+    _failRate = failRate;
 }
 
 void ClickItemsTask::execute( BotInfo *info )
-{    
+{
     Inventory *items = info->invItems;
     Inventory *itemsToDrop = new Inventory();
     int item;
+
+    MouseController::mc.setSpeed( 0.01, 0.035 );
 
     for( int item : _items->keys() )
     {
@@ -42,7 +49,10 @@ void ClickItemsTask::execute( BotInfo *info )
         if( item && itemsToDrop->value( item ) > 0 )
         {
             itemsToDrop->insert( item, itemsToDrop->value( item ) - 1 );
-            MouseController::mc.mousePress( MouseStates::Left, Util::genRandPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ), 50, 75 );
+            if( Util::genRand( 1, 100 ) < 100 - _failRate )
+                MouseController::mc.mousePress( MouseStates::Left, Util::genRandQPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ) );
         }
     }
+
+    MouseController::mc.resetSpeed();
 }

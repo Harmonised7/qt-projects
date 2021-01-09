@@ -4,11 +4,8 @@
 #define RS_WIDTH 765
 #define RS_HEIGHT 503
 
-#define WC_STATE_X 36
-#define WC_STATE_Y 456
-
-#define MINING_STATE_X 47
-#define MINING_STATE_Y 463
+#define GATHER_STATE_X 0
+#define GATHER_STATE_Y 456
 
 #define RS_INNER_WIDTH 512
 #define RS_INNER_HEIGHT 333

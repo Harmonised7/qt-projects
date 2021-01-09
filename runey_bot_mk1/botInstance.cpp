@@ -19,7 +19,7 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
     rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 
     updateInventory( _info );
-    updateFlood( _info->rsMat( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &_info->rsFloodMatches );
+    BotInfo::updateFlood( _info->rsMat( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &_info->rsFloodMatches );
 
     Inventory *items = _info->invItems;
 
@@ -38,8 +38,16 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
         rectangle( _info->rsMat, Util::getInvSlotRect( item ), color );
     }
 
-    _info->wcState = _info->rsMat.at<Vec3b>( WC_STATE_Y, WC_STATE_X )[1] == 255;
-    _info->miningState = _info->rsMat.at<Vec3b>( MINING_STATE_Y, MINING_STATE_X )[1] == 255;
+    _info->gatherState = false;
+
+    for( int i = 0; i < 50; i++ )
+    {
+        if( _info->rsMat.at<Vec3b>( GATHER_STATE_Y, GATHER_STATE_X + i )[1] == 255 )
+        {
+            _info->gatherState = true;
+            break;
+        }
+    }
 
     putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_X, INV_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
 
@@ -142,56 +150,6 @@ void BotInstance::updateInventory( BotInfo *info )
         //    qDebug() << _info->invItems->size();
         //    imshow("final", ref);
     }
-}
-
-void BotInstance::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches )
-{
-    Mat floodMat = Mat( inputMat.rows, inputMat.cols, CV_8UC3, Scalar( 0, 0, 0 ) );
-    QList<Point> strayPixels;
-
-//    imshow( "raw", inputMat );
-
-    for(int i = 0; i < inputMat.rows; i++)
-    {
-        for(int j = 0; j < inputMat.cols; j++)
-        {
-            Vec3b pixel = inputMat.at<Vec3b>(i, j);
-            if( pixel[0] >= 150 && pixel[1] <= 10 && pixel[2] <= 10 )
-                floodMat.at<Vec3b>(i, j) = Vec3b( 255, 255, 255 );
-        }
-    }
-
-    int matWidth = floodMat.cols;
-    int matHeight = floodMat.rows;
-
-    Mat backupMat = floodMat.clone();
-    int attempts = 0;
-    QPoint fillPoint = QPoint( 0, 0 );
-
-    do
-    {
-        if( attempts > 0 )
-            fillPoint = Util::genRandPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH-5, RS_INNER_HEIGHT-5 ) );
-
-        floodMatches->clear();
-        floodMat = backupMat.clone();
-        floodFill( floodMat, Point( fillPoint.x(), fillPoint.y() ), Scalar( 255, 255, 255 ) );
-        for(int i = 0; i < matHeight; i++)
-        {
-            for(int j = 0; j < matWidth; j++)
-            {
-                if( floodMat.at<Vec3b>( i, j )[0] == 0 )
-                {
-                    floodMatches->insert( new QPoint( j, i ) );
-                    floodMat.at<Vec3b>( i, j ) = Vec3b( 255, 255, 255 );
-                }
-                else
-                    floodMat.at<Vec3b>( i, j ) = Vec3b( 0, 0, 0 );
-            }
-        }
-        ++attempts;
-    }
-    while( attempts <= 5 && floodMatches->size() > 0.7*matHeight*matWidth );
 }
 
 void BotInstance::addModule( Module *module )

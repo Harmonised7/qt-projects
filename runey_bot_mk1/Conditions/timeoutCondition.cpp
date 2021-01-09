@@ -10,11 +10,15 @@ TimeoutCondition::TimeoutCondition( unsigned int minWaitTime, unsigned int maxWa
 
 bool TimeoutCondition::checkCondition( BotInfo *info )
 {
-//    qDebug() << _timeToWait - (info->timer->elapsed() - _lastTrigger);
-    if( info->timer->elapsed() - _lastTrigger >= _timeToWait )
+    return checkCondition( info->timer );
+}
+
+bool TimeoutCondition::checkCondition( QElapsedTimer *timer )
+{
+    if( timer->elapsed() - _lastTrigger >= _timeToWait )
     {
         _timeToWait = Util::genRand( _minWaitTime, _maxWaitTime );
-        _lastTrigger = info->timer->elapsed();
+        _lastTrigger = timer->elapsed();
         return true;
     }
     return false;
