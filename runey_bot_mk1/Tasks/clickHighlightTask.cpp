@@ -9,9 +9,7 @@ ClickHighlightTask::ClickHighlightTask()
 
 void ClickHighlightTask::execute( BotInfo *info )
 {
-    imshow( "rsMat", info->rsMat );
-
-    BotInfo::updateFlood( info->rsMat( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &info->rsFloodMatches );
+    BotInfo::updateFlood( info->rsMat( Rect( 0, 0, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &info->rsFloodMatches );
 
     for( QPoint *p : info->rsFloodMatches )
     {

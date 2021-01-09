@@ -62,7 +62,7 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches )
     do
     {
         if( attempts > 0 )
-            fillPoint = Util::genRandQPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH-5, RS_INNER_HEIGHT-5 ) );
+            fillPoint = Util::genRandQPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH, RS_INNER_HEIGHT ) );
 
         floodMatches->clear();
         floodMat = backupMat.clone();
@@ -73,7 +73,7 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches )
             {
                 if( floodMat.at<Vec3b>( i, j )[0] == 0 )
                 {
-                    floodMatches->insert( new QPoint( BORDER_SIZE + j, BORDER_SIZE + i ) );
+                    floodMatches->insert( new QPoint( j, i ) );
                     floodMat.at<Vec3b>( i, j ) = Vec3b( 255, 255, 255 );
                 }
                 else
