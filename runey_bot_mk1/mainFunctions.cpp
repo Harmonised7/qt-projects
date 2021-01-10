@@ -5,7 +5,7 @@ using namespace cv;
 
 void MainWindow::init()
 {
-    Sleeper::msleep( 2500 );
+    Sleeper::msleep( 1000 );
     connect( &_refreshTimer, SIGNAL( timeout() ), this, SLOT( handleFrame() ) );
     _refreshTimer.start( 1000 / FPS );
 }

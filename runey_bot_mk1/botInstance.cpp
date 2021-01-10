@@ -2,43 +2,40 @@
 
 using namespace cv;
 
-BotInstance::BotInstance( const int &x, const int &y )
+BotInstance::BotInstance( int x, int y, StrPair loginInfo ) :
+    loginInfo( loginInfo )
 {
-    _info = new BotInfo;
-    _info->timer = new QElapsedTimer;
-    _info->x = x,
-    _info->y = y;
-    _info->timer->start();
+    info = new BotInfo;
+    info->timer = new QElapsedTimer;
+    info->x = x,
+    info->y = y;
+    info->timer->start();
 }
 
 Mat BotInstance::handleFrame( const cv::Mat &screen )
 {
     //Prepare stuff for Modules
-    _info->rsMat = screen( Rect( _info->x, _info->y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
-    _info->invMat = _info->rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
-    Rect rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 );
-    rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
-    _info->tabId = TabCondition::getCurrentTab( _info );
+    info->rsMat = screen( Rect( info->x, info->y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
+    info->gameMat = info->rsMat( Rect( 0, 0, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone();
+    info->invMat = info->rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
+    info->tabId = TabCondition::getCurrentTab( info );
 
-    _info->gatherState = false;
+    info->states.insert( BotStates::Gather, false );
 
     for( int i = 0; i < 50; i++ )
     {
-        if( _info->rsMat.at<Vec3b>( GATHER_STATE_Y, GATHER_STATE_X + i )[1] == 255 )
+        if( info->rsMat.at<Vec3b>( GATHER_STATE_Y, GATHER_STATE_X + i )[1] == 255 )
         {
-            _info->gatherState = true;
+            info->states.insert( BotStates::Gather, true );
             break;
         }
     }
 
-    //Init
-    if( !_init )
-    {
-        runModules( _initModules );
-        _init = true;
-    }
+    //Login Modules
 
     //Draw stuff
+//    Rect rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 );
+//    rectangle( _info->rsMat, rect, CV_RGB( 255, 255, 255 ) );
 //    Inventory *items = _info->invItems;
 //    for( int item : items->keys() )
 //    {
@@ -57,12 +54,22 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
 //    updateInventory( _info );
 //    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_SLOTS_X, INV_SLOTS_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
 
-    runModules( _modules );
+    //////Run Modules
+    //Init
+    if( !_init )
+    {
+        runModules( _initModules );
+        _init = true;
+    }
+    else if( info->states.value( BotStates::Login ) && !info->states.value( BotStates::Pause ) )
+        runModules( _loginModules );
+    else if( !info->states.value( BotStates::Login ) )
+        runModules( _modules );
 
 //    imshow( "filter", info->floodMat );
-    rectangle( _info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
+    rectangle( info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
 
-    return _info->rsMat;
+    return info->rsMat;
 }
 
 void BotInstance::runModules( QList<Module *> modules )
@@ -72,38 +79,37 @@ void BotInstance::runModules( QList<Module *> modules )
         bool passedConditions = true;
         for( Condition *condition : module->getConditions() )
         {
-            if( !condition->checkCondition( _info ) )
+            if( !condition->checkCondition( info ) )
             {
                 passedConditions = false;
                 break;
             }
         }
-        if( passedConditions )
+        for( Task *task : passedConditions ? module->getTasks( false ) : module->getTasks( true ) )
         {
-            for( Task *task : module->getTasks() )
-            {
-                task->execute( _info );
-            }
+            task->execute( info );
         }
     }
 }
 
-void BotInstance::addModule( Module *module, bool initModule )
+void BotInstance::addModule( Module *module, int type )
 {
-    if( initModule )
-        _initModules.push_back( module );
-    else
+    if( type == 0 )
         _modules.push_back( module );
+    else if( type == 1 )
+        _initModules.push_back( module );
+    else if( type == 2 )
+        _loginModules.push_back( module );
 }
 
 void BotInstance::addImage( int id, cv::Mat image )
 {
-    _info->addImage( id, image );
+    info->addImage( id, image );
 }
 
 void BotInstance::addColorItem( char color, int item )
 {
-    _info->colorItems->insert( color, item );
+    info->colorItems->insert( color, item );
 }
 
 BotInstance::~BotInstance()

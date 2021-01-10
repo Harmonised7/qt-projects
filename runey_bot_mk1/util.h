@@ -17,6 +17,13 @@
 
 #include "defines.h"
 
+typedef QPair<cv::Mat, double> MatDoublePair;
+typedef QList<QList<int>> DropPatterns;
+typedef QPair<int, int> IntPair;
+typedef QMap<int, int> Inventory;
+typedef QMap<int, IntPair> RangedInventory;
+typedef QPair<std::string, std::string> StrPair;
+
 class Util
 {
 public:
@@ -53,6 +60,8 @@ public:
     static cv::Point genRandPoint( cv::Mat mat );
     static cv::Point genRandPoint( cv::Point p1, cv::Point p2 );
     static cv::Point genRandPointOffset( cv::Point p, int offset );
+
+    static QList<cv::Rect> findMatches( cv::Mat imageMat, cv::Mat targetMat, double threshold = 0.9 );
 };
 
 #endif // UTIL_H

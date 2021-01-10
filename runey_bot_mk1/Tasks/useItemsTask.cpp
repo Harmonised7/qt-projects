@@ -37,8 +37,15 @@ void UseItemsTask::execute( BotInfo *info )
 
     for( int i = 0; i < times; i++ )
     {
-        slot1 = itemsGroup1->value( Util::genRand( itemsGroup1->size() - 1 ) );
+        slot1 = itemsGroup1->value( Util::genRand( times-1 ) );
+        slot2 = itemsGroup2->value( Util::genRand( times-1 ) );
+
+        MouseController::mc.mousePress( MouseStates::Left, Util::genRandQPoint( Util::getInvSlotRect( slot1 ) ) + QPoint( info->x, info->y ) );
+        MouseController::mc.mousePress( MouseStates::Left, Util::genRandQPoint( Util::getInvSlotRect( slot2 ) ) + QPoint( info->x, info->y ) );
+
+        itemsGroup1->removeAt( slot1 );
+        itemsGroup2->removeAt( slot1 );
+        times--;
     }
 
-//    MouseController::_mc.mousePress( MouseStates::Left, RndController::genRandPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ), 50, 75 );
 }

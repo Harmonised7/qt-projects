@@ -6,12 +6,12 @@
 class StateCondition : public Condition
 {
 public:
-    StateCondition( int stateType, bool boolType = 0 );
+    StateCondition( BotStates stateType, bool boolType = 0 );
 
     bool checkCondition( BotInfo *info ) override;
 
 private:
-    int _stateType;
+    BotStates _stateType;
     bool _boolType;
 };
 

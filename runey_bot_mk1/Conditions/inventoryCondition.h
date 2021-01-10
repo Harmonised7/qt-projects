@@ -3,10 +3,6 @@
 
 #include "condition.h"
 
-typedef QMap<int, int> Inventory;
-typedef QPair<int, int> IntPair;
-typedef QMap<int, IntPair> RangedInventory;
-
 class InventoryCondition : public Condition
 {
 public:

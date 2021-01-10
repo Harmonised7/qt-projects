@@ -1,6 +1,6 @@
 #include "stateCondition.h"
 
-StateCondition::StateCondition( int stateType, bool boolType ) :
+StateCondition::StateCondition( BotStates stateType, bool boolType ) :
     _stateType( stateType ),
     _boolType( boolType )
 {
@@ -8,8 +8,5 @@ StateCondition::StateCondition( int stateType, bool boolType ) :
 
 bool StateCondition::checkCondition( BotInfo *info )
 {
-    if( _stateType == 1 )
-         return info->gatherState == _boolType;
-
-    return false;
+    return info->states.value( _stateType ) == _boolType;
 }

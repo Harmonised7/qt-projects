@@ -41,6 +41,8 @@ private slots:
     //Screen Stuff
     void handleFrame();
 
+    void on_testButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 

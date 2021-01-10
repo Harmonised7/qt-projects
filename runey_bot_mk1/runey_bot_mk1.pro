@@ -16,14 +16,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Conditions/imageCondition.cpp \
     Conditions/stateCondition.cpp \
     Conditions/tabCondition.cpp \
     Conditions/timeoutCondition.cpp \
     Modules/module.cpp \
     Tasks/antiBanTask.cpp \
     Tasks/changeTabTask.cpp \
+    Tasks/clickAreaTask.cpp \
     Tasks/clickHighlightTask.cpp \
+    Tasks/clickImagesTask.cpp \
     Tasks/clickItemsTask.cpp \
+    Tasks/keyboardTask.cpp \
+    Tasks/setStateTask.cpp \
     Tasks/useItemsTask.cpp \
     botFactory.cpp \
     botInstance.cpp \
@@ -38,14 +43,19 @@ SOURCES += \
 
 HEADERS += \
     Conditions/condition.h \
+    Conditions/imageCondition.h \
     Conditions/stateCondition.h \
     Conditions/tabCondition.h \
     Conditions/timeoutCondition.h \
     Modules/module.h \
     Tasks/antiBanTask.h \
     Tasks/changeTabTask.h \
+    Tasks/clickAreaTask.h \
     Tasks/clickHighlightTask.h \
+    Tasks/clickImagesTask.h \
     Tasks/clickItemsTask.h \
+    Tasks/keyboardTask.h \
+    Tasks/setStateTask.h \
     Tasks/useItemsTask.h \
     botFactory.h \
     botInstance.h \

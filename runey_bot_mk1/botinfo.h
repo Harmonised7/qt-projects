@@ -16,9 +16,12 @@
 #include "defines.h"
 #include "util.h"
 
-//typeDefs
-typedef QList<QList<int>> DropPatterns;
-typedef QMap<int, int> Inventory;
+enum class BotStates
+{
+    Gather,
+    Login,
+    Pause
+};
 
 class BotInfo
 {
@@ -29,6 +32,7 @@ public:
     static DropPatterns _dropPatterns;
 
     cv::Mat rsMat;
+    cv::Mat gameMat;
     cv::Mat invMat;
 
     int x, y;
@@ -46,7 +50,7 @@ public:
     Inventory *invItems;
     QMap<char, int> *colorItems;
     QElapsedTimer *timer;
-    bool gatherState;
+    QMap<BotStates, bool> states;
     int tabId = 4;
 
 private:

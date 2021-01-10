@@ -9,7 +9,7 @@ ClickHighlightTask::ClickHighlightTask()
 
 void ClickHighlightTask::execute( BotInfo *info )
 {
-    BotInfo::updateFlood( info->rsMat( Rect( 0, 0, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone(), &info->rsFloodMatches );
+    BotInfo::updateFlood( info->gameMat, &info->rsFloodMatches );
 
 //    for( QPoint *p : info->rsFloodMatches )
 //    {
@@ -19,19 +19,14 @@ void ClickHighlightTask::execute( BotInfo *info )
 //    imshow( "flood result", info->rsMat );
 
     int matchNumber = Util::genRand( info->rsFloodMatches.size() );
-
     if( matchNumber == 0 )
         return;
-
     QSet<QPoint *>::iterator iterator = info->rsFloodMatches.begin();
-
     int i = 0;
-
     while( ++i < matchNumber )
     {
         iterator = iterator.operator++();
     }
-
     QPoint *clickPoint = iterator.operator*();
 
     rectangle( info->rsMat, Rect( clickPoint->x() - 3, clickPoint->y() - 3, 6, 6 ), Scalar( 255, 255, 255 ) );

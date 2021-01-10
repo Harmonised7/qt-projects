@@ -192,3 +192,48 @@ Point Util::genRandPointOffset( Point p, int offset )
 {
     return p + Point( genRand( -offset, offset ), genRand( -offset, offset ) );
 }
+
+QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
+{
+    QList<Rect> matches;
+
+    if (imageMat.empty() || targetMat.empty())
+    {
+        qDebug() << "Empty Mat(s) at Util::findMatches!";
+        return matches;
+    }
+
+    //    imshow("file", imageMat);
+    //    imshow("template", targetMat);
+
+    Mat res_32f(imageMat.rows - targetMat.rows + 1, imageMat.cols - targetMat.cols + 1, CV_32FC1);
+    matchTemplate( imageMat, targetMat, res_32f, TM_CCOEFF_NORMED );
+
+    Mat res;
+    res_32f.convertTo(res, CV_8U, 255.0);
+    //    imshow("result", res);
+
+    int size = ((targetMat.cols + targetMat.rows) / 4) * 2 + 1; //force size to be odd
+    adaptiveThreshold(res, res, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, size, -128);
+    //    imshow("result_thresh", res);
+
+    while (true)
+    {
+        double minval, maxval;
+        Point minloc, maxloc;
+        minMaxLoc(res, &minval, &maxval, &minloc, &maxloc);
+
+        if (maxval >= threshold)
+        {
+            Rect match = Rect( maxloc, Point(maxloc.x + targetMat.cols, maxloc.y + targetMat.rows) );
+            matches.push_back( match );
+            floodFill(res, maxloc, 0); //mark drawn blob
+        }
+        else
+            break;
+    }
+    //    qDebug() << _info->invItems->size();
+    //    imshow("final", imageMat);
+
+    return matches;
+}

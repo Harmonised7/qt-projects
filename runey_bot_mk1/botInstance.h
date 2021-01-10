@@ -24,22 +24,24 @@
 class BotInstance
 {
 public:
-    BotInstance( const int &x, const int &y );
+    BotInstance( int x, int y, StrPair loginInfo );
 
     ~BotInstance();
 
     //Methods
-    void addModule( Module *module, bool initModule = false );
+    void addModule( Module *module, int type = 0 );
     void addImage( int id, cv::Mat image );
     void addColorItem( char color, int item );
     void runModules( QList<Module *> modules );
 
     cv::Mat handleFrame( const cv::Mat &screen );
+    StrPair loginInfo;
+    BotInfo *info;
 private:
     //Objects
     QList<Module *> _initModules;
+    QList<Module *> _loginModules;
     QList<Module *> _modules;
-    BotInfo *_info;
     bool _init = false;
 };
 

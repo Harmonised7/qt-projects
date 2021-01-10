@@ -26,12 +26,23 @@ void AntiBanTask::doAntiBan( Rect area )
     MouseController::mc.setJitter( 1 );
 
     int type = Util::genRand( 1, 5 );
+    int keyboardType = Util::genRand( 1, 5 );
 
-    if( Util::genRand( 1, 5 ) == 1 )
-        KeyboardController::kc.pressKeyDown( "Right" );
-    else if( Util::genRand( 1, 5 ) == 1 )
-        KeyboardController::kc.pressKeyDown( "Left" );
+    if( keyboardType == 1 )
+        KeyboardController::kc.press( KeyboardStates::Down, "Right" );
+    else if( keyboardType == 2 )
+        KeyboardController::kc.press( KeyboardStates::Down, "Left" );
 
+    if( Util::genRand( 1, 10 ) == 1 )
+        KeyboardController::kc.press( KeyboardStates::Down, "Up" );
+
+    Sleeper::msleep( Util::genRand( 25, 75 ) );
+    if( Util::genRand( 1, 17 ) < 8 )
+    {
+        KeyboardController::kc.press( KeyboardStates::Up, "Right" );
+        KeyboardController::kc.press( KeyboardStates::Up, "Left" );
+        KeyboardController::kc.press( KeyboardStates::Up, "Up" );
+    }
 
     if( type <= 4 )
     {
@@ -55,9 +66,10 @@ void AntiBanTask::doAntiBan( Rect area )
     if( Util::genRand( 1, 10 ) == 1 )
         doAntiBan( area );
 
-    Sleeper::msleep( Util::genRand( 25, 125 ) );
-    KeyboardController::kc.pressKeyUp( "Right" );
-    KeyboardController::kc.pressKeyUp( "Left" );
+    Sleeper::msleep( Util::genRand( 25, 75 ) );
+    KeyboardController::kc.press( KeyboardStates::Up, "Right" );
+    KeyboardController::kc.press( KeyboardStates::Up, "Left" );
+    KeyboardController::kc.press( KeyboardStates::Up, "Up" );
 
     MouseController::mc.resetSpeed();
     MouseController::mc.resetJitter();

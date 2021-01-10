@@ -6,5 +6,10 @@
         <file>Images/Logs.png</file>
         <file>Images/Tin_ore.png</file>
         <file>Images/Copper_ore.png</file>
+        <file>Images/Existing_user.png</file>
+        <file>Images/Click_here_to_play.png</file>
+        <file>Images/Ok.png</file>
+        <file>Images/Enter_your_credentials.png</file>
+        <file>Images/Login.png</file>
     </qresource>
 </RCC>

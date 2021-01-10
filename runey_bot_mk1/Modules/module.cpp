@@ -1,9 +1,10 @@
 #include "module.h"
 
-Module::Module( QList<Condition *> conditions, QList<Task *> tasks )
+Module::Module( QList<Condition *> conditions, QList<Task *> tasks, QList<Task *> elseTasks ) :
+    _conditions( conditions ),
+    _tasks( tasks ),
+    _elseTasks( elseTasks )
 {
-    _conditions = conditions;
-    _tasks = tasks;
 }
 
 Module::Module( Condition *condition, Task *task )
@@ -28,9 +29,9 @@ void Module::addCondition( Condition *condition )
     _conditions.push_back( condition );
 }
 
-void Module::addTask( Task *task )
+void Module::addTask( Task *task, bool elseTask )
 {
-    _tasks.push_back( task );
+    ( elseTask ? _elseTasks : _tasks ).push_back( task );
 }
 
 QList<Condition *> Module::getConditions()
@@ -38,7 +39,7 @@ QList<Condition *> Module::getConditions()
     return _conditions;
 }
 
-QList<Task *> Module::getTasks()
+QList<Task *> Module::getTasks( bool elseTask )
 {
-    return _tasks;
+    return elseTask ? _elseTasks : _tasks;
 }

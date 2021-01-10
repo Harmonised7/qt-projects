@@ -34,5 +34,7 @@
 
 //Others
 #define MOUSE_MOVE_DISTANCE 15
+#define DEFAULT_THRESHOLD 0.9
+#define FOCUS_CLICK_SHRINK 25
 
 #endif // DEFINES_H
