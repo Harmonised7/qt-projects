@@ -20,7 +20,7 @@ BotInfo::BotInfo()
     colorItems = new QMap<char, int>();
     states.insert( BotState::Gather, false );
     states.insert( BotState::Login, false );
-    states.insert( BotState::Pause, true );
+    states.insert( BotState::Pause, false );
 }
 
 BotInfo::~BotInfo()

@@ -33,6 +33,7 @@ public:
     static void addGathererModules( BotInstance *bot );
     static void addLoginModules( BotInstance *bot );
     static void addPauseModules( BotInstance *bot );
+    static void addRunOnModules( BotInstance *bot );
 };
 
 #endif // BOTFACTORY_H

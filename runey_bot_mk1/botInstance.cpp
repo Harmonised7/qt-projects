@@ -31,6 +31,17 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
             break;
         }
     }
+
+    info->states.insert( BotState::Run, false );
+
+    for( int i = 0; i < 10; i++ )
+    {
+        if( info->rsMat.at<Vec3b>( RUN_Y1 + 5, RUN_X1 + 5 + i )[1] > 200 )
+        {
+            info->states.insert( BotState::Run, true );
+            break;
+        }
+    }
 //    qDebug() << "gather state" << info->states.value( BotState::Gather );
 
     //Login Modules

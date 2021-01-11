@@ -30,10 +30,10 @@ MainWindow::MainWindow( QWidget *parent ) :
 //    accounts  += StrPair( "s8cskills@mail.com", "einblicke" );
 //    accounts  += StrPair( "s9cskills@mail.com", "einblicke" );
 
-//    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT, StrPair( "s6cskills@mail.com", "einblicke" ) ) );
-//    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT + 510, StrPair( "s7cskills@mail.com", "einblicke" ) ) );
-//    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT, StrPair( "s8cskills@mail.com", "einblicke" ) ) );
-//    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT + 510, StrPair( "s9cskills@mail.com", "einblicke" ) ) );
+    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT, StrPair( "s6cskills@mail.com", "einblicke" ) ) );
+    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE, BAR_HEIGHT + BORDER_HEIGHT + 510, StrPair( "s7cskills@mail.com", "einblicke" ) ) );
+    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT, StrPair( "s8cskills@mail.com", "einblicke" ) ) );
+    _botInstances.push_back( BotFactory::makeGathererBot( BAR_WIDTH + BORDER_SIZE + 1040, BAR_HEIGHT + BORDER_HEIGHT + 510, StrPair( "s9cskills@mail.com", "einblicke" ) ) );
 
 
 //    for( int i = 0; i < locations.size(); i++ )
@@ -56,7 +56,7 @@ MainWindow::MainWindow( QWidget *parent ) :
 //        }
 //    }
 
-    init();
+//    init();
 }
 
 MainWindow::~MainWindow()
@@ -66,10 +66,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_unpauseButton_clicked()
 {
-    for( BotInstance *bot : _botInstances )
-    {
-        bot->info->states.insert( BotState::Pause, false );
-    }
+    init();
+//    for( BotInstance *bot : _botInstances )
+//    {
+//        bot->info->states.insert( BotState::Pause, false );
+//    }
 }
 
 void MainWindow::on_pauseButton_clicked()

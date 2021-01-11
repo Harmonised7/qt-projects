@@ -21,7 +21,8 @@ enum class BotState
 {
     Gather,
     Login,
-    Pause
+    Pause,
+    Run
 };
 
 class BotInfo

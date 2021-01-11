@@ -8,6 +8,7 @@ BotInstance *BotFactory::makeGathererBot( int botX, int botY, StrPair loginInfo 
     addLoginModules( bot );
     addGathererModules( bot );
     addPauseModules( bot );
+    addRunOnModules( bot );
     return bot;
 }
 
@@ -165,4 +166,9 @@ void BotFactory::addPauseModules( BotInstance *bot )
     conditions.push_back( new StateCondition( BotState::Login, false ) );
     tasks.push_back( new TakeBreakTask( 40 * 60 * 1000, 80 * 60 * 1000 ) );
     bot->addModule( new Module( conditions, tasks ), ModuleType::Background );
+}
+
+void BotFactory::addRunOnModules( BotInstance *bot )
+{
+    bot->addModule( new Module( new StateCondition( BotState::Run, 0 ), new ClickAreaTask( MouseState::Left, Rect( Point( RUN_X1, RUN_Y1 ), Point( RUN_X2, RUN_Y2  ) ) ) ) );
 }

@@ -13,6 +13,11 @@
 #define WIKI_X2 742
 #define WIKI_Y2 167
 
+#define RUN_X1 557
+#define RUN_Y1 114
+#define RUN_X2 575
+#define RUN_Y2 134
+
 #define LOGIN_BUTTONS_X1 360
 #define LOGIN_BUTTONS_Y1 260
 #define LOGIN_BUTTONS_X2 535

@@ -2,8 +2,8 @@
 #define KEYBOARDCONTROLLER_H
 
 #define SCREEN 0
-#define TSDELAY_MIN 20000
-#define TSDELAY_MAX 70000
+#define TSDELAY_MIN 5000
+#define TSDELAY_MAX 20000
 
 #include <QDebug>
 #include "sleeper.h"
