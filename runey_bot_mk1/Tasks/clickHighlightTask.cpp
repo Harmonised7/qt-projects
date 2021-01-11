@@ -32,7 +32,7 @@ void ClickHighlightTask::execute( BotInfo *info )
     rectangle( info->rsMat, Rect( clickPoint->x() - 3, clickPoint->y() - 3, 6, 6 ), Scalar( 255, 255, 255 ) );
 
     MouseController::mc.setClickDelay( 750, 1250 );
-    MouseController::mc.mousePress( MouseStates::Left, info->x + 4 + clickPoint->x(), info->y + 4 + clickPoint->y() );
+    MouseController::mc.mousePress( MouseState::Left, info->x + 4 + clickPoint->x(), info->y + 4 + clickPoint->y() );
     MouseController::mc.resetClickDelay();
 
     if( Util::genRand( 1, 20 ) == 1 )

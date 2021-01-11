@@ -1,6 +1,6 @@
 #include "setStateTask.h"
 
-SetStateTask::SetStateTask( BotStates stateType, int newState ) :
+SetStateTask::SetStateTask( BotState stateType, bool newState ) :
     _stateType( stateType ),
     _newState( newState )
 {
@@ -8,5 +8,7 @@ SetStateTask::SetStateTask( BotStates stateType, int newState ) :
 
 void SetStateTask::execute( BotInfo *info )
 {
+//    if( _stateType == BotState::Login )
+//        qDebug() << "Login state set to" << _newState;
     info->states.insert( _stateType, _newState );
 }

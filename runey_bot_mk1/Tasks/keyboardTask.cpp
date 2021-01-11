@@ -1,6 +1,6 @@
 #include "keyboardTask.h"
 
-KeyboardTask::KeyboardTask( KeyboardStates state, std::string key, int minTsDelay, int maxTsDelay ) :
+KeyboardTask::KeyboardTask( KeyboardState state, std::string key, int minTsDelay, int maxTsDelay ) :
     _state( state ),
     _key( key ),
     _minTsDelay( minTsDelay ),

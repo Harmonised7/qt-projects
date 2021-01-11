@@ -27,27 +27,32 @@ typedef QPair<std::string, std::string> StrPair;
 class Util
 {
 public:
-    Util();
-
     //Method Declarations
     static QPoint getMidPoint( cv::Rect area );
     static QPoint getMidPoint( QPoint p1, QPoint p2 );
+
     static int makeAbsolute( int value );
+
     static QPixmap matToPixmap(const cv::Mat &openCVMat);
     static cv::Mat pixMapToMat(const QPixmap &QtPixmap);
     static QImage pixmapToQImage(const QPixmap &QtPixmap);
     static cv::Point QPointToPoint( QPoint point );
     static QPoint PointToQPoint( cv::Point point );
     static cv::Rect RectFromTwoQPoints( QPoint p1, QPoint p2 );
+
     static double map(const double &x, const double &in_min, const double &in_max, const double &out_min, const double &out_max);
     static double mapCapped(const double &x, const double &in_min, const double &in_max, const double &out_min, const double &out_max);
     static double cap( const double &x, const double &min_bound, const double &max_bound );
+
     static cv::Rect getInvTabRect( int index );
     static cv::Rect getInvSlotRect( int index );
+
     static int getInvSlotIndex( const cv::Rect &rect );
     static int getInvSlotIndex( const QPoint &point );
+
     static double getDistance( QPoint &p1, QPoint &p2 );
     static double getDistance( cv::Point &p1, cv::Point &p2 );
+
     static int genRand( int bound1, int bound2 = 0 );
     static double genRandDouble( double bound1, double bound2 = 0 );
 
@@ -62,6 +67,9 @@ public:
     static cv::Point genRandPointOffset( cv::Point p, int offset );
 
     static QList<cv::Rect> findMatches( cv::Mat imageMat, cv::Mat targetMat, double threshold = 0.9 );
+
+    static cv::Rect resizeRect( cv::Rect rect, int shrink );
+    static cv::Rect resizeRect( cv::Rect rect, int shrinkX, int shrinkY );
 };
 
 #endif // UTIL_H

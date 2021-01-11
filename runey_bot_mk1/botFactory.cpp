@@ -1,4 +1,4 @@
-#include "botFactory.h"
+﻿#include "botFactory.h"
 
 using namespace cv;
 
@@ -7,6 +7,7 @@ BotInstance *BotFactory::makeGathererBot( int botX, int botY, StrPair loginInfo 
     BotInstance *bot = new BotInstance( botX, botY, loginInfo );
     addLoginModules( bot );
     addGathererModules( bot );
+    addPauseModules( bot );
     return bot;
 }
 
@@ -16,6 +17,9 @@ void BotFactory::addGathererModules( BotInstance *bot )
 
     QList<Condition *> conditions;
     QList<Task *> tasks;
+
+    //Make sure inv
+    bot->addModule( new Module( new TabCondition( 4, false ), new ChangeTabTask( 4 ) ) );
 
     //Drop items
     conditions = QList<Condition *>();
@@ -45,7 +49,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
     tasks = QList<Task *>();
 
     conditions.push_back( new TimeoutCondition( 2000, 5000 ) );
-    conditions.push_back( new StateCondition( BotStates::Gather ) );
+    conditions.push_back( new StateCondition( BotState::Gather, false ) );
     tasks.push_back( new ClickHighlightTask() );
 //    tasks.push_back( randomChangeTabTask );
 
@@ -56,12 +60,13 @@ void BotFactory::addGathererModules( BotInstance *bot )
 
 void BotFactory::addLoginModules( BotInstance *bot )
 {
-    cv::Mat existingUser = Util::pixMapToMat( QPixmap( ":/icons/Images/Existing_user.png" ) );
-    cv::Mat clickHereToPlay = Util::pixMapToMat( QPixmap( ":/icons/Images/Click_here_to_play.png" ) );
-    cv::Mat login = Util::pixMapToMat( QPixmap( ":/icons/Images/Login.png" ) );
-    cv::Mat ok = Util::pixMapToMat( QPixmap( ":/icons/Images/Ok.png" ) );
+    Mat existingUser = Util::pixMapToMat( QPixmap( ":/icons/Images/Existing_user.png" ) );
+    Mat welcomeMessage = Util::pixMapToMat( QPixmap( ":/icons/Images/Welcome_message.png" ) );
+    Mat login = Util::pixMapToMat( QPixmap( ":/icons/Images/Login.png" ) );
+    Mat cancel = Util::pixMapToMat( QPixmap( ":/icons/Images/Cancel.png" ) );
+    Mat ok = Util::pixMapToMat( QPixmap( ":/icons/Images/Ok.png" ) );
+    Mat wiki = Util::pixMapToMat( QPixmap( ":/icons/Images/Wiki.png" ) );
 
-    QList<MatDoublePair> notLoggedInMats;
     QList<MatDoublePair> clickMats;
     QList<Condition *> conditions;
     QList<Task *> tasks;
@@ -72,35 +77,92 @@ void BotFactory::addLoginModules( BotInstance *bot )
     tasks = QList<Task *>();
     elseTasks = QList<Task *>();
 
-    notLoggedInMats.push_back( MatDoublePair( existingUser, DEFAULT_THRESHOLD ) );
-    notLoggedInMats.push_back( MatDoublePair( clickHereToPlay, DEFAULT_THRESHOLD ) );
-    notLoggedInMats.push_back( MatDoublePair( login, 200 ) );
-    notLoggedInMats.push_back( MatDoublePair( ok, 200 ) );
+    Rect playButtonArea = Util::resizeRect( Rect( Point( PLAY_BUTTON_X1, PLAY_BUTTON_Y1 + 80 ), Point( PLAY_BUTTON_X2, PLAY_BUTTON_Y2 ) ), -5 );
+    Rect welcomeMessageArea = Util::resizeRect( Rect( WELCOME_MESSAGE_X, WELCOME_MESSAGE_Y, WELCOME_MESSAGE_WIDTH, WELCOME_MESSAGE_HEIGHT ), 5 );
+    Rect buttonsArea = Rect( Point( LOGIN_BUTTONS_X1, LOGIN_BUTTONS_Y1 ), Point( LOGIN_BUTTONS_X2, LOGIN_BUTTONS_Y2 ) );
+    Rect wikiArea = Rect( Point( WIKI_X1, WIKI_Y1 ), Point( WIKI_X2, WIKI_Y2 ) );
 
-    conditions.push_back( new ImageCondition( notLoggedInMats ) );
-    tasks.push_back( new SetStateTask( BotStates::Login, false ) );
-    elseTasks.push_back( new SetStateTask( BotStates::Login, true ) );
+    ImageCondition *imageCondition;
+    imageCondition = new ImageCondition( wiki, DEFAULT_THRESHOLD );
+    imageCondition->setCrop( Util::resizeRect( Util::resizeRect( wikiArea, 5 ), 5 ) );
+    conditions.push_back( imageCondition );
 
-    bot->addModule( new Module( conditions, tasks ) );
+    tasks.push_back( new SetStateTask( BotState::Login, false ) );
+    elseTasks.push_back( new SetStateTask( BotState::Login, true ) );
+
+    Module *loginStateModule = new Module( conditions, tasks, elseTasks );
+    loginStateModule->setMatchReq( 1 );
+
+    bot->addModule( loginStateModule, ModuleType::Background );
 
     //Find Login Screen Module
     clickMats = QList<MatDoublePair>();
     clickMats.push_back( MatDoublePair( ok, 200 ) );
     clickMats.push_back( MatDoublePair( existingUser, DEFAULT_THRESHOLD ) );
-    clickMats.push_back( MatDoublePair( clickHereToPlay, DEFAULT_THRESHOLD ) );
 
-    bot->addModule( new Module( new ClickImagesTask( clickMats ) ) );
+    ClickImagesTask *clickLoginButtons = new ClickImagesTask( clickMats );
+    clickLoginButtons->setCrop( buttonsArea );
+
+//    Mat test = Mat( buttonsArea.height, buttonsArea.width, CV_8UC3, Scalar( 0 ) );
+//    imshow( "test", test );
+
+    bot->addModule( new Module( clickLoginButtons ), ModuleType::Login );
 
     //Login Module
-    conditions.push_back( new ImageCondition( login, 200 ) );
-    Rect focusArea = Rect( bot->info->x + FOCUS_CLICK_SHRINK, bot->info->y + FOCUS_CLICK_SHRINK, RUNELITE_WIDTH - FOCUS_CLICK_SHRINK*2, RUNELITE_HEIGHT - FOCUS_CLICK_SHRINK*2 );
-    tasks.push_back( new ClickAreaTask( MouseStates::Left, focusArea ) );
-    tasks.push_back( new KeyboardTask( KeyboardStates::Press, "Escape" ) );
-    tasks.push_back( new KeyboardTask( KeyboardStates::Press, "Return" ) );
-    tasks.push_back( new KeyboardTask( KeyboardStates::Write, bot->loginInfo.first ) );
-    tasks.push_back( new KeyboardTask( KeyboardStates::Press, "Tab" ) );
-    tasks.push_back( new KeyboardTask( KeyboardStates::Write, bot->loginInfo.second ) );
-    tasks.push_back( new KeyboardTask( KeyboardStates::Press, "Return" ) );
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
 
+    conditions.push_back( new ImageCondition( login, 200 ) );
+    Rect focusArea = Rect( Point( PLAY_BUTTON_X1, PLAY_BUTTON_Y1 + 80 ), Point( PLAY_BUTTON_X2, PLAY_BUTTON_Y2 ) );
+    tasks.push_back( new ClickAreaTask( MouseState::Right, focusArea ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Escape" ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.first ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Tab" ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.second ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
+    tasks.push_back( new DelayTask( 5000, 10000 ) );
+
+    bot->addModule( new Module( conditions, tasks ), ModuleType::Login );
+
+    //Click play now, hold up arrow key for a while Module
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    ImageCondition *welcomeMessageCondition = new ImageCondition( welcomeMessage );
+    welcomeMessageCondition->setCrop( welcomeMessageArea );
+    conditions.push_back( welcomeMessageCondition );
+    ClickAreaTask *clickPlayButtonTask = new ClickAreaTask( MouseState::Left, Util::resizeRect( playButtonArea, -5 ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Down, "Up" ) );
+    tasks.push_back( new DelayTask( 1200, 2300 ) );
+    tasks.push_back( new KeyboardTask( KeyboardState::Up, "Up" ) );
+    tasks.push_back( clickPlayButtonTask );
+
+    bot->addModule( new Module( conditions, tasks ), ModuleType::Login );
+    //
+}
+
+void BotFactory::addPauseModules( BotInstance *bot )
+{
+    QList<Condition *> conditions;
+    QList<Task *> tasks;
+
+    conditions.push_back( new TimeoutCondition( 120 * 60 * 1000, 240 * 60 * 1000 ) );
+    tasks.push_back( new SetStateTask( BotState::Pause, true ) );
+    tasks.push_back( new TimerTask( TimerOperation::Stop ) );
+    tasks.push_back( new TimerTask( TimerOperation::Start ) );
+
+    //Set state to pause
     bot->addModule( new Module( conditions, tasks ) );
+//    bot->addModule( new Module( new TimeoutCondition( 15000, 20000 ), new SetStateTask( BotState::Pause, true ) ) );
+
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    //If Pause, but still logged in, log out
+    conditions.push_back( new TimeoutCondition( 1000, 3000 ) );
+    conditions.push_back( new StateCondition( BotState::Pause, true ) );
+    conditions.push_back( new StateCondition( BotState::Login, false ) );
+    tasks.push_back( new TakeBreakTask( 40 * 60 * 1000, 80 * 60 * 1000 ) );
+    bot->addModule( new Module( conditions, tasks ), ModuleType::Background );
 }

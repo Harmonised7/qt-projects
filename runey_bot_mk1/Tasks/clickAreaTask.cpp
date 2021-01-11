@@ -2,13 +2,13 @@
 
 using namespace cv;
 
-ClickAreaTask::ClickAreaTask( MouseStates state, Point p ) :
+ClickAreaTask::ClickAreaTask( MouseState state, Point p ) :
     _state( state ),
     _clickArea( Rect( p, p ) )
 {
 }
 
-ClickAreaTask::ClickAreaTask( MouseStates state, Rect area ) :
+ClickAreaTask::ClickAreaTask( MouseState state, Rect area ) :
     _state( state ),
     _clickArea( area )
 {
@@ -16,5 +16,7 @@ ClickAreaTask::ClickAreaTask( MouseStates state, Rect area ) :
 
 void ClickAreaTask::execute( BotInfo *info )
 {
-    MouseController::mc.mousePress( _state, Util::genRandQPoint( _clickArea ) );
+//    rectangle( info->rsMat, _clickArea, Scalar( 255, 255, 255 ) );
+//    imshow( "click area task", info->rsMat );
+    MouseController::mc.mousePress( _state, info->tl() + Util::genRandQPoint( _clickArea ) );
 }

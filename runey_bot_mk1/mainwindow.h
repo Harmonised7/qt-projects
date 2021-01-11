@@ -24,6 +24,7 @@
 #include "keyboardController.h"
 #include "botInstance.h"
 #include "botFactory.h"
+#include "timer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,7 +42,9 @@ private slots:
     //Screen Stuff
     void handleFrame();
 
-    void on_testButton_clicked();
+    void on_unpauseButton_clicked();
+
+    void on_pauseButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -60,7 +63,7 @@ private:
 
     cv::Rect _clickSafeArea;
 
-    QElapsedTimer *_timer;
+    Timer *_timer;
     TimeoutCondition *_timeoutCondition;
 };
 #endif // MAINWINDOW_H

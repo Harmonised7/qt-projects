@@ -20,11 +20,18 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <widget class="QPushButton" name="testButton">
+     <widget class="QPushButton" name="unpauseButton">
       <property name="text">
-       <string>PushButton</string>
+       <string>unpauseAll</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pauseButton">
+      <property name="text">
+       <string>pauseAll</string>
       </property>
      </widget>
     </item>

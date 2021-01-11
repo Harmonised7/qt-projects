@@ -38,12 +38,12 @@ void ChangeTabTask::execute( BotInfo *info )
         info->tabId = _tabs->values()[ Util::genRand( _tabs->size() - 1 ) ];
     }
     while( _tabs->size() > 1 && _originTab == info->tabId );
-    MouseController::mc.mousePress( MouseStates::Left, Util::genRandQPoint( Util::getInvTabRect( info->tabId ) ) + QPoint( info->x, info->y ) );
+    MouseController::mc.mousePress( MouseState::Left, Util::genRandQPoint( Util::getInvTabRect( info->tabId ) ) + QPoint( info->x, info->y ) );
 
     if( _goBack )
     {
         Sleeper::msleep( Util::genRand( MIN_SLEEP, MAX_SLEEP ) );
-        MouseController::mc.mousePress( MouseStates::Left, Util::genRandQPoint( Util::getInvTabRect( _originTab ) ) + QPoint( info->x, info->y ) );
+        MouseController::mc.mousePress( MouseState::Left, Util::genRandQPoint( Util::getInvTabRect( _originTab ) ) + QPoint( info->x, info->y ) );
         info->tabId = _originTab;
     }
 }

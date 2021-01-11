@@ -21,6 +21,9 @@
 #include "Tasks/changeTabTask.h"
 #include "Tasks/keyboardTask.h"
 #include "Tasks/setStateTask.h"
+#include "Tasks/delayTask.h"
+#include "Tasks/takeBreakTask.h"
+#include "Tasks/timerTask.h"
 
 class BotFactory
 {
@@ -29,6 +32,7 @@ public:
 
     static void addGathererModules( BotInstance *bot );
     static void addLoginModules( BotInstance *bot );
+    static void addPauseModules( BotInstance *bot );
 };
 
 #endif // BOTFACTORY_H

@@ -20,6 +20,15 @@
 #include "mouseController.h"
 #include "util.h"
 #include "botinfo.h"
+#include "timer.h"
+
+enum class ModuleType
+{
+    Init,
+    Ingame,
+    Login,
+    Background
+};
 
 class BotInstance
 {
@@ -29,7 +38,7 @@ public:
     ~BotInstance();
 
     //Methods
-    void addModule( Module *module, int type = 0 );
+    void addModule( Module *module, ModuleType type = ModuleType::Ingame );
     void addImage( int id, cv::Mat image );
     void addColorItem( char color, int item );
     void runModules( QList<Module *> modules );
@@ -39,9 +48,7 @@ public:
     BotInfo *info;
 private:
     //Objects
-    QList<Module *> _initModules;
-    QList<Module *> _loginModules;
-    QList<Module *> _modules;
+    QMap<ModuleType, QList<Module *>> _modules;
     bool _init = false;
 };
 

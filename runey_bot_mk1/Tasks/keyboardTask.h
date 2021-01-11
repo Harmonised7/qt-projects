@@ -6,12 +6,12 @@
 class KeyboardTask : public Task
 {
 public:
-    KeyboardTask( KeyboardStates state, std::string key, int minTsDelay = TSDELAY_MIN, int maxTsDelay = TSDELAY_MAX );
+    KeyboardTask( KeyboardState state, std::string key, int minTsDelay = TSDELAY_MIN, int maxTsDelay = TSDELAY_MAX );
 
     void execute( BotInfo *info ) override;
 
 private:
-    KeyboardStates _state;
+    KeyboardState _state;
     std::string _key;
     int _minTsDelay, _maxTsDelay;
 };

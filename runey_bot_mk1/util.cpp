@@ -195,6 +195,9 @@ Point Util::genRandPointOffset( Point p, int offset )
 
 QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
 {
+    if( targetMat.rows > imageMat.rows || targetMat.cols > imageMat.cols )
+        qDebug() << "targetMat bigger than imageMat at Util::findMatches";
+
     QList<Rect> matches;
 
     if (imageMat.empty() || targetMat.empty())
@@ -203,8 +206,8 @@ QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
         return matches;
     }
 
-    //    imshow("file", imageMat);
-    //    imshow("template", targetMat);
+//    imshow("file", imageMat);
+//    imshow("template", targetMat);
 
     Mat res_32f(imageMat.rows - targetMat.rows + 1, imageMat.cols - targetMat.cols + 1, CV_32FC1);
     matchTemplate( imageMat, targetMat, res_32f, TM_CCOEFF_NORMED );
@@ -223,9 +226,13 @@ QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
         Point minloc, maxloc;
         minMaxLoc(res, &minval, &maxval, &minloc, &maxloc);
 
+//        imshow( "stuff", imageMat );
         if (maxval >= threshold)
         {
             Rect match = Rect( maxloc, Point(maxloc.x + targetMat.cols, maxloc.y + targetMat.rows) );
+//            rectangle( imageMat, match, Scalar( 0, 255, 255 ) );
+//            imshow( "imageMat", imageMat );
+
             matches.push_back( match );
             floodFill(res, maxloc, 0); //mark drawn blob
         }
@@ -233,7 +240,26 @@ QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
             break;
     }
     //    qDebug() << _info->invItems->size();
-    //    imshow("final", imageMat);
+//    if( imageMat.cols > 90 )
+//        imshow("final", imageMat);
 
     return matches;
+}
+
+Rect Util::resizeRect( Rect rect, int shrink )
+{
+    rect.x -= shrink;
+    rect.y -= shrink;
+    rect.width += shrink*2;
+    rect.height += shrink*2;
+    return rect;
+}
+
+Rect Util::resizeRect( Rect rect, int resizeX, int resizeY )
+{
+    rect.x -= resizeX;
+    rect.y -= resizeY;
+    rect.width += resizeX*2;
+    rect.height += resizeY*2;
+    return rect;
 }

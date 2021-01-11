@@ -15,8 +15,9 @@
 //Other Includes
 #include "defines.h"
 #include "util.h"
+#include "timer.h"
 
-enum class BotStates
+enum class BotState
 {
     Gather,
     Login,
@@ -49,9 +50,12 @@ public:
     //Objects
     Inventory *invItems;
     QMap<char, int> *colorItems;
-    QElapsedTimer *timer;
-    QMap<BotStates, bool> states;
+    Timer *timer;
+    Timer *pauseTimer;
+    QMap<BotState, bool> states;
     int tabId = 4;
+
+    unsigned long pauseLength = 300000, pauseCount = 0;
 
 private:
     //Objects

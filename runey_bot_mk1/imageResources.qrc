@@ -11,5 +11,11 @@
         <file>Images/Ok.png</file>
         <file>Images/Enter_your_credentials.png</file>
         <file>Images/Login.png</file>
+        <file>Images/Logout_door.png</file>
+        <file>Images/Logout_button.png</file>
+        <file>Images/Welcome_message.png</file>
+        <file>Images/Cancel.png</file>
+        <file>Images/Scroll_down.png</file>
+        <file>Images/Wiki.png</file>
     </qresource>
 </RCC>

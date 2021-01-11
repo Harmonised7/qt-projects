@@ -52,7 +52,7 @@ void ClickItemsTask::execute( BotInfo *info )
         {
             itemsToDrop->insert( item, itemsToDrop->value( item ) - 1 );
             if( Util::genRand( 1, 100 ) < 100 - _failRate )
-                MouseController::mc.mousePress( MouseStates::Left, Util::genRandQPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ) );
+                MouseController::mc.mousePress( MouseState::Left, Util::genRandQPoint( Util::getInvSlotRect( i ) ) + QPoint( info->x, info->y ) );
         }
     }
 

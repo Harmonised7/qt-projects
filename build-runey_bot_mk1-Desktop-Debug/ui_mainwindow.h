@@ -11,11 +11,11 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -24,8 +24,9 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QHBoxLayout *horizontalLayout;
-    QPushButton *testButton;
+    QVBoxLayout *verticalLayout_4;
+    QPushButton *unpauseButton;
+    QPushButton *pauseButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -37,12 +38,17 @@ public:
         MainWindow->setMaximumSize(QSize(139, 110));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        horizontalLayout = new QHBoxLayout(centralwidget);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        testButton = new QPushButton(centralwidget);
-        testButton->setObjectName(QString::fromUtf8("testButton"));
+        verticalLayout_4 = new QVBoxLayout(centralwidget);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        unpauseButton = new QPushButton(centralwidget);
+        unpauseButton->setObjectName(QString::fromUtf8("unpauseButton"));
 
-        horizontalLayout->addWidget(testButton);
+        verticalLayout_4->addWidget(unpauseButton);
+
+        pauseButton = new QPushButton(centralwidget);
+        pauseButton->setObjectName(QString::fromUtf8("pauseButton"));
+
+        verticalLayout_4->addWidget(pauseButton);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -61,7 +67,8 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
-        testButton->setText(QApplication::translate("MainWindow", "PushButton", nullptr));
+        unpauseButton->setText(QApplication::translate("MainWindow", "unpauseAll", nullptr));
+        pauseButton->setText(QApplication::translate("MainWindow", "pauseAll", nullptr));
     } // retranslateUi
 
 };

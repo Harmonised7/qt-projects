@@ -6,7 +6,6 @@ TabCondition::TabCondition( int tab, bool boolType ) :
     _tab( tab ),
     _boolType( boolType )
 {
-
 }
 
 bool TabCondition::checkCondition( BotInfo *info )
@@ -39,7 +38,7 @@ int TabCondition::getCurrentTab( BotInfo *info )
         }
     }
 
-    if( tab == 0 )
-        qDebug() << "Could not find current tab!";
+//    if( tab == 0 )
+//        qDebug() << "Could not find current tab!";
     return tab;
 }

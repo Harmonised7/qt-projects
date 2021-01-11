@@ -10,7 +10,7 @@ public:
     InventoryCondition( RangedInventory *items, bool up );
     InventoryCondition( int item, bool up, int amount = 28 );
     InventoryCondition( int item, bool up, int minAmount, int maxAmount );
-    bool checkCondition( BotInfo *info );
+    bool checkCondition( BotInfo *info ) override;
 
 private:
     Inventory *_items;

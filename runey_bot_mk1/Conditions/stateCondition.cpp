@@ -1,6 +1,6 @@
 #include "stateCondition.h"
 
-StateCondition::StateCondition( BotStates stateType, bool boolType ) :
+StateCondition::StateCondition( BotState stateType, bool boolType ) :
     _stateType( stateType ),
     _boolType( boolType )
 {

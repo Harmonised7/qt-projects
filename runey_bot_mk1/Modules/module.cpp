@@ -34,12 +34,22 @@ void Module::addTask( Task *task, bool elseTask )
     ( elseTask ? _elseTasks : _tasks ).push_back( task );
 }
 
-QList<Condition *> Module::getConditions()
-{
-    return _conditions;
-}
-
 QList<Task *> Module::getTasks( bool elseTask )
 {
     return elseTask ? _elseTasks : _tasks;
+}
+
+void Module::setMatchReq( unsigned int matchReq )
+{
+    _passReq = matchReq;
+}
+
+unsigned int Module::getPassReq()
+{
+    return _passReq;
+}
+
+QList<Condition *> Module::getConditions()
+{
+    return _conditions;
 }

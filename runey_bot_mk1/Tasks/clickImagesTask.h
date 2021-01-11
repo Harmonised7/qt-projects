@@ -12,8 +12,13 @@ public:
 
     void execute( BotInfo *info ) override;
 
+    void setCrop( cv::Rect crop );
+
 private:
     QList<MatDoublePair> _mats = QList<MatDoublePair>();
+    cv::Rect _crop;
+    QPoint _cropOffset = QPoint( 0, 0 );
+    bool _cropSet = false;
 };
 
 #endif // CLICKIMAGESTASK_H

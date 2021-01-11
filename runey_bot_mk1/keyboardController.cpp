@@ -19,16 +19,15 @@ KeyboardController::KeyboardController( int screen ) :
     qDebug() << "Initialized Keyboard Controller...";
 }
 
-void KeyboardController::press( KeyboardStates state, std::string key, int minTsDelay, int maxTsDelay )
+void KeyboardController::press( KeyboardState state, std::string key, int minTsDelay, int maxTsDelay )
 {
-    qDebug() << QString::fromStdString( key );
-    if( state == KeyboardStates::Press )
+    if( state == KeyboardState::Press )
         xdo_send_keysequence_window( xDoTool, 0, key.c_str(), Util::genRand( minTsDelay, maxTsDelay ) );
-    else if( state == KeyboardStates::Down )
+    else if( state == KeyboardState::Down )
         xdo_send_keysequence_window_down( xDoTool, 0, key.c_str(), Util::genRand( minTsDelay, maxTsDelay ) );
-    else if( state == KeyboardStates::Up )
+    else if( state == KeyboardState::Up )
         xdo_send_keysequence_window_up( xDoTool, 0, key.c_str(), Util::genRand( minTsDelay, maxTsDelay ) );
-    else if( state == KeyboardStates::Write )
+    else if( state == KeyboardState::Write )
     {
         for( unsigned long i = 0; i < key.size(); i++ )
         {

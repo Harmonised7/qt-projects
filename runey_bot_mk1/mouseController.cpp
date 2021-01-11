@@ -115,74 +115,77 @@ QPoint MouseController::getMousePos()
     return QPoint(x, y);
 }
 
-void MouseController::mousePressRelative( MouseStates state, QPoint p )
+void MouseController::mousePressRelative( MouseState state, QPoint p )
 {
     mousePress( state, getMousePos() + p );
 }
 
-void MouseController::mousePressRelative( MouseStates state, int relativeX, int relativeY )
+void MouseController::mousePressRelative( MouseState state, int relativeX, int relativeY )
 {
     mousePress( state, getMousePos() + QPoint( relativeX, relativeY ) );
 }
 
-void MouseController::mousePress( MouseStates state, QPoint newPoint )
+void MouseController::mousePress( MouseState state, QPoint newPoint )
 {
     mousePress( state, newPoint.x(), newPoint.y() );
 }
 
-void MouseController::mousePress( MouseStates state, int newX, int newY)
+void MouseController::mousePress( MouseState state, int newX, int newY)
 {
+//    if( totalClicks > 30 )
+//        return;
     mouseMove(newX, newY);
 
-    if (state == MouseStates::Left)
+    if (state == MouseState::Left)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
     }
-    else if (state == MouseStates::Right)
+    else if (state == MouseState::Right)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
     }
-    else if (state == MouseStates::Middle)
+    else if (state == MouseState::Middle)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);
     }
+    totalClicks++;
 }
 
-void MouseController::mouseDragRelative( MouseStates state, QPoint p )
+void MouseController::mouseDragRelative( MouseState state, QPoint p )
 {
     mouseDrag( state, getMousePos() + p );
 }
 
-void MouseController::mouseDragRelative( MouseStates state, int relativeX, int relativeY )
+void MouseController::mouseDragRelative( MouseState state, int relativeX, int relativeY )
 {
     mouseDrag( state, getMousePos() + QPoint( relativeX, relativeY ) );
 }
 
-void MouseController::mouseDrag( MouseStates state, QPoint newPoint )
+void MouseController::mouseDrag( MouseState state, QPoint newPoint )
 {
     mouseDrag( state, newPoint.x(), newPoint.y() );
 }
 
-void MouseController::mouseDrag( MouseStates state, int newX, int newY )
+void MouseController::mouseDrag( MouseState state, int newX, int newY )
 {
     qDebug() << "Dragging to x:" << newX << " y:" << newY;
-    if (state == MouseStates::Left)
+    if (state == MouseState::Left)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
     }
-    else if (state == MouseStates::Right)
+    else if (state == MouseState::Right)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
     }
-    else if (state == MouseStates::Middle)
+    else if (state == MouseState::Middle)
     {
         xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
@@ -190,17 +193,17 @@ void MouseController::mouseDrag( MouseStates state, int newX, int newY )
 
     mouseMove(newX, newY);
 
-    if (state == MouseStates::Left)
+    if (state == MouseState::Left)
     {
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
     }
-    else if (state == MouseStates::Right)
+    else if (state == MouseState::Right)
     {
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
     }
-    else if (state == MouseStates::Middle)
+    else if (state == MouseState::Middle)
     {
         Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
         xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);

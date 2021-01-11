@@ -6,9 +6,10 @@ BotInstance::BotInstance( int x, int y, StrPair loginInfo ) :
     loginInfo( loginInfo )
 {
     info = new BotInfo;
-    info->timer = new QElapsedTimer;
     info->x = x,
     info->y = y;
+    info->pauseTimer = new Timer;
+    info->timer = new Timer;
     info->timer->start();
 }
 
@@ -20,16 +21,17 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
     info->invMat = info->rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
     info->tabId = TabCondition::getCurrentTab( info );
 
-    info->states.insert( BotStates::Gather, false );
+    info->states.insert( BotState::Gather, false );
 
     for( int i = 0; i < 50; i++ )
     {
-        if( info->rsMat.at<Vec3b>( GATHER_STATE_Y, GATHER_STATE_X + i )[1] == 255 )
+        if( info->rsMat.at<Vec3b>( GATHER_STATE_Y, GATHER_STATE_X + i )[1] > 200 )
         {
-            info->states.insert( BotStates::Gather, true );
+            info->states.insert( BotState::Gather, true );
             break;
         }
     }
+//    qDebug() << "gather state" << info->states.value( BotState::Gather );
 
     //Login Modules
 
@@ -55,19 +57,25 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
 //    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_SLOTS_X, INV_SLOTS_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
 
     //////Run Modules
-    //Init
     if( !_init )
     {
-        runModules( _initModules );
+        runModules( _modules.value( ModuleType::Init ) );
         _init = true;
     }
-    else if( info->states.value( BotStates::Login ) && !info->states.value( BotStates::Pause ) )
-        runModules( _loginModules );
-    else if( !info->states.value( BotStates::Login ) )
-        runModules( _modules );
+    runModules( _modules.value( ModuleType::Background ) );
+
+    if( info->states.value( BotState::Pause ) )
+    {
+        if( info->pauseTimer->elapsed() > info->pauseLength )
+            info->states.insert( BotState::Pause, false );
+    }
+    else if( info->states.value( BotState::Login ) )
+        runModules( _modules.value( ModuleType::Login ) );
+    else if( !info->states.value( BotState::Login ) )
+        runModules( _modules.value( ModuleType::Ingame ) );
 
 //    imshow( "filter", info->floodMat );
-    rectangle( info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
+//    rectangle( info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
 
     return info->rsMat;
 }
@@ -77,12 +85,22 @@ void BotInstance::runModules( QList<Module *> modules )
     for( Module *module : modules )
     {
         bool passedConditions = true;
-        for( Condition *condition : module->getConditions() )
+        if( module->getConditions().size() > 0 )
         {
-            if( !condition->checkCondition( info ) )
+            passedConditions = false;
+            int passes = 0;
+            int passReq = module->getPassReq();
+            if( passReq == 0 )
+                passReq = module->getConditions().length();
+            for( Condition *condition : module->getConditions() )
             {
-                passedConditions = false;
-                break;
+                if( condition->checkCondition( info ) )
+                    passes++;
+                if( passes >= passReq )
+                {
+                    passedConditions = true;
+                    break;
+                }
             }
         }
         for( Task *task : passedConditions ? module->getTasks( false ) : module->getTasks( true ) )
@@ -92,14 +110,9 @@ void BotInstance::runModules( QList<Module *> modules )
     }
 }
 
-void BotInstance::addModule( Module *module, int type )
+void BotInstance::addModule( Module *module, ModuleType type )
 {
-    if( type == 0 )
-        _modules.push_back( module );
-    else if( type == 1 )
-        _initModules.push_back( module );
-    else if( type == 2 )
-        _loginModules.push_back( module );
+    _modules[ type ].push_back( module );
 }
 
 void BotInstance::addImage( int id, cv::Mat image )

@@ -9,7 +9,7 @@
 #include "sleeper.h"
 #include "util.h"
 
-enum class KeyboardStates
+enum class KeyboardState
 {
     Press,
     Up,
@@ -22,7 +22,7 @@ class KeyboardController
 public:
     KeyboardController( int screen );
 
-    void press( KeyboardStates state, std::string key, int minTsDelay = TSDELAY_MIN, int maxTsDelay = TSDELAY_MAX );
+    void press( KeyboardState state, std::string key, int minTsDelay = TSDELAY_MIN, int maxTsDelay = TSDELAY_MAX );
 
     static KeyboardController kc;
     QMap<char, std::string> specialChars;

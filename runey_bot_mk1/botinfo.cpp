@@ -18,9 +18,9 @@ BotInfo::BotInfo()
 {
     invItems = new Inventory();
     colorItems = new QMap<char, int>();
-    states.insert( BotStates::Gather, false );
-    states.insert( BotStates::Login, false );
-    states.insert( BotStates::Pause, false );
+    states.insert( BotState::Gather, false );
+    states.insert( BotState::Login, false );
+    states.insert( BotState::Pause, true );
 }
 
 BotInfo::~BotInfo()

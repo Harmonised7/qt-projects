@@ -6,12 +6,12 @@
 class SetStateTask : public Task
 {
 public:
-    SetStateTask( BotStates stateType, int newState );
+    SetStateTask( BotState stateType, bool newState );
 
     void execute( BotInfo *info ) override;
 
 private:
-    BotStates _stateType;
+    BotState _stateType;
     int _newState;
 };
 

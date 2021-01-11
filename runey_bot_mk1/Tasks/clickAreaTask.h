@@ -6,13 +6,13 @@
 class ClickAreaTask : public Task
 {
 public:
-    ClickAreaTask( MouseStates state, cv::Point p );
-    ClickAreaTask( MouseStates state, cv::Rect area );
+    ClickAreaTask( MouseState state, cv::Point p );
+    ClickAreaTask( MouseState state, cv::Rect area );
 
     void execute( BotInfo *info ) override;
 
 private:
-    MouseStates _state;
+    MouseState _state;
     cv::Rect _clickArea;
 };
 

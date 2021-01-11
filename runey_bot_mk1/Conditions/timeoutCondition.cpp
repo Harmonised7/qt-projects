@@ -13,7 +13,7 @@ bool TimeoutCondition::checkCondition( BotInfo *info )
     return checkCondition( info->timer );
 }
 
-bool TimeoutCondition::checkCondition( QElapsedTimer *timer )
+bool TimeoutCondition::checkCondition( Timer *timer )
 {
     if( timer->elapsed() - _lastTrigger >= _timeToWait )
     {

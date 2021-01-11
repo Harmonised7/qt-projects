@@ -29,19 +29,19 @@ void AntiBanTask::doAntiBan( Rect area )
     int keyboardType = Util::genRand( 1, 5 );
 
     if( keyboardType == 1 )
-        KeyboardController::kc.press( KeyboardStates::Down, "Right" );
+        KeyboardController::kc.press( KeyboardState::Down, "Right" );
     else if( keyboardType == 2 )
-        KeyboardController::kc.press( KeyboardStates::Down, "Left" );
+        KeyboardController::kc.press( KeyboardState::Down, "Left" );
 
     if( Util::genRand( 1, 10 ) == 1 )
-        KeyboardController::kc.press( KeyboardStates::Down, "Up" );
+        KeyboardController::kc.press( KeyboardState::Down, "Up" );
 
     Sleeper::msleep( Util::genRand( 25, 75 ) );
     if( Util::genRand( 1, 17 ) < 8 )
     {
-        KeyboardController::kc.press( KeyboardStates::Up, "Right" );
-        KeyboardController::kc.press( KeyboardStates::Up, "Left" );
-        KeyboardController::kc.press( KeyboardStates::Up, "Up" );
+        KeyboardController::kc.press( KeyboardState::Up, "Right" );
+        KeyboardController::kc.press( KeyboardState::Up, "Left" );
+        KeyboardController::kc.press( KeyboardState::Up, "Up" );
     }
 
     if( type <= 4 )
@@ -51,7 +51,7 @@ void AntiBanTask::doAntiBan( Rect area )
     else if( type <= 6 )
     {
         Point rightClickPoint = Util::genRandPoint( area );
-        MouseController::mc.mousePress( MouseStates::Right, Util::PointToQPoint( rightClickPoint ) );
+        MouseController::mc.mousePress( MouseState::Right, Util::PointToQPoint( rightClickPoint ) );
         Sleeper::msleep( Util::genRand( 50, 300 ) );
         if( Util::genRand( 1, 2 ) == 1 )
             MouseController::mc.mouseMoveRelative( Util::genRandQPointOffset( Util::PointToQPoint( rightClickPoint ), 25 ) );
@@ -60,16 +60,16 @@ void AntiBanTask::doAntiBan( Rect area )
     {
         Point middleClickPoint = area.tl() + Util::genRandPoint( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_WIDTH ) );
         MouseController::mc.mouseMove( Util::PointToQPoint( middleClickPoint ) );
-        MouseController::mc.mouseDragRelative( MouseStates::Middle, Util::genRandQPointOffset( Util::PointToQPoint( middleClickPoint ), 10 ) );
+        MouseController::mc.mouseDragRelative( MouseState::Middle, Util::genRandQPointOffset( Util::PointToQPoint( middleClickPoint ), 10 ) );
     }
 
     if( Util::genRand( 1, 10 ) == 1 )
         doAntiBan( area );
 
     Sleeper::msleep( Util::genRand( 25, 75 ) );
-    KeyboardController::kc.press( KeyboardStates::Up, "Right" );
-    KeyboardController::kc.press( KeyboardStates::Up, "Left" );
-    KeyboardController::kc.press( KeyboardStates::Up, "Up" );
+    KeyboardController::kc.press( KeyboardState::Up, "Right" );
+    KeyboardController::kc.press( KeyboardState::Up, "Left" );
+    KeyboardController::kc.press( KeyboardState::Up, "Up" );
 
     MouseController::mc.resetSpeed();
     MouseController::mc.resetJitter();

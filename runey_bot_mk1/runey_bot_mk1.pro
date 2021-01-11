@@ -27,8 +27,11 @@ SOURCES += \
     Tasks/clickHighlightTask.cpp \
     Tasks/clickImagesTask.cpp \
     Tasks/clickItemsTask.cpp \
+    Tasks/delayTask.cpp \
     Tasks/keyboardTask.cpp \
     Tasks/setStateTask.cpp \
+    Tasks/takeBreakTask.cpp \
+    Tasks/timerTask.cpp \
     Tasks/useItemsTask.cpp \
     botFactory.cpp \
     botInstance.cpp \
@@ -39,6 +42,7 @@ SOURCES += \
     mainFunctions.cpp \
     mainwindow.cpp \
     mouseController.cpp \
+    timer.cpp \
     util.cpp
 
 HEADERS += \
@@ -54,8 +58,11 @@ HEADERS += \
     Tasks/clickHighlightTask.h \
     Tasks/clickImagesTask.h \
     Tasks/clickItemsTask.h \
+    Tasks/delayTask.h \
     Tasks/keyboardTask.h \
     Tasks/setStateTask.h \
+    Tasks/takeBreakTask.h \
+    Tasks/timerTask.h \
     Tasks/useItemsTask.h \
     botFactory.h \
     botInstance.h \
@@ -67,6 +74,7 @@ HEADERS += \
     mouseController.h \
     sleeper.h \
     Tasks/task.h \
+    timer.h \
     util.h
 
 FORMS += \

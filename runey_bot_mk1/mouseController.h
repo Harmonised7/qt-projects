@@ -25,7 +25,7 @@
 #include "sleeper.h"
 #include "util.h"
 
-enum class MouseStates
+enum class MouseState
 {
     Left,
     Right,
@@ -35,7 +35,6 @@ enum class MouseStates
 class MouseController
 {
 public:
-    MouseController( int screen );
     ~MouseController();
 
     void changeRandValues();
@@ -47,15 +46,15 @@ public:
     void mouseMove(QPoint newPoint);
     void mouseMove(int newX, int newY);
 
-    void mousePressRelative( MouseStates state, QPoint p );
-    void mousePressRelative( MouseStates state, int relativeX, int relativeY );
-    void mousePress( MouseStates state, QPoint newPoint );
-    void mousePress( MouseStates state, int newX, int newY );
+    void mousePressRelative( MouseState state, QPoint p );
+    void mousePressRelative( MouseState state, int relativeX, int relativeY );
+    void mousePress( MouseState state, QPoint newPoint );
+    void mousePress( MouseState state, int newX, int newY );
 
-    void mouseDragRelative( MouseStates state, QPoint p );
-    void mouseDragRelative( MouseStates state, int relativeX, int relativeY );
-    void mouseDrag( MouseStates state, QPoint newPoint );
-    void mouseDrag( MouseStates state, int newX, int newY );
+    void mouseDragRelative( MouseState state, QPoint p );
+    void mouseDragRelative( MouseState state, int relativeX, int relativeY );
+    void mouseDrag( MouseState state, QPoint newPoint );
+    void mouseDrag( MouseState state, int newX, int newY );
 
     void setFPS(uint newFPS);
     uint getFPS();
@@ -76,6 +75,8 @@ public:
     static MouseController mc;
 
 private:
+    MouseController( int screen );
+
     int _jitterValue;
     uint _mouseFPS;
 
@@ -98,6 +99,8 @@ private:
     double _tSpeed;
 
     int _screen;
+
+    unsigned long totalClicks = 0;
 };
 
 #endif // MOUSECONTROLLER_H
