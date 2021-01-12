@@ -118,9 +118,11 @@ void BotFactory::addLoginModules( BotInstance *bot )
     conditions.push_back( new ImageCondition( login, 200 ) );
     Rect focusArea = Rect( Point( PLAY_BUTTON_X1, PLAY_BUTTON_Y1 + 80 ), Point( PLAY_BUTTON_X2, PLAY_BUTTON_Y2 ) );
     tasks.push_back( new ClickAreaTask( MouseState::Right, focusArea ) );
+    tasks.push_back( new DelayTask( 1000, 2000 ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Escape" ) );
+    tasks.push_back( new DelayTask( 1000, 2000 ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
-    tasks.push_back( new DelayTask( 500, 1000 ) );
+    tasks.push_back( new DelayTask( 1000, 2000 ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.first ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Tab" ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.second ) );
