@@ -40,7 +40,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
     tasks = QList<Task *>();
 
     conditions.push_back( new TimeoutCondition( 30000, 90000 ) );
-    tasks.push_back( new ChangeTabTask( IntPair( 1, 7 ) ) );
+    tasks.push_back( new ChangeTabTask( IntPair( 1, 14 ) ) );
     tasks.push_back( new AntiBanTask( 2 ) );
 
     bot->addModule( new Module( conditions, tasks ) );
