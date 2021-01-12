@@ -78,7 +78,10 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
     if( info->states.value( BotState::Pause ) )
     {
         if( info->pauseTimer->elapsed() > info->pauseLength )
+        {
+            info->pauseTimer->stop();
             info->states.insert( BotState::Pause, false );
+        }
     }
     else if( info->states.value( BotState::Login ) )
         runModules( _modules.value( ModuleType::Login ) );

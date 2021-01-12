@@ -6,9 +6,9 @@ BotInstance *BotFactory::makeGathererBot( int botX, int botY, StrPair loginInfo 
 {
     BotInstance *bot = new BotInstance( botX, botY, loginInfo );
     addLoginModules( bot );
+    addRunOnModules( bot );
     addGathererModules( bot );
     addPauseModules( bot );
-    addRunOnModules( bot );
     return bot;
 }
 
@@ -67,6 +67,7 @@ void BotFactory::addLoginModules( BotInstance *bot )
     Mat cancel = Util::pixMapToMat( QPixmap( ":/icons/Images/Cancel.png" ) );
     Mat ok = Util::pixMapToMat( QPixmap( ":/icons/Images/Ok.png" ) );
     Mat wiki = Util::pixMapToMat( QPixmap( ":/icons/Images/Wiki.png" ) );
+    Mat tryAgain = Util::pixMapToMat( QPixmap( ":/icons/Images/Try_again.png" ) );
 
     QList<MatDoublePair> clickMats;
     QList<Condition *> conditions;
@@ -99,6 +100,7 @@ void BotFactory::addLoginModules( BotInstance *bot )
     //Find Login Screen Module
     clickMats = QList<MatDoublePair>();
     clickMats.push_back( MatDoublePair( ok, 200 ) );
+    clickMats.push_back( MatDoublePair( tryAgain, 200 ) );
     clickMats.push_back( MatDoublePair( existingUser, DEFAULT_THRESHOLD ) );
 
     ClickImagesTask *clickLoginButtons = new ClickImagesTask( clickMats );
@@ -118,6 +120,7 @@ void BotFactory::addLoginModules( BotInstance *bot )
     tasks.push_back( new ClickAreaTask( MouseState::Right, focusArea ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Escape" ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
+    tasks.push_back( new DelayTask( 500, 1000 ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.first ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Tab" ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.second ) );
@@ -150,8 +153,7 @@ void BotFactory::addPauseModules( BotInstance *bot )
 
     conditions.push_back( new TimeoutCondition( 120 * 60 * 1000, 240 * 60 * 1000 ) );
     tasks.push_back( new SetStateTask( BotState::Pause, true ) );
-    tasks.push_back( new TimerTask( TimerOperation::Stop ) );
-    tasks.push_back( new TimerTask( TimerOperation::Start ) );
+    tasks.push_back( new TimerTask( TimerOperation::Restart ) );
 
     //Set state to pause
     bot->addModule( new Module( conditions, tasks ) );
@@ -160,15 +162,25 @@ void BotFactory::addPauseModules( BotInstance *bot )
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    //If Pause, but still logged in, log out
+    //If Pause, but still logged in, log out module
     conditions.push_back( new TimeoutCondition( 1000, 3000 ) );
     conditions.push_back( new StateCondition( BotState::Pause, true ) );
     conditions.push_back( new StateCondition( BotState::Login, false ) );
-    tasks.push_back( new TakeBreakTask( 40 * 60 * 1000, 80 * 60 * 1000 ) );
+    tasks.push_back( new TakeBreakTask( 20 * 60 * 1000, 60 * 60 * 1000 ) );
     bot->addModule( new Module( conditions, tasks ), ModuleType::Background );
 }
 
 void BotFactory::addRunOnModules( BotInstance *bot )
 {
-    bot->addModule( new Module( new StateCondition( BotState::Run, 0 ), new ClickAreaTask( MouseState::Left, Rect( Point( RUN_X1, RUN_Y1 ), Point( RUN_X2, RUN_Y2  ) ) ) ) );
+    QList<Condition *> conditions;
+    QList<Task *> tasks;
+
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    conditions.push_back( new TimeoutCondition( 15000, 90000 ) );
+    conditions.push_back( new StateCondition( BotState::Run, 0 ) );
+    tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( RUN_X1, RUN_Y1 ), Point( RUN_X2, RUN_Y2  ) ) ) );
+
+    bot->addModule( new Module( conditions, tasks ) );
 }

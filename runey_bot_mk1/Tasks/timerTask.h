@@ -7,7 +7,8 @@ enum class TimerOperation
 {
     Start,
     Pause,
-    Stop
+    Stop,
+    Restart
 };
 
 enum class TimerType

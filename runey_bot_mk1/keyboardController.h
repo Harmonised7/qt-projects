@@ -2,7 +2,7 @@
 #define KEYBOARDCONTROLLER_H
 
 #define SCREEN 0
-#define TSDELAY_MIN 5000
+#define TSDELAY_MIN 10000
 #define TSDELAY_MAX 20000
 
 #include <QDebug>

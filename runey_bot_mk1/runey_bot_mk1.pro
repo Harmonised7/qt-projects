@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Conditions/imageCondition.cpp \
+    Conditions/pixelsCondition.cpp \
     Conditions/stateCondition.cpp \
     Conditions/tabCondition.cpp \
     Conditions/timeoutCondition.cpp \
@@ -48,6 +49,7 @@ SOURCES += \
 HEADERS += \
     Conditions/condition.h \
     Conditions/imageCondition.h \
+    Conditions/pixelsCondition.h \
     Conditions/stateCondition.h \
     Conditions/tabCondition.h \
     Conditions/timeoutCondition.h \

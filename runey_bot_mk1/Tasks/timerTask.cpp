@@ -14,4 +14,6 @@ void TimerTask::execute( BotInfo *info )
         info->pauseTimer->start();
     else if( _operation == TimerOperation::Stop )
         info->pauseTimer->stop();
+    else if( _operation == TimerOperation::Restart )
+        info->pauseTimer->restart();
 }

@@ -26,6 +26,12 @@ void Timer::stop()
     _running = false;
 }
 
+void Timer::restart()
+{
+    _elapsed = 0;
+    start();
+}
+
 unsigned long Timer::elapsed()
 {
     return _elapsed + ( _running ? QDateTime::currentMSecsSinceEpoch() - _startTime : 0 );

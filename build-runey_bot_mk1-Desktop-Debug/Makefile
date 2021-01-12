@@ -53,6 +53,7 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../runey_bot_mk1/Conditions/imageCondition.cpp \
+		../runey_bot_mk1/Conditions/pixelsCondition.cpp \
 		../runey_bot_mk1/Conditions/stateCondition.cpp \
 		../runey_bot_mk1/Conditions/tabCondition.cpp \
 		../runey_bot_mk1/Conditions/timeoutCondition.cpp \
@@ -82,6 +83,7 @@ SOURCES       = ../runey_bot_mk1/Conditions/imageCondition.cpp \
 		../runey_bot_mk1/util.cpp qrc_imageResources.cpp \
 		moc_mainwindow.cpp
 OBJECTS       = imageCondition.o \
+		pixelsCondition.o \
 		stateCondition.o \
 		tabCondition.o \
 		timeoutCondition.o \
@@ -188,6 +190,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../runey_bot_mk1/runey_bot_mk1.pro ../runey_bot_mk1/Conditions/condition.h \
 		../runey_bot_mk1/Conditions/imageCondition.h \
+		../runey_bot_mk1/Conditions/pixelsCondition.h \
 		../runey_bot_mk1/Conditions/stateCondition.h \
 		../runey_bot_mk1/Conditions/tabCondition.h \
 		../runey_bot_mk1/Conditions/timeoutCondition.h \
@@ -216,6 +219,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../runey_bot_mk1/Tasks/task.h \
 		../runey_bot_mk1/timer.h \
 		../runey_bot_mk1/util.h ../runey_bot_mk1/Conditions/imageCondition.cpp \
+		../runey_bot_mk1/Conditions/pixelsCondition.cpp \
 		../runey_bot_mk1/Conditions/stateCondition.cpp \
 		../runey_bot_mk1/Conditions/tabCondition.cpp \
 		../runey_bot_mk1/Conditions/timeoutCondition.cpp \
@@ -425,8 +429,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../runey_bot_mk1/imageResources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/condition.h ../runey_bot_mk1/Conditions/imageCondition.h ../runey_bot_mk1/Conditions/stateCondition.h ../runey_bot_mk1/Conditions/tabCondition.h ../runey_bot_mk1/Conditions/timeoutCondition.h ../runey_bot_mk1/Modules/module.h ../runey_bot_mk1/Tasks/antiBanTask.h ../runey_bot_mk1/Tasks/changeTabTask.h ../runey_bot_mk1/Tasks/clickAreaTask.h ../runey_bot_mk1/Tasks/clickHighlightTask.h ../runey_bot_mk1/Tasks/clickImagesTask.h ../runey_bot_mk1/Tasks/clickItemsTask.h ../runey_bot_mk1/Tasks/delayTask.h ../runey_bot_mk1/Tasks/keyboardTask.h ../runey_bot_mk1/Tasks/setStateTask.h ../runey_bot_mk1/Tasks/takeBreakTask.h ../runey_bot_mk1/Tasks/timerTask.h ../runey_bot_mk1/Tasks/useItemsTask.h ../runey_bot_mk1/botFactory.h ../runey_bot_mk1/botInstance.h ../runey_bot_mk1/botinfo.h ../runey_bot_mk1/Conditions/inventoryCondition.h ../runey_bot_mk1/defines.h ../runey_bot_mk1/keyboardController.h ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/mouseController.h ../runey_bot_mk1/sleeper.h ../runey_bot_mk1/Tasks/task.h ../runey_bot_mk1/timer.h ../runey_bot_mk1/util.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/imageCondition.cpp ../runey_bot_mk1/Conditions/stateCondition.cpp ../runey_bot_mk1/Conditions/tabCondition.cpp ../runey_bot_mk1/Conditions/timeoutCondition.cpp ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/Tasks/antiBanTask.cpp ../runey_bot_mk1/Tasks/changeTabTask.cpp ../runey_bot_mk1/Tasks/clickAreaTask.cpp ../runey_bot_mk1/Tasks/clickHighlightTask.cpp ../runey_bot_mk1/Tasks/clickImagesTask.cpp ../runey_bot_mk1/Tasks/clickItemsTask.cpp ../runey_bot_mk1/Tasks/delayTask.cpp ../runey_bot_mk1/Tasks/keyboardTask.cpp ../runey_bot_mk1/Tasks/setStateTask.cpp ../runey_bot_mk1/Tasks/takeBreakTask.cpp ../runey_bot_mk1/Tasks/timerTask.cpp ../runey_bot_mk1/Tasks/useItemsTask.cpp ../runey_bot_mk1/botFactory.cpp ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/keyboardController.cpp ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/timer.cpp ../runey_bot_mk1/util.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/condition.h ../runey_bot_mk1/Conditions/imageCondition.h ../runey_bot_mk1/Conditions/pixelsCondition.h ../runey_bot_mk1/Conditions/stateCondition.h ../runey_bot_mk1/Conditions/tabCondition.h ../runey_bot_mk1/Conditions/timeoutCondition.h ../runey_bot_mk1/Modules/module.h ../runey_bot_mk1/Tasks/antiBanTask.h ../runey_bot_mk1/Tasks/changeTabTask.h ../runey_bot_mk1/Tasks/clickAreaTask.h ../runey_bot_mk1/Tasks/clickHighlightTask.h ../runey_bot_mk1/Tasks/clickImagesTask.h ../runey_bot_mk1/Tasks/clickItemsTask.h ../runey_bot_mk1/Tasks/delayTask.h ../runey_bot_mk1/Tasks/keyboardTask.h ../runey_bot_mk1/Tasks/setStateTask.h ../runey_bot_mk1/Tasks/takeBreakTask.h ../runey_bot_mk1/Tasks/timerTask.h ../runey_bot_mk1/Tasks/useItemsTask.h ../runey_bot_mk1/botFactory.h ../runey_bot_mk1/botInstance.h ../runey_bot_mk1/botinfo.h ../runey_bot_mk1/Conditions/inventoryCondition.h ../runey_bot_mk1/defines.h ../runey_bot_mk1/keyboardController.h ../runey_bot_mk1/mainwindow.h ../runey_bot_mk1/mouseController.h ../runey_bot_mk1/sleeper.h ../runey_bot_mk1/Tasks/task.h ../runey_bot_mk1/timer.h ../runey_bot_mk1/util.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../runey_bot_mk1/Conditions/imageCondition.cpp ../runey_bot_mk1/Conditions/pixelsCondition.cpp ../runey_bot_mk1/Conditions/stateCondition.cpp ../runey_bot_mk1/Conditions/tabCondition.cpp ../runey_bot_mk1/Conditions/timeoutCondition.cpp ../runey_bot_mk1/Modules/module.cpp ../runey_bot_mk1/Tasks/antiBanTask.cpp ../runey_bot_mk1/Tasks/changeTabTask.cpp ../runey_bot_mk1/Tasks/clickAreaTask.cpp ../runey_bot_mk1/Tasks/clickHighlightTask.cpp ../runey_bot_mk1/Tasks/clickImagesTask.cpp ../runey_bot_mk1/Tasks/clickItemsTask.cpp ../runey_bot_mk1/Tasks/delayTask.cpp ../runey_bot_mk1/Tasks/keyboardTask.cpp ../runey_bot_mk1/Tasks/setStateTask.cpp ../runey_bot_mk1/Tasks/takeBreakTask.cpp ../runey_bot_mk1/Tasks/timerTask.cpp ../runey_bot_mk1/Tasks/useItemsTask.cpp ../runey_bot_mk1/botFactory.cpp ../runey_bot_mk1/botInstance.cpp ../runey_bot_mk1/botinfo.cpp ../runey_bot_mk1/Conditions/inventoryCondition.cpp ../runey_bot_mk1/keyboardController.cpp ../runey_bot_mk1/main.cpp ../runey_bot_mk1/mainFunctions.cpp ../runey_bot_mk1/mainwindow.cpp ../runey_bot_mk1/mouseController.cpp ../runey_bot_mk1/timer.cpp ../runey_bot_mk1/util.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../runey_bot_mk1/mainwindow.ui $(DISTDIR)/
 
 
@@ -456,23 +460,24 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_imageResources.cpp
 qrc_imageResources.cpp: ../runey_bot_mk1/imageResources.qrc \
 		/usr/lib/qt5/bin/rcc \
-		../runey_bot_mk1/Images/Welcome_message.png \
-		../runey_bot_mk1/Images/Wiki.png \
-		../runey_bot_mk1/Images/Tin_ore.png \
+		../runey_bot_mk1/Images/Beer.png \
 		../runey_bot_mk1/Images/Jug_of_water.png \
-		../runey_bot_mk1/Images/Copper_ore.png \
 		../runey_bot_mk1/Images/Existing_user.png \
 		../runey_bot_mk1/Images/Enter_your_credentials.png \
-		../runey_bot_mk1/Images/Logout_door.png \
 		../runey_bot_mk1/Images/Grapes.png \
-		../runey_bot_mk1/Images/Logs.png \
-		../runey_bot_mk1/Images/Click_here_to_play.png \
 		../runey_bot_mk1/Images/Scroll_down.png \
-		../runey_bot_mk1/Images/Ok.png \
-		../runey_bot_mk1/Images/Beer.png \
-		../runey_bot_mk1/Images/Cancel.png \
 		../runey_bot_mk1/Images/Logout_button.png \
-		../runey_bot_mk1/Images/Login.png
+		../runey_bot_mk1/Images/Logout_door.png \
+		../runey_bot_mk1/Images/Copper_ore.png \
+		../runey_bot_mk1/Images/Ok.png \
+		../runey_bot_mk1/Images/Wiki.png \
+		../runey_bot_mk1/Images/Logs.png \
+		../runey_bot_mk1/Images/Cancel.png \
+		../runey_bot_mk1/Images/Login.png \
+		../runey_bot_mk1/Images/Tin_ore.png \
+		../runey_bot_mk1/Images/Welcome_message.png \
+		../runey_bot_mk1/Images/Try_again.png \
+		../runey_bot_mk1/Images/Click_here_to_play.png
 	/usr/lib/qt5/bin/rcc -name imageResources ../runey_bot_mk1/imageResources.qrc -o qrc_imageResources.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -545,6 +550,14 @@ imageCondition.o: ../runey_bot_mk1/Conditions/imageCondition.cpp ../runey_bot_mk
 		../runey_bot_mk1/botinfo.h \
 		../runey_bot_mk1/timer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o imageCondition.o ../runey_bot_mk1/Conditions/imageCondition.cpp
+
+pixelsCondition.o: ../runey_bot_mk1/Conditions/pixelsCondition.cpp ../runey_bot_mk1/Conditions/pixelsCondition.h \
+		../runey_bot_mk1/Conditions/condition.h \
+		../runey_bot_mk1/util.h \
+		../runey_bot_mk1/defines.h \
+		../runey_bot_mk1/botinfo.h \
+		../runey_bot_mk1/timer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pixelsCondition.o ../runey_bot_mk1/Conditions/pixelsCondition.cpp
 
 stateCondition.o: ../runey_bot_mk1/Conditions/stateCondition.cpp ../runey_bot_mk1/Conditions/stateCondition.h \
 		../runey_bot_mk1/Conditions/condition.h \

@@ -17,5 +17,6 @@
         <file>Images/Cancel.png</file>
         <file>Images/Scroll_down.png</file>
         <file>Images/Wiki.png</file>
+        <file>Images/Try_again.png</file>
     </qresource>
 </RCC>

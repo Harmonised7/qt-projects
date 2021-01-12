@@ -11,6 +11,7 @@ public:
     void start();
     void pause();
     void stop();
+    void restart();
     unsigned long elapsed();
 
 private:

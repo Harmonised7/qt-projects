@@ -65,5 +65,13 @@ private:
 
     Timer *_timer;
     TimeoutCondition *_timeoutCondition;
+
+private:
+    //Methods
+    void setRes();
+
+    //Objects
+    int _leftX, _rightX;
+    int _topY, _botY;
 };
 #endif // MAINWINDOW_H
