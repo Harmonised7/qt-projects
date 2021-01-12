@@ -15,11 +15,8 @@ ImageCondition::ImageCondition( QList<MatDoublePair> mats ) :
 
 bool ImageCondition::checkCondition( BotInfo *info )
 {
-    if( _cropSet && _crop.width == 160 )
-    {
-        rectangle( info->rsMat, _crop, Scalar( 255, 255, 0 ) );
-        imshow( "ImageCondition", info->rsMat );
-    }
+//    rectangle( info->rsMat, _crop, Scalar( 255, 255, 0 ) );
+//    imshow( "ImageCondition", info->rsMat );
 
     for( MatDoublePair matPair : _mats )
     {

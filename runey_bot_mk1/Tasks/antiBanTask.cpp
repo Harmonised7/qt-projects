@@ -58,7 +58,7 @@ void AntiBanTask::doAntiBan( Rect area )
     }
     else if( type <= 7 )
     {
-        Point middleClickPoint = area.tl() + Util::genRandPoint( Rect( BORDER_SIZE, BORDER_SIZE, RS_INNER_WIDTH, RS_INNER_WIDTH ) );
+        Point middleClickPoint = area.tl() + Util::genRandPoint( Rect( 4, 4, RS_INNER_WIDTH, RS_INNER_WIDTH ) );
         MouseController::mc.mouseMove( Util::PointToQPoint( middleClickPoint ) );
         MouseController::mc.mouseDragRelative( MouseState::Middle, Util::genRandQPointOffset( Util::PointToQPoint( middleClickPoint ), 10 ) );
     }
