@@ -18,30 +18,57 @@ void BotFactory::addGathererModules( BotInstance *bot )
 
     QList<Condition *> conditions;
     QList<Task *> tasks;
+    QList<Task *> elseTasks;
+
+    //Set Gather State
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+    elseTasks = QList<Task *>();
+
+    conditions.push_back( new PixelsCondition( Rect( GATHER_STATE_X, GATHER_STATE_Y, 50, 1 ), Vec3b( 0, 200, 0 ), Vec3b( 255, 255, 255 ) ) );
+    tasks.push_back( new SetStateTask( BotState::Gather, true ) );
+    elseTasks.push_back( new SetStateTask( BotState::Gather, false ) );
+
+    bot->addModule( new Module( conditions, tasks, elseTasks ) );
 
     //Make sure inv
-    bot->addModule( new Module( new TabCondition( 4, false ), new ChangeTabTask( 4 ) ) );
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    conditions.push_back( new ChanceCondition( 80, 92 ) );
+    conditions.push_back( new TabCondition( 4, false ) );
+    tasks.push_back( new ChangeTabTask( 4, TabType::Inventory ) );
+
+    bot->addModule( new Module( conditions, tasks ) );
 
     //Drop items
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 26 );
-    clickItemsTask->setFailRate( Util::genRand( 5, 15 ) );
-    tasks = QList<Task *>();
-
+    conditions.push_back( new TabCondition( 4, true ) );
     conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
+    ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
+    clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
     tasks.push_back( clickItemsTask );
 
     bot->addModule( new Module( conditions, tasks ) );
 
-    //Antiban - Check random tab
+    //Antiban - Check random inv tab
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    conditions.push_back( new TimeoutCondition( 30000, 90000 ) );
-    tasks.push_back( new ChangeTabTask( IntPair( 1, 14 ) ) );
+    conditions.push_back( new TimeoutCondition( 30000, 150000 ) );
+    tasks.push_back( new ChangeTabTask( IntPair( 1, 14 ), TabType::Inventory ) );
     tasks.push_back( new AntiBanTask( 2 ) );
+
+    bot->addModule( new Module( conditions, tasks ) );
+
+    //Antiban - Check random bot tab
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    conditions.push_back( new TimeoutCondition( 300000, 900000 ) );
+    tasks.push_back( new ChangeTabTask( IntPair( 1, 6 ), TabType::Bottom ) );
 
     bot->addModule( new Module( conditions, tasks ) );
 

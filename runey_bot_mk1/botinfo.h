@@ -54,7 +54,7 @@ public:
     Timer *timer;
     Timer *pauseTimer;
     QMap<BotState, bool> states;
-    int tabId = 4;
+    int invTabId = 4, botTabId = 1;
 
     unsigned long pauseLength = 300000, pauseCount = 0;
 

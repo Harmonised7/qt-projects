@@ -10,6 +10,8 @@
 #include "Conditions/stateCondition.h"
 #include "Conditions/tabCondition.h"
 #include "Conditions/imageCondition.h"
+#include "Conditions/pixelsCondition.h"
+#include "Conditions/chanceCondition.h"
 
 //Task Includes
 #include "Tasks/task.h"

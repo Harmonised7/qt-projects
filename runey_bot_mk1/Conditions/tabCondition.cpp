@@ -10,11 +10,11 @@ TabCondition::TabCondition( int tab, bool boolType ) :
 
 bool TabCondition::checkCondition( BotInfo *info )
 {
-    info->tabId = getCurrentTab( info );
+    info->invTabId = getCurrentTab( info );
     if( _boolType )
-        return info->tabId == _tab;
+        return info->invTabId == _tab;
     else
-        return info->tabId != _tab;
+        return info->invTabId != _tab;
 }
 
 int TabCondition::getCurrentTab( BotInfo *info )

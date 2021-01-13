@@ -19,18 +19,7 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
     info->rsMat = screen( Rect( info->x, info->y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
     info->gameMat = info->rsMat( Rect( 0, 0, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone();
     info->invMat = info->rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
-    info->tabId = TabCondition::getCurrentTab( info );
-
-    info->states.insert( BotState::Gather, false );
-
-    for( int i = 0; i < 50; i++ )
-    {
-        if( info->rsMat.at<Vec3b>( GATHER_STATE_Y, GATHER_STATE_X + i )[1] > 200 )
-        {
-            info->states.insert( BotState::Gather, true );
-            break;
-        }
-    }
+    info->invTabId = TabCondition::getCurrentTab( info );
 
     info->states.insert( BotState::Run, false );
 
@@ -79,6 +68,7 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
     {
         if( info->pauseTimer->elapsed() > info->pauseLength )
         {
+            info->timer->start();
             info->pauseTimer->stop();
             info->states.insert( BotState::Pause, false );
         }

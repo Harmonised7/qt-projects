@@ -13,8 +13,15 @@ void TakeBreakTask::execute( BotInfo *info )
     info->states.insert( BotState::Pause, true );
     info->pauseLength = Util::genRand( _minBreakTime, _maxBreakTime );
     info->pauseCount++;
+    info->timer->pause();
 
-    KeyboardController::kc.press( KeyboardState::Press, "Escape" );
+    if( Util::genRand( 1, 100 ) < 70 )
+        KeyboardController::kc.press( KeyboardState::Press, "Escape" );
+    else
+    {
+        ChangeTabTask changeTabTask = ChangeTabTask( 11, TabType::Inventory, false );
+        changeTabTask.execute( info );
+    }
 
     Mat logoutDoor = Util::pixMapToMat( QPixmap( ":/icons/Images/Logout_door.png" ) );
     Mat logoutButton = Util::pixMapToMat( QPixmap( ":/icons/Images/Logout_button.png" ) );

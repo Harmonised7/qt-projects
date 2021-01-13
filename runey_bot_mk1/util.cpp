@@ -33,6 +33,13 @@ cv::Rect Util:: getInvTabRect(int index)
                  INV_TAB_HEIGHT - INV_TAB_SHRINK*2 );
 }
 
+cv::Rect Util:: getBotTabRect(int index)
+{
+    if( index < 1 || index > 6 )
+        qDebug() << "getBotTabRect Index out of bounds!" << index;
+    --index;
+    return Rect( BOT_TABS_X + (BOT_TAB_WIDTH + BOT_TABS_GAP)*index, BOT_TABS_Y, BOT_TAB_WIDTH, BOT_TAB_HEIGHT );
+}
 
 cv::Rect Util::getInvSlotRect( int index )
 {

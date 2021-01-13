@@ -45,6 +45,7 @@ public:
     static double cap( const double &x, const double &min_bound, const double &max_bound );
 
     static cv::Rect getInvTabRect( int index );
+    static cv::Rect getBotTabRect( int index );
     static cv::Rect getInvSlotRect( int index );
 
     static int getInvSlotIndex( const cv::Rect &rect );

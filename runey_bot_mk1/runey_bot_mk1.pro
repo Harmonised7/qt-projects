@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Conditions/chanceCondition.cpp \
     Conditions/imageCondition.cpp \
     Conditions/pixelsCondition.cpp \
     Conditions/stateCondition.cpp \
@@ -47,6 +48,7 @@ SOURCES += \
     util.cpp
 
 HEADERS += \
+    Conditions/chanceCondition.h \
     Conditions/condition.h \
     Conditions/imageCondition.h \
     Conditions/pixelsCondition.h \

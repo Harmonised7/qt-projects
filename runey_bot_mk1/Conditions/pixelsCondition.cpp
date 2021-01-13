@@ -38,7 +38,8 @@ bool PixelsCondition::checkCondition( BotInfo *info )
     {
         for ( int j = 0; j < _area.width; j++ )
         {
-            pixel = info->rsMat.at<Vec3b>( i, j );
+            pixel = info->rsMat.at<Vec3b>( _area.y + i, _area.x + j );
+
             bool passed = true;
             for( int c = 0; c < 3; c++ )
             {
@@ -51,15 +52,11 @@ bool PixelsCondition::checkCondition( BotInfo *info )
                     upperBound = temp;
                 }
                 if( pixel[c] < lowerBound || pixel[c] > upperBound )
-                {
                     passed = false;
-                    break;
-                }
             }
             if( passed )
                 return true;
         }
     }
-
     return false;
 }

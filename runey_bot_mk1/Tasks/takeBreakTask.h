@@ -2,6 +2,7 @@
 #define TAKEBREAKTASK_H
 
 #include "Tasks/task.h"
+#include "Tasks/changeTabTask.h"
 
 class TakeBreakTask : public Task
 {

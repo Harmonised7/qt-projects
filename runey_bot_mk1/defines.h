@@ -72,8 +72,16 @@
 #define INV_TAB_SHRINK 3
 #define INV_TABS_GAP 298
 
+//Bottom Tabs
+#define BOT_TABS_X 5
+#define BOT_TABS_Y 480
+#define BOT_TAB_WIDTH 56
+#define BOT_TAB_HEIGHT 22
+#define BOT_TAB_SHRINK 3
+#define BOT_TABS_GAP 10
+
 //Locations
-#define GATHER_STATE_X 0
+#define GATHER_STATE_X 30
 #define GATHER_STATE_Y 461
 
 //Others

@@ -8,18 +8,26 @@
 
 typedef QPair<int, int> IntPair;
 
+enum class TabType
+{
+    Inventory,
+    Bottom
+};
+
 class ChangeTabTask : public Task
 {
 public:
-    ChangeTabTask( int tab, bool goBack = false );
-    ChangeTabTask( IntPair tabRange, bool goBack = false );
-    ChangeTabTask( QSet<int> tabRange, bool goBack = false );
+    ChangeTabTask( int tab,             TabType type, bool goBack = false );
+    ChangeTabTask( IntPair tabRange,    TabType type, bool goBack = false );
+    ChangeTabTask( QSet<int> tabRange,  TabType type, bool goBack = false );
 
     void execute( BotInfo *info ) override;
+    static cv::Rect getTabRect( int tab, TabType type );
 
 private:
     QSet<int> *_tabs = new QSet<int>();
     int _originTab;
+    TabType _type;
     bool _goBack;
 };
 
