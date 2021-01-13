@@ -31,7 +31,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
 
     bot->addModule( new Module( conditions, tasks, elseTasks ) );
 
-    //Make sure inv
+    //Show Inv
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
@@ -50,6 +50,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
     ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
     clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
     tasks.push_back( clickItemsTask );
+    tasks.push_back( new ClickHighlightTask() );
 
     bot->addModule( new Module( conditions, tasks ) );
 

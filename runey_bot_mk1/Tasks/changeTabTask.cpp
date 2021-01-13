@@ -55,9 +55,6 @@ void ChangeTabTask::execute( BotInfo *info )
     }
     while( _tabs->size() > 1 && _originTab == *currTabId );
 
-    if( _type == TabType::Inventory )
-
-
     MouseController::mc.mousePress( MouseState::Left, Util::genRandQPoint( getTabRect( *currTabId, _type ) ) + QPoint( info->x, info->y ) );
 
     if( _goBack )
