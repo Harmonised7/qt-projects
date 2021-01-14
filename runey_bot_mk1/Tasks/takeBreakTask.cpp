@@ -13,7 +13,6 @@ void TakeBreakTask::execute( BotInfo *info )
     info->states.insert( BotState::Pause, true );
     info->pauseLength = Util::genRand( _minBreakTime, _maxBreakTime );
     info->pauseCount++;
-    info->timer->pause();
 
     if( Util::genRand( 1, 100 ) < 70 )
         KeyboardController::kc.press( KeyboardState::Press, "Escape" );
