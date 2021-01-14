@@ -52,7 +52,7 @@ void AntiBanTask::doAntiBan( Rect area )
     {
         Point rightClickPoint = Util::genRandPoint( area );
         MouseController::mc.mousePress( MouseState::Right, Util::PointToQPoint( rightClickPoint ) );
-        Sleeper::msleep( Util::genRand( 50, 300 ) );
+        Sleeper::msleep( Util::genRand( 50, 250 ) );
         if( Util::genRand( 1, 2 ) == 1 )
             MouseController::mc.mouseMoveRelative( Util::genRandQPointOffset( Util::PointToQPoint( rightClickPoint ), 25 ) );
     }
