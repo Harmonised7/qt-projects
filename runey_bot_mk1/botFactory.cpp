@@ -25,7 +25,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
     tasks = QList<Task *>();
     elseTasks = QList<Task *>();
 
-    conditions.push_back( new PixelsCondition( Rect( GATHER_STATE_X, GATHER_STATE_Y, 50, 1 ), Vec3b( 0, 200, 0 ), Vec3b( 255, 255, 255 ) ) );
+    conditions.push_back( new PixelsCondition( Rect( GATHER_STATE_X, GATHER_STATE_Y, 50, 1 ), Vec3b( 0, 100, 0 ), Vec3b( 200, 255, 200 ) ) );
     tasks.push_back( new SetStateTask( BotState::Gather, true ) );
     elseTasks.push_back( new SetStateTask( BotState::Gather, false ) );
 
