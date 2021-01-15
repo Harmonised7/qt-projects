@@ -14,11 +14,22 @@ BotInstance *BotFactory::makeGathererBot( int botX, int botY, StrPair loginInfo 
 
 void BotFactory::addGathererModules( BotInstance *bot )
 {
-//    cv::Mat logs = Util::pixMapToMat( QPixmap( ":/icons/Images/Logs.png" ) );
+    cv::Mat closeInterfaceX = Util::pixMapToMat( QPixmap( ":/icons/Images/Close_interface_x.png" ) );
 
     QList<Condition *> conditions;
     QList<Task *> tasks;
     QList<Task *> elseTasks;
+
+    //Exit random interfaces
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    conditions.push_back( new TimeoutCondition( 2000, 5000 ) );
+    ClickImagesTask *exitInterfacesTask = new ClickImagesTask( closeInterfaceX, DEFAULT_THRESHOLD );
+    exitInterfacesTask->setCrop( Util::resizeRect( Rect( Point( CLOSE_INTERFACE_X1, CLOSE_INTERFACE_Y1 ), Point( CLOSE_INTERFACE_X2, CLOSE_INTERFACE_Y2 ) ), 5 ) );
+    tasks.push_back( exitInterfacesTask );
+
+    bot->addModule( new Module( conditions, tasks ) );
 
     //Set Gather State
     conditions = QList<Condition *>();
@@ -46,7 +57,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
     tasks = QList<Task *>();
 
     conditions.push_back( new TabCondition( 4, true ) );
-    conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
+    conditions.push_back( new InventoryCondition( 9001, true, 10, 40 ) );
     ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
     clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
     tasks.push_back( clickItemsTask );

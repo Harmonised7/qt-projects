@@ -18,5 +18,6 @@
         <file>Images/Scroll_down.png</file>
         <file>Images/Wiki.png</file>
         <file>Images/Try_again.png</file>
+        <file>Images/Close_interface_x.png</file>
     </qresource>
 </RCC>
