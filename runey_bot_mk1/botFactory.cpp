@@ -192,7 +192,7 @@ void BotFactory::addPauseModules( BotInstance *bot )
     QList<Condition *> conditions;
     QList<Task *> tasks;
 
-    conditions.push_back( new TimeoutCondition( 180 * 60 * 1000, 360 * 60 * 1000 ) );
+    conditions.push_back( new TimeoutCondition( 120 * 60 * 1000, 360 * 60 * 1000 ) );
     tasks.push_back( new SetStateTask( BotState::Pause, true ) );
     tasks.push_back( new TimerTask( TimerOperation::Restart ) );
 
