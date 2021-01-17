@@ -32,9 +32,9 @@ PixelsCondition::PixelsCondition( cv::Point pixel, cv::Vec3b p ) :
 
 bool PixelsCondition::checkCondition( BotInfo *info )
 {
-    Mat test = info->rsMat.clone();
-    rectangle( test, _area, Scalar( 255, 255, 255 ) );
-    imshow( "pixelCondition", test );
+//    Mat test = info->rsMat.clone();
+//    rectangle( test, _area, Scalar( 255, 255, 255 ) );
+//    imshow( "pixelCondition", test );
     Vec3b pixel;
     int lowerBound, upperBound;
     for( int i = 0; i < _area.height; i++ )
@@ -42,7 +42,7 @@ bool PixelsCondition::checkCondition( BotInfo *info )
         for ( int j = 0; j < _area.width; j++ )
         {
             pixel = info->rsMat.at<Vec3b>( _area.y + i, _area.x + j );
-            qDebug() << "Blue:" << pixel[0] << "Green:" << pixel[1] << "Red:" << pixel[2];
+//            qDebug() << "Blue:" << pixel[0] << "Green:" << pixel[1] << "Red:" << pixel[2];
 
             bool passed = true;
             for( int c = 0; c < 3; c++ )
@@ -58,7 +58,7 @@ bool PixelsCondition::checkCondition( BotInfo *info )
                 if( pixel[c] < lowerBound || pixel[c] > upperBound )
                     passed = false;
             }
-            qDebug() << ( passed ? "passed" : "not passed" );
+//            qDebug() << ( passed ? "passed" : "not passed" );
             if( passed )
                 return true;
         }
