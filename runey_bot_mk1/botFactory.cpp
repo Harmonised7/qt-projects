@@ -36,13 +36,13 @@ void BotFactory::addGathererModules( BotInstance *bot )
     tasks = QList<Task *>();
     elseTasks = QList<Task *>();
 
-    conditions.push_back( new PixelsCondition( Rect( GATHER_STATE_X, GATHER_STATE_Y, 50, 1 ), Vec3b( 0, 100, 0 ), Vec3b( 200, 255, 200 ) ) );
+    conditions.push_back( new PixelsCondition( Rect( GATHER_STATE_X, GATHER_STATE_Y, 50, 1 ), Vec3b( 0, 255, 0 ) ) );
     tasks.push_back( new SetStateTask( BotState::Gather, true ) );
     elseTasks.push_back( new SetStateTask( BotState::Gather, false ) );
 
     bot->addModule( new Module( conditions, tasks, elseTasks ) );
 
-    //Show Inv
+    //Show Invchan
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
@@ -91,7 +91,6 @@ void BotFactory::addGathererModules( BotInstance *bot )
     conditions.push_back( new TimeoutCondition( 2000, 5000 ) );
     conditions.push_back( new StateCondition( BotState::Gather, false ) );
     tasks.push_back( new ClickHighlightTask() );
-//    tasks.push_back( randomChangeTabTask );
 
     bot->addModule( new Module( conditions, tasks ) );
 
