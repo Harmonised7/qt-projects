@@ -107,6 +107,7 @@ void BotInfo::updateInventory( BotInfo *info )
                     if( pixel[0] == 255 )
                     {
                         info->invItems->insert( 1+y*4+x, info->colorItems->value( 'b' ) );
+//                        rectangle( info->rsMat, Util::getInvSlotRect( 1+y*4+x ), Scalar( 255, 255, 255 ), 5 );
                         goto exit_pixel_loop;
                     }
                 }

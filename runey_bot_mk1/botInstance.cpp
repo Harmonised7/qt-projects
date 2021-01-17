@@ -53,7 +53,6 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
 //        rectangle( _info->rsMat, Util::getInvSlotRect( item ), color );
 //    }
 
-//    updateInventory( _info );
 //    putText(_info->rsMat, QString::number( items->size() ).toStdString(), Point( INV_SLOTS_X, INV_SLOTS_Y ), FONT_HERSHEY_DUPLEX, 1, Scalar( 255, 255, 255 ) );
 
     //////Run Modules

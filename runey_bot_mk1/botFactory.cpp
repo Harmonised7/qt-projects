@@ -57,7 +57,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
     tasks = QList<Task *>();
 
     conditions.push_back( new TabCondition( 4, true ) );
-    conditions.push_back( new InventoryCondition( 9001, true, 10, 40 ) );
+    conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
     ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
     clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
     tasks.push_back( clickItemsTask );
