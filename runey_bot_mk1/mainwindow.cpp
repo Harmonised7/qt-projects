@@ -31,14 +31,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_unpauseButton_clicked()
 {
-//    Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) );
-
-//    rectangle( screen, Rect( _leftX, _topY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
-//    rectangle( screen, Rect( _leftX, _botY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
-//    rectangle( screen, Rect( _rightX, _topY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
-//    rectangle( screen, Rect( _rightX, _botY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
-
-//    imshow( "test", screen );
     init();
 }
 
@@ -73,4 +65,16 @@ void MainWindow::setRes()
     }
     else
         qDebug() << "WARNING WRONG RESOLUTION" << width << height;
+}
+
+void MainWindow::on_showButton_clicked()
+{
+        Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) );
+
+        rectangle( screen, Rect( _leftX, _topY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
+        rectangle( screen, Rect( _leftX, _botY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
+        rectangle( screen, Rect( _rightX, _topY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
+        rectangle( screen, Rect( _rightX, _botY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
+
+        imshow( "test", screen );
 }

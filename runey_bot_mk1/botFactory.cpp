@@ -42,7 +42,7 @@ void BotFactory::addGathererModules( BotInstance *bot )
 
     bot->addModule( new Module( conditions, tasks, elseTasks ) );
 
-    //Show Invchan
+    //Show Inv chance
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
