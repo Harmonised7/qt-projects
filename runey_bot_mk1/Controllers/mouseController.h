@@ -69,7 +69,6 @@ public:
     void resetClickDelay();
 
     static QPoint getMousePos();
-    static double measureDistance(QPoint pA, QPoint pB);
 
     static MouseController mc;
 

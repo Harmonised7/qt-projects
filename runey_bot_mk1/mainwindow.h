@@ -22,6 +22,7 @@
 //Controllers
 #include "Controllers/mouseController.h"
 #include "Controllers/keyboardController.h"
+#include "Controllers/windowController.h"
 
 //Util Includes
 #include "Util/botFactory.h"
