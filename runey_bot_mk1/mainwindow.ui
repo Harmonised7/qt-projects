@@ -22,6 +22,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
+<<<<<<< HEAD
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QPushButton" name="pauseButton">
@@ -58,6 +59,27 @@
        </widget>
       </item>
      </layout>
+=======
+     <widget class="QPushButton" name="unpauseButton">
+      <property name="text">
+       <string>unpauseAll</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pauseButton">
+      <property name="text">
+       <string>pauseAll</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="showButton">
+      <property name="text">
+       <string>Show</string>
+      </property>
+     </widget>
+>>>>>>> 0874cbb58a330c420ff049e6025436c26fc7566a
     </item>
    </layout>
   </widget>
@@ -66,8 +88,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
+<<<<<<< HEAD
      <width>134</width>
      <height>28</height>
+=======
+     <width>160</width>
+     <height>22</height>
+>>>>>>> 0874cbb58a330c420ff049e6025436c26fc7566a
     </rect>
    </property>
   </widget>
