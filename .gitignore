@@ -1,6 +1,6 @@
 *.o
 *.zip
-Debug/*
-Release/*
+*Debug/**
+*Release/**
 Debug
 Release
