@@ -1,12 +1,17 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include "defines.h"
+//Controller Includes
+#include "Controllers/mouseController.h"
+#include "Controllers/keyboardController.h"
+
+//Util Includes
+#include "Util/defines.h"
+#include "Util/util.h"
+#include "Util/sleeper.h"
+
+//Other Includes
 #include "botinfo.h"
-#include "mouseController.h"
-#include "keyboardController.h"
-#include "util.h"
-#include "sleeper.h"
 
 class Task
 {

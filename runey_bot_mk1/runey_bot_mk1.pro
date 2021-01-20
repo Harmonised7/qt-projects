@@ -22,6 +22,7 @@ SOURCES += \
     Conditions/stateCondition.cpp \
     Conditions/tabCondition.cpp \
     Conditions/timeoutCondition.cpp \
+    Controllers/windowController.cpp \
     Modules/module.cpp \
     Tasks/antiBanTask.cpp \
     Tasks/changeTabTask.cpp \
@@ -35,17 +36,17 @@ SOURCES += \
     Tasks/takeBreakTask.cpp \
     Tasks/timerTask.cpp \
     Tasks/useItemsTask.cpp \
-    botFactory.cpp \
     botInstance.cpp \
     botinfo.cpp \
     Conditions/inventoryCondition.cpp \
-    keyboardController.cpp \
     main.cpp \
     mainFunctions.cpp \
     mainwindow.cpp \
-    mouseController.cpp \
-    timer.cpp \
-    util.cpp
+    Controllers/mouseController.cpp \
+    Controllers/keyboardController.cpp \
+    Util/botFactory.cpp \
+    Util/timer.cpp \
+    Util/util.cpp
 
 HEADERS += \
     Conditions/chanceCondition.h \
@@ -55,6 +56,7 @@ HEADERS += \
     Conditions/stateCondition.h \
     Conditions/tabCondition.h \
     Conditions/timeoutCondition.h \
+    Controllers/windowController.h \
     Modules/module.h \
     Tasks/antiBanTask.h \
     Tasks/changeTabTask.h \
@@ -68,18 +70,18 @@ HEADERS += \
     Tasks/takeBreakTask.h \
     Tasks/timerTask.h \
     Tasks/useItemsTask.h \
-    botFactory.h \
     botInstance.h \
     botinfo.h \
     Conditions/inventoryCondition.h \
-    defines.h \
-    keyboardController.h \
     mainwindow.h \
-    mouseController.h \
-    sleeper.h \
+    Controllers/mouseController.h \
+    Controllers/keyboardController.h \
     Tasks/task.h \
-    timer.h \
-    util.h
+    Util/botFactory.h \
+    Util/defines.h \
+    Util/sleeper.h \
+    Util/timer.h \
+    Util/util.h
 
 FORMS += \
     mainwindow.ui

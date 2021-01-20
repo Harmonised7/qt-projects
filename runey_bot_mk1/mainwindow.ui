@@ -6,41 +6,58 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>160</width>
-    <height>149</height>
+    <width>134</width>
+    <height>229</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>160</width>
-    <height>320</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_4">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QPushButton" name="unpauseButton">
-      <property name="text">
-       <string>unpauseAll</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pauseButton">
-      <property name="text">
-       <string>pauseAll</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="showButton">
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="pauseButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>pauseAll</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="unpauseButton">
+        <property name="text">
+         <string>unpauseAll</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="logoutButton">
+        <property name="text">
+         <string>logoutAll</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="showButton">
+        <property name="text">
+         <string>showAll</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -49,7 +66,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>160</width>
+     <width>134</width>
      <height>28</height>
     </rect>
    </property>

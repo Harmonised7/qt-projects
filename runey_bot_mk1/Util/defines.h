@@ -1,0 +1,104 @@
+#ifndef DEFINES_H
+#define DEFINES_H
+
+//Toggles
+//#define botsRunning
+#define debugMode
+
+//Important stuff
+#define SCREEN  0
+
+//Rs Sizes
+#define RUNELITE_WIDTH  765
+#define RUNELITE_HEIGHT 503
+
+#define RS_INNER_WIDTH  512
+#define RS_INNER_HEIGHT 333
+
+#define WIKI_X1 702
+#define WIKI_Y1 153
+#define WIKI_X2 742
+#define WIKI_Y2 167
+
+#define RUN_X1 557
+#define RUN_Y1 114
+#define RUN_X2 575
+#define RUN_Y2 134
+
+#define CLOSE_INTERFACE_X1 487
+#define CLOSE_INTERFACE_Y1 10
+#define CLOSE_INTERFACE_X2 511
+#define CLOSE_INTERFACE_Y2 33
+
+#define LOGIN_BUTTONS_X1 350
+#define LOGIN_BUTTONS_Y1 250
+#define LOGIN_BUTTONS_X2 535
+#define LOGIN_BUTTONS_Y2 350
+
+#define PLAY_BUTTON_X1 268
+#define PLAY_BUTTON_Y1 292
+#define PLAY_BUTTON_X2 497
+#define PLAY_BUTTON_Y2 382
+
+#define LOGOUT_DOOR_X1 714
+#define LOGOUT_DOOR_Y1 435
+#define LOGOUT_DOOR_X2 735
+#define LOGOUT_DOOR_Y2 465
+
+#define SCROLL_DOWN_ARROW_X1 496
+#define SCROLL_DOWN_ARROW_Y1 442
+#define SCROLL_DOWN_ARROW_X2 512
+#define SCROLL_DOWN_ARROW_Y2 459
+
+#define LOGOUT_BUTTON_X1 572
+#define LOGOUT_BUTTON_Y1 416
+#define LOGOUT_BUTTON_X2 712
+#define LOGOUT_BUTTON_Y2 448
+
+#define LOGOUT_BUTTON_LINE_X 578
+#define LOGOUT_BUTTON_LINE_Y 446
+
+#define WELCOME_MESSAGE_X 265
+#define WELCOME_MESSAGE_Y 20
+#define WELCOME_MESSAGE_WIDTH 234
+#define WELCOME_MESSAGE_HEIGHT 16
+
+//UI Sizes
+#define BAR_WIDTH 72
+#define BAR_HEIGHT 34
+#define BORDER_HEIGHT 29
+#define BORDER_SIZE 4
+
+//Inventory
+#define INV_SLOTS_X 558
+#define INV_SLOTS_Y 211
+#define INV_SLOT_WIDTH 42
+#define INV_SLOT_HEIGHT 36
+#define INV_SLOT_SHRINK 4
+
+//Inventory Tabs
+#define INV_TABS_X 527
+#define INV_TABS_Y 168
+#define INV_TAB_WIDTH  33
+#define INV_TAB_HEIGHT 36
+#define INV_TAB_SHRINK 3
+#define INV_TABS_GAP 298
+
+//Bottom Tabs
+#define BOT_TABS_X 5
+#define BOT_TABS_Y 480
+#define BOT_TAB_WIDTH 56
+#define BOT_TAB_HEIGHT 22
+#define BOT_TAB_SHRINK 3
+#define BOT_TABS_GAP 10
+
+//Locations
+#define GATHER_STATE_X 30
+#define GATHER_STATE_Y 461
+
+//Others
+#define MOUSE_MOVE_DISTANCE 15
+#define DEFAULT_THRESHOLD 0.9
+#define FOCUS_CLICK_SHRINK 25
+
+#endif // DEFINES_H

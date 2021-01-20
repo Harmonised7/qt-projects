@@ -15,12 +15,16 @@
 #include "Tasks/task.h"
 #include "Conditions/tabCondition.h"
 
+//Controllers
+#include "Controllers/mouseController.h"
+
+//Util Includes
+#include "Util/defines.h"
+#include "Util/util.h"
+#include "Util/timer.h"
+
 //Other Includes
-#include "defines.h"
-#include "mouseController.h"
-#include "util.h"
 #include "botinfo.h"
-#include "timer.h"
 
 enum class ModuleType
 {

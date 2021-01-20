@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -24,9 +25,12 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QVBoxLayout *verticalLayout_4;
-    QPushButton *unpauseButton;
+    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout;
     QPushButton *pauseButton;
+    QPushButton *unpauseButton;
+    QPushButton *logoutButton;
+    QPushButton *showButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -34,26 +38,42 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(160, 149);
-        MainWindow->setMaximumSize(QSize(160, 320));
+        MainWindow->resize(134, 229);
+        MainWindow->setMaximumSize(QSize(16777215, 16777215));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        verticalLayout_4 = new QVBoxLayout(centralwidget);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        horizontalLayout_2 = new QHBoxLayout(centralwidget);
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        pauseButton = new QPushButton(centralwidget);
+        pauseButton->setObjectName(QString::fromUtf8("pauseButton"));
+        pauseButton->setMinimumSize(QSize(0, 0));
+
+        verticalLayout->addWidget(pauseButton);
+
         unpauseButton = new QPushButton(centralwidget);
         unpauseButton->setObjectName(QString::fromUtf8("unpauseButton"));
 
-        verticalLayout_4->addWidget(unpauseButton);
+        verticalLayout->addWidget(unpauseButton);
 
-        pauseButton = new QPushButton(centralwidget);
-        pauseButton->setObjectName(QString::fromUtf8("pauseButton"));
+        logoutButton = new QPushButton(centralwidget);
+        logoutButton->setObjectName(QString::fromUtf8("logoutButton"));
 
-        verticalLayout_4->addWidget(pauseButton);
+        verticalLayout->addWidget(logoutButton);
+
+        showButton = new QPushButton(centralwidget);
+        showButton->setObjectName(QString::fromUtf8("showButton"));
+
+        verticalLayout->addWidget(showButton);
+
+
+        horizontalLayout_2->addLayout(verticalLayout);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 160, 28));
+        menubar->setGeometry(QRect(0, 0, 134, 28));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -67,8 +87,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
-        unpauseButton->setText(QApplication::translate("MainWindow", "unpauseAll", nullptr));
         pauseButton->setText(QApplication::translate("MainWindow", "pauseAll", nullptr));
+        unpauseButton->setText(QApplication::translate("MainWindow", "unpauseAll", nullptr));
+        logoutButton->setText(QApplication::translate("MainWindow", "logoutAll", nullptr));
+        showButton->setText(QApplication::translate("MainWindow", "showAll", nullptr));
     } // retranslateUi
 
 };

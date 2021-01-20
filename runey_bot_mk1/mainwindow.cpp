@@ -15,13 +15,15 @@ MainWindow::MainWindow( QWidget *parent ) :
     ui->setupUi(this);
     setRes();
 
-    _botInstances.push_back( BotFactory::makeGathererBot( _leftX, _topY, StrPair( "s6cskills@mail.com", "einblicke" ) ) );
-    _botInstances.push_back( BotFactory::makeGathererBot( _leftX, _botY, StrPair( "s7cskills@mail.com", "einblicke" ) ) );
-    _botInstances.push_back( BotFactory::makeGathererBot( _rightX, _topY, StrPair( "s8cskills@mail.com", "einblicke" ) ) );
-    _botInstances.push_back( BotFactory::makeGathererBot( _rightX, _botY, StrPair( "s9cskills@mail.com", "einblicke" ) ) );
+    addBot( BotFactory::makeGathererBot( _leftX, _topY, StrPair( "s6cskills@mail.com", "einblicke" ) ) );
+    addBot( BotFactory::makeGathererBot( _leftX, _botY, StrPair( "s7cskills@mail.com", "einblicke" ) ) );
+    addBot( BotFactory::makeGathererBot( _rightX, _topY, StrPair( "s8cskills@mail.com", "einblicke" ) ) );
+    addBot( BotFactory::makeGathererBot( _rightX, _botY, StrPair( "s9cskills@mail.com", "einblicke" ) ) );
 
     _clickSafeArea = cv::Rect( BAR_WIDTH, BAR_HEIGHT, _screen->size().width() - BAR_WIDTH, _screen->size().height() - BAR_HEIGHT );
     _timeoutCondition = new TimeoutCondition( 3000, 30000 );
+
+    init();
 }
 
 MainWindow::~MainWindow()
@@ -29,17 +31,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_unpauseButton_clicked()
+void MainWindow::addBot( BotInstance *bot )
 {
-    init();
-}
-
-void MainWindow::on_pauseButton_clicked()
-{
-    for( BotInstance *bot : _botInstances )
-    {
-        bot->info->states.insert( BotState::Pause, true );
-    }
+    _botInstances.push_back( bot );
 }
 
 void MainWindow::setRes()
@@ -65,6 +59,24 @@ void MainWindow::setRes()
     }
     else
         qDebug() << "WARNING WRONG RESOLUTION" << width << height;
+}
+
+void MainWindow::on_unpauseButton_clicked()
+{
+    _botsRunning = true;
+}
+
+void MainWindow::on_pauseButton_clicked()
+{
+    _botsRunning = false;
+}
+
+void MainWindow::on_logoutButton_clicked()
+{
+    for( BotInstance *bot : _botInstances )
+    {
+        bot->info->states.insert( BotState::Pause, true );
+    }
 }
 
 void MainWindow::on_showButton_clicked()

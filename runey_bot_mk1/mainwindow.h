@@ -19,12 +19,17 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
+//Controllers
+#include "Controllers/mouseController.h"
+#include "Controllers/keyboardController.h"
+
+//Util Includes
+#include "Util/botFactory.h"
+#include "Util/timer.h"
+#include "Util/defines.h"
+
 //Other Includes
-#include "mouseController.h"
-#include "keyboardController.h"
 #include "botInstance.h"
-#include "botFactory.h"
-#include "timer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -44,9 +49,11 @@ private slots:
 
     void on_unpauseButton_clicked();
 
-    void on_pauseButton_clicked();
+    void on_logoutButton_clicked();
 
     void on_showButton_clicked();
+
+    void on_pauseButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -71,9 +78,12 @@ private:
 private:
     //Methods
     void setRes();
+    void addBot( BotInstance *bot );
 
     //Objects
     int _leftX, _rightX;
     int _topY, _botY;
+    bool _botsRunning = false;
+    bool _frameFinished = true;
 };
 #endif // MAINWINDOW_H

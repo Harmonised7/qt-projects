@@ -13,12 +13,20 @@ void MainWindow::init()
 
 void MainWindow::handleFrame()
 {
-    for( BotInstance *bot : _botInstances )
+    if( _frameFinished )
     {
-        Mat mat = bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) );
-//        imshow( "bot", mat );
-    }
+        _frameFinished = false;
+        if( _botsRunning )
+        {
+            for( BotInstance *bot : _botInstances )
+            {
+                Mat mat = bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) );
+//                imshow( "bot", mat );
+            }
 
-    if( _timeoutCondition->checkCondition( _timer ) )
-        AntiBanTask::doAntiBan( _clickSafeArea );
+            if( _timeoutCondition->checkCondition( _timer ) )
+                AntiBanTask::doAntiBan( _clickSafeArea );
+        }
+        _frameFinished = true;
+    }
 }

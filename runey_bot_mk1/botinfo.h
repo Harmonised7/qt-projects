@@ -12,10 +12,10 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 
-//Other Includes
-#include "defines.h"
-#include "util.h"
-#include "timer.h"
+//Util Includes
+#include "Util/defines.h"
+#include "Util/util.h"
+#include "Util/timer.h"
 
 enum class BotState
 {
