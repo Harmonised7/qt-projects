@@ -2,12 +2,14 @@
 
 using namespace cv;
 
-BotInstance *BotFactory::makeGathererBot( int botX, int botY, StrPair loginInfo )
+BotInstance *BotFactory::makeGathererBot( QPoint pos, StrPair loginInfo, bool dropper )
 {
-    BotInstance *bot = new BotInstance( botX, botY, loginInfo );
+    BotInstance *bot = new BotInstance( pos.x(), pos.y(), loginInfo );
+
     addLoginModules( bot );
+    addEssentialModules( bot );
     addRunOnModules( bot );
-    addGathererModules( bot, false );
+    addGathererModules( bot, dropper );
     addPauseModules( bot );
 
 //    addDebugModules( bot );
@@ -15,14 +17,50 @@ BotInstance *BotFactory::makeGathererBot( int botX, int botY, StrPair loginInfo 
     return bot;
 }
 
-void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
+BotInstance *BotFactory::makeKillerBot( QPoint pos, StrPair loginInfo )
 {
-    cv::Mat closeInterfaceX = Util::pixMapToMat( QPixmap( ":/icons/Images/Close_interface_x.png" ) );
-    cv::Mat bankText = Util::pixMapToMat( QPixmap( ":/icons/Images/Bank_text.png" ) );
+    BotInstance *bot = new BotInstance( pos.x(), pos.y(), loginInfo );
+    addLoginModules( bot );
+    addEssentialModules( bot );
+    addRunOnModules( bot );
+    addKillerModules( bot );
+    addPauseModules( bot );
 
+//    addDebugModules( bot );
+
+    return bot;
+}
+
+void BotFactory::addKillerModules( BotInstance *bot )
+{
     QList<Condition *> conditions;
     QList<Task *> tasks;
     QList<Task *> elseTasks;
+
+    conditions.push_back( new PixelsCondition( Rect( ENEMY_HP_BAR_X, ENEMY_HP_BAR_Y, 5, 1 ), Vec3b( 0, 128, 0 ), Vec3b( 75, 255, 75 ) ) );
+    tasks.push_back( new SetStateTask( BotState::Combat, true ) );
+    elseTasks.push_back( new SetStateTask( BotState::Combat, false ) );
+    bot->addModule( new Module( conditions, tasks, elseTasks ) );
+
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    conditions.push_back( new TimeoutCondition( 1000, 5000 ) );
+    conditions.push_back( new StateCondition( BotState::Combat, false ) );
+    tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, 0.0075, 0.015 ) );
+    //Click gate
+    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
+    tasks.push_back( new ClickHighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
+    tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, MOUSE_SPEED_MIN, MOUSE_SPEED_MAX ) );
+    bot->addModule( new Module( conditions, tasks ) );
+}
+
+void BotFactory::addEssentialModules( BotInstance *bot )
+{
+    cv::Mat closeInterfaceX = Util::pixMapToMat( QPixmap( ":/icons/Images/Close_interface_x.png" ) );
+
+    QList<Condition *> conditions;
+    QList<Task *> tasks;
 
     //Exit random interfaces
     conditions = QList<Condition *>();
@@ -34,6 +72,15 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
     tasks.push_back( exitInterfacesTask );
 
     bot->addModule( new Module( conditions, tasks ) );
+}
+
+void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
+{
+    cv::Mat bankText = Util::pixMapToMat( QPixmap( ":/icons/Images/Bank_text.png" ) );
+
+    QList<Condition *> conditions;
+    QList<Task *> tasks;
+    QList<Task *> elseTasks;
 
     //Set Gather State
     conditions = QList<Condition *>();
@@ -110,7 +157,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
         conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
         conditions.push_back( new StateCondition( BotState::InBank, false ) );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 10, 150, 10 ), Vec3b( 0, 255, 0 ) ) );
+        tasks.push_back( new ClickHighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
         bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
@@ -149,7 +196,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
     conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
     conditions.push_back( new StateCondition( BotState::Gather, false ) );
-    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 10, 10 ), Vec3b( 255, 0, 0 ) ) );
+    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
 
     bot->addModule( new Module( conditions, tasks ) );
 

@@ -22,6 +22,7 @@ enum class BotState
     Banking,
     InBank,
     Gather,
+    Combat,
     Login,
     Pause,
     Run

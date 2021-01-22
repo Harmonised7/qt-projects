@@ -26,13 +26,18 @@
 #include "Tasks/delayTask.h"
 #include "Tasks/takeBreakTask.h"
 #include "Tasks/timerTask.h"
+#include "Tasks/setMouseValuesTask.h"
 
 class BotFactory
 {
 public:
-    static BotInstance *makeGathererBot( int botX, int botY, StrPair loginInfo );
+    static BotInstance *makeGathererBot( QPoint pos, StrPair loginInfo, bool dropper = true );
+    static BotInstance *makeKillerBot( QPoint pos, StrPair loginInfo );
 
     static void addGathererModules( BotInstance *bot, bool dropper );
+    static void addKillerModules( BotInstance *bot );
+
+    static void addEssentialModules( BotInstance *bot );
     static void addLoginModules( BotInstance *bot );
     static void addPauseModules( BotInstance *bot );
     static void addRunOnModules( BotInstance *bot );

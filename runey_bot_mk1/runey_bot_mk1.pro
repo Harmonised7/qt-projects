@@ -32,6 +32,7 @@ SOURCES += \
     Tasks/clickItemsTask.cpp \
     Tasks/delayTask.cpp \
     Tasks/keyboardTask.cpp \
+    Tasks/setMouseValuesTask.cpp \
     Tasks/setStateTask.cpp \
     Tasks/takeBreakTask.cpp \
     Tasks/timerTask.cpp \
@@ -66,6 +67,7 @@ HEADERS += \
     Tasks/clickItemsTask.h \
     Tasks/delayTask.h \
     Tasks/keyboardTask.h \
+    Tasks/setMouseValuesTask.h \
     Tasks/setStateTask.h \
     Tasks/takeBreakTask.h \
     Tasks/timerTask.h \

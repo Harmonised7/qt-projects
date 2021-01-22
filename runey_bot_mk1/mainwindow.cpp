@@ -15,10 +15,63 @@ MainWindow::MainWindow( QWidget *parent ) :
     ui->setupUi(this);
     setRes();
 
-//    addBot( BotFactory::makeGathererBot( _leftX, _topY, StrPair( "s6cskills@mail.com", "einblicke" ) ) );
-//    addBot( BotFactory::makeGathererBot( _leftX, _botY, StrPair( "s7cskills@mail.com", "einblicke" ) ) );
-    addBot( BotFactory::makeGathererBot( _rightX, _topY, StrPair( "s5cskills@mail.com", "einblicke" ) ) );
-//    addBot( BotFactory::makeGathererBot( _rightX, _botY, StrPair( "s9cskills@mail.com", "einblicke" ) ) );
+    QList<QPoint> availableBotPos;
+
+    availableBotPos.push_back( QPoint( _rightX, _topY ) );
+    availableBotPos.push_back( QPoint( _rightX, _botY ) );
+    availableBotPos.push_back( QPoint( _leftX, _topY ) );
+    availableBotPos.push_back( QPoint( _leftX, _botY ) );
+
+    QString path = QDir::current().absolutePath() + "/accounts.txt";
+    qDebug() << path;
+    QFile file( path );
+    if( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+    {
+        _accounts.push_back( "s6cskills@mail.com\teinblicke\tgather\tdrop" );
+        _accounts.push_back( "s7cskills@mail.com\teinblicke\tgather\tdrop" );
+        _accounts.push_back( "s8cskills@mail.com\teinblicke\tgather\tdrop" );
+        _accounts.push_back( "s9cskills@mail.com\teinblicke\tgather\tdrop" );
+
+        qDebug() << "file not found, loading default accounts";
+    }
+    else
+    {
+        for( QByteArray account : file.readAll().split( '\n' ) )
+        {
+            _accounts.push_back( QString( account ) );
+        }
+    }
+
+    for( int i = 0; i < min( _accounts.size(), 4 ); i++ )
+    {
+        QString account = _accounts[i];
+        QList<QString> accountInfo = account.split( "\t" );
+        QString accountInfoText = accountInfo[0].left( accountInfo[0].indexOf( '@' ) ) + " " + accountInfo[2];
+        StrPair loginInfo = StrPair( accountInfo[0].toStdString(), accountInfo[1].toStdString() );
+        QPoint pos = availableBotPos[ 0 ];
+        availableBotPos.removeAt( 0 );
+
+        if( accountInfo.size() < 3 )
+        {
+            qDebug() << account << "not enough info";
+            continue;
+        }
+
+        if( accountInfo[2] == "gather" )
+        {
+            _botInstances.push_back( BotFactory::makeGathererBot( pos, loginInfo, false ) );
+        }
+        else if( accountInfo[2] == "powergather" )
+        {
+            _botInstances.push_back( BotFactory::makeGathererBot( pos, loginInfo, true ) );
+        }
+        else if( accountInfo[2] == "kill" )
+        {
+            _botInstances.push_back( BotFactory::makeKillerBot( pos, loginInfo ) );
+        }
+
+        ui->accountsInfoLabel->setText( ui->accountsInfoLabel->text() + "\n" + accountInfoText );
+    }
 
     _clickSafeArea = cv::Rect( BAR_WIDTH, BAR_HEIGHT, _screen->size().width() - BAR_WIDTH, _screen->size().height() - BAR_HEIGHT );
     _timeoutCondition = new TimeoutCondition( 3000, 30000 );

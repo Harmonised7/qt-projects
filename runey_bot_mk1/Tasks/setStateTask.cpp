@@ -12,9 +12,11 @@ void SetStateTask::execute( BotInfo *info )
 //        qDebug() << "Login state set to" << _newState;
 //    if( _stateType == BotState::Gather )
 //        qDebug() << "Gather state set to" << _newState;
-    if( _stateType == BotState::Banking )
-        qDebug() << "Banking state set to" << _newState;
-    if( _stateType == BotState::InBank )
-        qDebug() << "InBank state set to" << _newState;
+//    if( _stateType == BotState::Banking )
+//        qDebug() << "Banking state set to" << _newState;
+//    if( _stateType == BotState::InBank )
+//        qDebug() << "InBank state set to" << _newState;
+    if( _stateType == BotState::Combat )
+        qDebug() << "Combat state set to" << _newState;
     info->states.insert( _stateType, _newState );
 }

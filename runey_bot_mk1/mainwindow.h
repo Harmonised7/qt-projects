@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QSet>
 #include <QPixmap>
+#include <QDir>
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
@@ -76,7 +77,6 @@ private:
     Timer *_timer;
     TimeoutCondition *_timeoutCondition;
 
-private:
     //Methods
     void setRes();
     void addBot( BotInstance *bot );
@@ -86,5 +86,6 @@ private:
     int _topY, _botY;
     bool _botsRunning = false;
     bool _frameFinished = true;
+    QList<QString> _accounts;
 };
 #endif // MAINWINDOW_H
