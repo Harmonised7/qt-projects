@@ -24,6 +24,13 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QPushButton" name="unpauseButton">
+        <property name="text">
+         <string>unpauseAll</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pauseButton">
         <property name="minimumSize">
          <size>
@@ -33,13 +40,6 @@
         </property>
         <property name="text">
          <string>pauseAll</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="unpauseButton">
-        <property name="text">
-         <string>unpauseAll</string>
         </property>
        </widget>
       </item>

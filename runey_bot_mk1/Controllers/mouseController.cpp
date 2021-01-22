@@ -102,9 +102,14 @@ void MouseController::mouseMove( int newX, int newY )
         _pFinal.setX( static_cast<int>((pow((1.0 - _t), 2) * (_p0.x()) + (1.0 - _t) * 2.0 * _t * (_p1.x()) + _t * _t * (_p2.x()))) );
         _pFinal.setY( static_cast<int>((pow((1.0 - _t), 2) * (_p0.y()) + (1.0 - _t) * 2.0 * _t * (_p1.y()) + _t * _t * (_p2.y()))) );
 
-        QCursor::setPos( _pFinal.x(), _pFinal.y() );
+        xdo_move_mouse( xDoTool, _pFinal.x(), _pFinal.y(), SCREEN );
+        int x, y;
+        xdo_get_mouse_location( xDoTool, &x, &y, SCREEN );
+        if( x != _pFinal.x() || y != _pFinal.y() )
+            return;
 
         Sleeper::msleep(1000 / _mouseFPS);
+
     }
 }
 

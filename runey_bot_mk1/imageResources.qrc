@@ -19,5 +19,6 @@
         <file>Images/Wiki.png</file>
         <file>Images/Try_again.png</file>
         <file>Images/Close_interface_x.png</file>
+        <file>Images/Bank_text.png</file>
     </qresource>
 </RCC>

@@ -246,7 +246,7 @@ QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
         else
             break;
     }
-    //    qDebug() << _info->invItems->size();
+//        qDebug() << matches.size();
 //    if( imageMat.cols > 90 )
 //        imshow("final", imageMat);
 
@@ -269,4 +269,28 @@ Rect Util::resizeRect( Rect rect, int resizeX, int resizeY )
     rect.width += resizeX*2;
     rect.height += resizeY*2;
     return rect;
+}
+
+bool Util::pixelInRange( Vec3b reference, Vec3b target )
+{
+    return pixelInRange( reference, target, target );
+}
+
+bool Util::pixelInRange( Vec3b reference, Vec3b p1, Vec3b p2 )
+{
+    int lowerBound, upperBound;
+    for( int c = 0; c < 3; c++ )
+    {
+        lowerBound = p1[c];
+        upperBound = p2[c];
+        if( lowerBound > upperBound )
+        {
+            int temp = lowerBound;
+            lowerBound = upperBound;
+            upperBound = temp;
+        }
+        if( reference[c] < lowerBound || reference[c] > upperBound )
+            return false;
+    }
+    return true;
 }

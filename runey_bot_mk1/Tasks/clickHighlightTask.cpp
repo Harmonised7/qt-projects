@@ -2,14 +2,21 @@
 
 using namespace cv;
 
-ClickHighlightTask::ClickHighlightTask()
+ClickHighlightTask::ClickHighlightTask( Vec3b pixel ) :
+    _p1( pixel ),
+    _p2( pixel )
 {
+}
 
+ClickHighlightTask::ClickHighlightTask( Vec3b p1, Vec3b p2 ) :
+    _p1( p1 ),
+    _p2( p2 )
+{
 }
 
 void ClickHighlightTask::execute( BotInfo *info )
 {
-    BotInfo::updateFlood( info->gameMat, &info->rsFloodMatches );
+    BotInfo::updateFlood( info->gameMat, &info->rsFloodMatches, _p1, _p2 );
 
 //    for( QPoint *p : info->rsFloodMatches )
 //    {

@@ -71,6 +71,9 @@ public:
 
     static cv::Rect resizeRect( cv::Rect rect, int shrink );
     static cv::Rect resizeRect( cv::Rect rect, int shrinkX, int shrinkY );
+
+    static bool pixelInRange( cv::Vec3b reference, cv::Vec3b target );
+    static bool pixelInRange( cv::Vec3b reference, cv::Vec3b p1, cv::Vec3b p2 );
 };
 
 #endif // UTIL_H

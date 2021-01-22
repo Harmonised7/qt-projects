@@ -32,10 +32,12 @@ class BotFactory
 public:
     static BotInstance *makeGathererBot( int botX, int botY, StrPair loginInfo );
 
-    static void addGathererModules( BotInstance *bot );
+    static void addGathererModules( BotInstance *bot, bool dropper );
     static void addLoginModules( BotInstance *bot );
     static void addPauseModules( BotInstance *bot );
     static void addRunOnModules( BotInstance *bot );
+
+    static void addDebugModules( BotInstance *bot );
 };
 
 #endif // BOTFACTORY_H

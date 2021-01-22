@@ -74,7 +74,13 @@ Mat BotInstance::handleFrame( const cv::Mat &screen )
     else if( info->states.value( BotState::Login ) )
         runModules( _modules.value( ModuleType::Login ) );
     else if( !info->states.value( BotState::Login ) )
-        runModules( _modules.value( ModuleType::Ingame ) );
+    {
+        //Ingame
+        if( info->states.value( BotState::Banking ) )
+            runModules( _modules.value( ModuleType::Banking ) );
+        else
+            runModules( _modules.value( ModuleType::Ingame ) );
+    }
 
 //    imshow( "filter", info->floodMat );
 //    rectangle( info->rsMat, Util::getInvTabRect( Util::genRand( 1, 14 ) ), Scalar( 255, 255, 255 ) );
@@ -114,6 +120,17 @@ void BotInstance::runModules( QList<Module *> modules )
 
 void BotInstance::addModule( Module *module, ModuleType type )
 {
+    for( Condition *condition : module->getConditions() )
+    {
+        if( module->getTasks( true ).size() > 0 )
+        {
+            if( Condition* castTest = dynamic_cast<TimeoutCondition*>( condition ) )
+            {
+                qDebug() << "WARNING: TimeoutCondition with elseTask combination!";
+            }
+        }
+    }
+
     _modules[ type ].push_back( module );
 }
 

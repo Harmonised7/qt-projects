@@ -16,6 +16,7 @@ void MainWindow::handleFrame()
     if( _frameFinished )
     {
         _frameFinished = false;
+        qDebug() << QString::number( Util::genRand( 5000 ) );
         if( _botsRunning )
         {
             for( BotInstance *bot : _botInstances )

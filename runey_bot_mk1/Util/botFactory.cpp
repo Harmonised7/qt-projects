@@ -7,14 +7,18 @@ BotInstance *BotFactory::makeGathererBot( int botX, int botY, StrPair loginInfo 
     BotInstance *bot = new BotInstance( botX, botY, loginInfo );
     addLoginModules( bot );
     addRunOnModules( bot );
-    addGathererModules( bot );
+    addGathererModules( bot, false );
     addPauseModules( bot );
+
+//    addDebugModules( bot );
+
     return bot;
 }
 
-void BotFactory::addGathererModules( BotInstance *bot )
+void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 {
     cv::Mat closeInterfaceX = Util::pixMapToMat( QPixmap( ":/icons/Images/Close_interface_x.png" ) );
+    cv::Mat bankText = Util::pixMapToMat( QPixmap( ":/icons/Images/Bank_text.png" ) );
 
     QList<Condition *> conditions;
     QList<Task *> tasks;
@@ -52,18 +56,73 @@ void BotFactory::addGathererModules( BotInstance *bot )
 
     bot->addModule( new Module( conditions, tasks ) );
 
-    //Drop items
-    conditions = QList<Condition *>();
-    tasks = QList<Task *>();
+    //Full Inv
 
-    conditions.push_back( new TabCondition( 4, true ) );
-    conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
-    ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
-    clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
-    tasks.push_back( clickItemsTask );
-    tasks.push_back( new ClickHighlightTask() );
+    if( dropper )
+    {
+        //Drop items
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+        conditions.push_back( new TabCondition( 4, true ) );
+        conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
+        ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
+        clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
+        tasks.push_back( clickItemsTask );
+        tasks.push_back( new ClickHighlightTask( Vec3b( 150, 10, 10 ), Vec3b( 255, 0, 0 ) ) );
+        bot->addModule( new Module( conditions, tasks ) );
+    }
+    else
+    {
+        //Set Inside Bank State
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+        elseTasks = QList<Task *>();
+        ImageCondition *bankTextVisibleCondition = new ImageCondition( bankText, 0.2 );
+        bankTextVisibleCondition->setCrop( Util::resizeRect( Rect( Point( BANK_TEXT_X1, BANK_TEXT_Y1 ), Point( BANK_TEXT_X2, BANK_TEXT_Y2 ) ), 5 ) );
+        conditions.push_back( bankTextVisibleCondition );
+        tasks.push_back( new SetStateTask( BotState::InBank, true ) );
+        elseTasks.push_back( new SetStateTask( BotState::InBank, false ) );
+        bot->addModule( new Module( conditions, tasks, elseTasks ), ModuleType::Background );
 
-    bot->addModule( new Module( conditions, tasks ) );
+        //If Bank Interface Open
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+        conditions.push_back( new StateCondition( BotState::InBank, true ) );
+        //Atleast 5 highlighted Items
+        conditions.push_back( new InventoryCondition( 9001, true, 5 ) );
+        tasks.push_back( new SetStateTask( BotState::Banking, false ) );
+        tasks.push_back( new DelayTask( 200, 2000 ) );
+        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( DEPOSIT_ALL_BUTTON_X1, DEPOSIT_ALL_BUTTON_Y1 ), Point( DEPOSIT_ALL_BUTTON_X2, DEPOSIT_ALL_BUTTON_Y2 ) ) ) );
+        bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
+
+        //Set Banking State when inv full
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+        elseTasks = QList<Task *>();
+        conditions.push_back( new TabCondition( 4, true ) );
+        conditions.push_back( new InventoryCondition( 9001, true, 18, 24 ) );
+        tasks.push_back( new SetStateTask( BotState::Banking, true ) );
+        bot->addModule( new Module( conditions, tasks, elseTasks ) );
+
+        //If Banking, but bank not open, click bank
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+
+        conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
+        conditions.push_back( new StateCondition( BotState::InBank, false ) );
+        tasks.push_back( new ClickHighlightTask( Vec3b( 10, 150, 10 ), Vec3b( 0, 255, 0 ) ) );
+        tasks.push_back( new DelayTask( 1000, 3000 ) );
+        bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
+
+        //If Not Banking, but bank is open, exit Bank
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+
+        conditions.push_back( new TimeoutCondition( 1000, 6000 ) );
+        conditions.push_back( new StateCondition( BotState::InBank, true ) );
+        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( EXIT_BANK_BUTTON_X1, EXIT_BANK_BUTTON_Y2 ), Point( EXIT_BANK_BUTTON_X2, EXIT_BANK_BUTTON_Y2 ) ) ) );
+        bot->addModule( new Module( conditions, tasks ) );
+    }
 
     //Antiban - Check random inv tab
     conditions = QList<Condition *>();
@@ -88,9 +147,9 @@ void BotFactory::addGathererModules( BotInstance *bot )
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    conditions.push_back( new TimeoutCondition( 2000, 5000 ) );
+    conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
     conditions.push_back( new StateCondition( BotState::Gather, false ) );
-    tasks.push_back( new ClickHighlightTask() );
+    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 10, 10 ), Vec3b( 255, 0, 0 ) ) );
 
     bot->addModule( new Module( conditions, tasks ) );
 
@@ -218,9 +277,20 @@ void BotFactory::addRunOnModules( BotInstance *bot )
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    conditions.push_back( new TimeoutCondition( 15000, 90000 ) );
+    conditions.push_back( new TimeoutCondition( 45000, 180000 ) );
     conditions.push_back( new StateCondition( BotState::Run, 0 ) );
     tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( RUN_X1, RUN_Y1 ), Point( RUN_X2, RUN_Y2  ) ) ) );
 
     bot->addModule( new Module( conditions, tasks ) );
 }
+
+//void BotFactory::addDebugModules( BotInstance *bot )
+//{
+//    cv::Mat bankText = Util::pixMapToMat( QPixmap( ":/icons/Images/Bank_text.png" ) );
+
+//    QList<Condition *> conditions;
+//    QList<Task *> tasks;
+//    QList<Task *> elseTasks;
+
+
+//}

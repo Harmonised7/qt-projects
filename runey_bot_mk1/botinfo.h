@@ -19,6 +19,8 @@
 
 enum class BotState
 {
+    Banking,
+    InBank,
     Gather,
     Login,
     Pause,
@@ -45,7 +47,8 @@ public:
     QPoint br(){ return QPoint( x + RUNELITE_WIDTH, y + RUNELITE_HEIGHT ); };
     void addImage( const int &id, const cv::Mat image );
     QMap<int, cv::Mat> getImages();
-    static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches );
+    static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches, cv::Vec3b pixel );
+    static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches, cv::Vec3b p1, cv::Vec3b p2 );
     static void updateInventory( BotInfo *info );
 
     //Objects

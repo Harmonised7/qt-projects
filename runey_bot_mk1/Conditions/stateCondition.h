@@ -6,7 +6,7 @@
 class StateCondition : public Condition
 {
 public:
-    StateCondition( BotState stateType, bool boolType = 1 );
+    StateCondition( BotState stateType, bool boolType = true );
 
     bool checkCondition( BotInfo *info ) override;
 

@@ -14,6 +14,7 @@
 #include "Conditions/condition.h"
 #include "Tasks/task.h"
 #include "Conditions/tabCondition.h"
+#include "Conditions/timeoutCondition.h"
 
 //Controllers
 #include "Controllers/mouseController.h"
@@ -30,6 +31,7 @@ enum class ModuleType
 {
     Init,
     Ingame,
+    Banking,
     Login,
     Background
 };
