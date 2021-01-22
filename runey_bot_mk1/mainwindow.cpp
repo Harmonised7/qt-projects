@@ -46,16 +46,19 @@ MainWindow::MainWindow( QWidget *parent ) :
     {
         QString account = _accounts[i];
         QList<QString> accountInfo = account.split( "\t" );
-        QString accountInfoText = accountInfo[0].left( accountInfo[0].indexOf( '@' ) ) + " " + accountInfo[2];
+
+        if( accountInfo.size() < 3 )
+        {
+            if( account.length() > 0 )
+                qDebug() << account << "not enough info";
+            continue;
+        }
+
+        QString accountInfoText = accountInfo[0] + " " + accountInfo[2];
         StrPair loginInfo = StrPair( accountInfo[0].toStdString(), accountInfo[1].toStdString() );
         QPoint pos = availableBotPos[ 0 ];
         availableBotPos.removeAt( 0 );
 
-        if( accountInfo.size() < 3 )
-        {
-            qDebug() << account << "not enough info";
-            continue;
-        }
 
         if( accountInfo[2] == "gather" )
         {
@@ -72,6 +75,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 
         ui->accountsInfoLabel->setText( ui->accountsInfoLabel->text() + "\n" + accountInfoText );
     }
+
+//    ui->accountsInfoLabel->setText( ui->accountsInfoLabel->text() + "\n" + path );
 
     _clickSafeArea = cv::Rect( BAR_WIDTH, BAR_HEIGHT, _screen->size().width() - BAR_WIDTH, _screen->size().height() - BAR_HEIGHT );
     _timeoutCondition = new TimeoutCondition( 3000, 30000 );
