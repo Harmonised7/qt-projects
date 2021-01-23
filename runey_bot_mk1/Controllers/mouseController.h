@@ -2,14 +2,17 @@
 #define MOUSECONTROLLER_H
 
 //Mouse Controller
-#define MOUSE_JITTER        4
-#define MOUSE_CURVES_MIN    3
-#define MOUSE_CURVES_MAX    60
-#define MOUSE_FPS           120
-#define MOUSE_SPEED_MIN     0.0025
-#define MOUSE_SPEED_MAX     0.0075
-#define MOUSE_DELAY_MIN     50
-#define MOUSE_DELAY_MAX     85
+#define MOUSE_JITTER            4
+#define MOUSE_CURVES_MIN        3
+#define MOUSE_CURVES_MAX        60
+#define MOUSE_FPS               120
+#define MOUSE_SPEED_MIN         0.0025
+#define MOUSE_SPEED_MAX         0.0075
+#define MOUSE_DELAY_MIN         50
+#define MOUSE_DELAY_MAX         85
+#define MOUSE_RELEASE_DELAY_MIN 20
+#define MOUSE_RELEASE_DELAY_MAX 150
+#define MOUSE_HIJACK_FOR        5000
 
 // Qt Native Includes
 #include <QPoint>
@@ -26,9 +29,9 @@
 
 enum class MouseState
 {
-    Left,
-    Right,
-    Middle
+    Left = 1,
+    Right = 2,
+    Middle = 3
 };
 
 class MouseController
@@ -68,12 +71,16 @@ public:
     void setClickDelay(double newMaxDelay, double newMinDelay );
     void resetClickDelay();
 
+    bool mouseHijacked();
+
     static QPoint getMousePos();
 
     static MouseController mc;
 
 private:
     MouseController( int screen );
+
+    unsigned long _hijackSince = 0;
 
     int _jitterValue;
     uint _mouseFPS;

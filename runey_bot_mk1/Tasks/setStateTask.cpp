@@ -16,7 +16,7 @@ void SetStateTask::execute( BotInfo *info )
 //        qDebug() << "Banking state set to" << _newState;
 //    if( _stateType == BotState::InBank )
 //        qDebug() << "InBank state set to" << _newState;
-    if( _stateType == BotState::Combat )
-        qDebug() << "Combat state set to" << _newState;
+//    if( _stateType == BotState::Combat )
+//        qDebug() << "Combat state set to" << _newState;
     info->states.insert( _stateType, _newState );
 }

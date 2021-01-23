@@ -57,7 +57,8 @@ void MouseController::mouseMove( QPoint newPoint )
 
 void MouseController::mouseMove( int newX, int newY )
 {
-//    changeRandValues();
+    if( mouseHijacked() )
+        return;
 
     _p0 = getMousePos();
     _p2.setX( newX );
@@ -105,11 +106,14 @@ void MouseController::mouseMove( int newX, int newY )
         xdo_move_mouse( xDoTool, _pFinal.x(), _pFinal.y(), SCREEN );
         int x, y;
         xdo_get_mouse_location( xDoTool, &x, &y, SCREEN );
-        if( x != _pFinal.x() || y != _pFinal.y() )
-            return;
 
         Sleeper::msleep(1000 / _mouseFPS);
 
+        if( x != _pFinal.x() || y != _pFinal.y() )
+        {
+            _hijackSince = Util::getEpochMS();
+            return;
+        }
     }
 }
 
@@ -137,28 +141,16 @@ void MouseController::mousePress( MouseState state, QPoint newPoint )
 
 void MouseController::mousePress( MouseState state, int newX, int newY)
 {
-//    if( totalClicks > 30 )
-//        return;
+    if( mouseHijacked() )
+        return;
+
     mouseMove(newX, newY);
 
-    if (state == MouseState::Left)
-    {
-        xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
-        xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
-    }
-    else if (state == MouseState::Right)
-    {
-        xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
-        xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
-    }
-    else if (state == MouseState::Middle)
-    {
-        xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
-        xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);
-    }
+    Sleeper::msleep( Util::genRand( _minDelay, _maxDelay ) );
+    xdo_mouse_down(xDoTool, CURRENTWINDOW, (int) state );
+    Sleeper::msleep( Util::genRand( MOUSE_RELEASE_DELAY_MIN, MOUSE_RELEASE_DELAY_MAX ) );
+    xdo_mouse_up(xDoTool, CURRENTWINDOW, (int) state );
+
     totalClicks++;
 }
 
@@ -179,40 +171,16 @@ void MouseController::mouseDrag( MouseState state, QPoint newPoint )
 
 void MouseController::mouseDrag( MouseState state, int newX, int newY )
 {
-    qDebug() << "Dragging to x:" << newX << " y:" << newY;
-    if (state == MouseState::Left)
-    {
-        xdo_mouse_down(xDoTool, CURRENTWINDOW, Button1);
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
-    }
-    else if (state == MouseState::Right)
-    {
-        xdo_mouse_down(xDoTool, CURRENTWINDOW, Button3);
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
-    }
-    else if (state == MouseState::Middle)
-    {
-        xdo_mouse_down(xDoTool, CURRENTWINDOW, Button2);
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
-    }
+    if( mouseHijacked() )
+        return;
+
+    xdo_mouse_down( xDoTool, CURRENTWINDOW, (int) state );
+    Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
 
     mouseMove(newX, newY);
 
-    if (state == MouseState::Left)
-    {
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
-        xdo_mouse_up(xDoTool, CURRENTWINDOW, Button1);
-    }
-    else if (state == MouseState::Right)
-    {
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
-        xdo_mouse_up(xDoTool, CURRENTWINDOW, Button3);
-    }
-    else if (state == MouseState::Middle)
-    {
-        Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay )) );
-        xdo_mouse_up(xDoTool, CURRENTWINDOW, Button2);
-    }
+    Sleeper::msleep( static_cast<uint>(Util::genRand( _minDelay, _maxDelay ) ) );
+    xdo_mouse_up( xDoTool, CURRENTWINDOW, (int) state );
 }
 
 void MouseController::setFPS( uint newFPS )
@@ -278,4 +246,10 @@ void MouseController::resetClickDelay()
 {
     _maxDelay = MOUSE_DELAY_MIN;
     _minDelay = MOUSE_DELAY_MAX;
+}
+
+bool MouseController::mouseHijacked()
+{
+//    qDebug() << "Since Hijack" << Util::getEpochMS() - _hijackSince;
+    return Util::getEpochMS() - _hijackSince < MOUSE_HIJACK_FOR;
 }

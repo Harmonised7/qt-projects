@@ -192,12 +192,22 @@ Point Util::genRandPoint( Point p1, Point p2 )
 
 QPoint Util::genRandQPointOffset( QPoint p, int offset )
 {
-    return p + QPoint( genRand( -offset, offset ), genRand( -offset, offset ) );
+    return QPoint( p.x() + genRand( -offset, offset ), p.y() + genRand( -offset, offset ) );
 }
 
 Point Util::genRandPointOffset( Point p, int offset )
 {
-    return p + Point( genRand( -offset, offset ), genRand( -offset, offset ) );
+    return Point( p.x + genRand( -offset, offset ), p.y + genRand( -offset, offset ) );
+}
+
+Point Util::movePoint( Point p, int moveX, int moveY )
+{
+    return Point( p.x + moveX, p.y + moveY );
+}
+
+QPoint Util::moveQPoint( QPoint p, int moveX, int moveY )
+{
+    return QPoint( p.x() + moveX, p.y() + moveY );
 }
 
 QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
@@ -293,4 +303,9 @@ bool Util::pixelInRange( Vec3b reference, Vec3b p1, Vec3b p2 )
             return false;
     }
     return true;
+}
+
+qint64 Util::getEpochMS()
+{
+    return QDateTime::currentMSecsSinceEpoch();
 }

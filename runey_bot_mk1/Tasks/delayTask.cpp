@@ -14,8 +14,5 @@ DelayTask::DelayTask( unsigned int minMs, unsigned int maxMs ) :
 
 void DelayTask::execute( BotInfo *info )
 {
-    _startMs = info->timer->elapsed();
-    unsigned int timeToWait = Util::genRand( _minMs, _maxMs );
-
-    while( info->timer->elapsed() - _startMs > timeToWait );
+    Sleeper::msleep( Util::genRand( _minMs, _maxMs ) );
 }

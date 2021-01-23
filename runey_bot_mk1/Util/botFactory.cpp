@@ -207,7 +207,7 @@ void BotFactory::addLoginModules( BotInstance *bot )
 {
     Mat existingUser = Util::pixMapToMat( QPixmap( ":/icons/Images/Existing_user.png" ) );
     Mat welcomeMessage = Util::pixMapToMat( QPixmap( ":/icons/Images/Welcome_message.png" ) );
-    Mat login = Util::pixMapToMat( QPixmap( ":/icons/Images/Login.png" ) );
+    Mat enterYourCredentials = Util::pixMapToMat( QPixmap( ":/icons/Images/Enter_your_credentials.png" ) );
     Mat cancel = Util::pixMapToMat( QPixmap( ":/icons/Images/Cancel.png" ) );
     Mat ok = Util::pixMapToMat( QPixmap( ":/icons/Images/Ok.png" ) );
     Mat wiki = Util::pixMapToMat( QPixmap( ":/icons/Images/Wiki.png" ) );
@@ -230,7 +230,7 @@ void BotFactory::addLoginModules( BotInstance *bot )
 
     ImageCondition *imageCondition;
     imageCondition = new ImageCondition( wiki, DEFAULT_THRESHOLD );
-    imageCondition->setCrop( Util::resizeRect( Util::resizeRect( wikiArea, 5 ), 5 ) );
+    imageCondition->setCrop( ( Util::resizeRect( wikiArea, 20 ) ) );
     conditions.push_back( imageCondition );
 
     tasks.push_back( new SetStateTask( BotState::Login, false ) );
@@ -259,19 +259,21 @@ void BotFactory::addLoginModules( BotInstance *bot )
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    conditions.push_back( new ImageCondition( login, 200 ) );
+    ImageCondition *enterYourCredentialsCondition = new ImageCondition( enterYourCredentials, 200 );
+    enterYourCredentialsCondition->setCrop( Util::resizeRect( Rect( Point( ENTER_YOUR_CREDENTIALS_X1, ENTER_YOUR_CREDENTIALS_Y1 ), Point( ENTER_YOUR_CREDENTIALS_X2, ENTER_YOUR_CREDENTIALS_Y2 ) ), 5 ) );
+    conditions.push_back( enterYourCredentialsCondition );
     Rect focusArea = Rect( Point( PLAY_BUTTON_X1, PLAY_BUTTON_Y1 + 80 ), Point( PLAY_BUTTON_X2, PLAY_BUTTON_Y2 ) );
     tasks.push_back( new ClickAreaTask( MouseState::Right, focusArea ) );
-    tasks.push_back( new DelayTask( 2000, 5000 ) );
+    tasks.push_back( new DelayTask( 1000, 2000 ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Escape" ) );
-    tasks.push_back( new DelayTask( 2000, 5000 ) );
+    tasks.push_back( new DelayTask( 1000, 2000 ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
-    tasks.push_back( new DelayTask( 2000, 5000 ) );
+    tasks.push_back( new DelayTask( 1000, 2000 ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.first ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Tab" ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.second ) );
     tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
-    tasks.push_back( new DelayTask( 15000, 25000 ) );
+    tasks.push_back( new DelayTask( 3500, 8500 ) );
 
     bot->addModule( new Module( conditions, tasks ), ModuleType::Login );
 

@@ -33,7 +33,7 @@ void AntiBanTask::doAntiBan( Rect area )
     else if( keyboardType == 2 )
         KeyboardController::kc.press( KeyboardState::Down, "Left" );
 
-    if( Util::genRand( 1, 10 ) == 1 )
+    if( Util::genRand( 1, 10 ) <= 7 )
         KeyboardController::kc.press( KeyboardState::Down, "Up" );
 
     Sleeper::msleep( Util::genRand( 25, 75 ) );
@@ -54,7 +54,7 @@ void AntiBanTask::doAntiBan( Rect area )
         MouseController::mc.mousePress( MouseState::Right, Util::PointToQPoint( rightClickPoint ) );
         Sleeper::msleep( Util::genRand( 50, 250 ) );
         if( Util::genRand( 1, 2 ) == 1 )
-            MouseController::mc.mouseMoveRelative( Util::genRandQPointOffset( Util::PointToQPoint( rightClickPoint ), 25 ) );
+            MouseController::mc.mouseMoveRelative( Util::genRandQPointOffset( Util::PointToQPoint( Util::movePoint( rightClickPoint, 0, 30 ) ), 25 ) );
     }
     else if( type <= 7 )
     {
