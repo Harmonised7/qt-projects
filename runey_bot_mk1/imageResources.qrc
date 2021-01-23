@@ -20,5 +20,6 @@
         <file>Images/Try_again.png</file>
         <file>Images/Close_interface_x.png</file>
         <file>Images/Bank_text.png</file>
+        <file>Images/Close_interface_x_button.png</file>
     </qresource>
 </RCC>

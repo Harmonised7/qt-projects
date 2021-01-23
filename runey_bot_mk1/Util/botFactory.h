@@ -12,6 +12,7 @@
 #include "Conditions/imageCondition.h"
 #include "Conditions/pixelsCondition.h"
 #include "Conditions/chanceCondition.h"
+#include "Conditions/checkHighlightCondition.h"
 
 //Task Includes
 #include "Tasks/task.h"

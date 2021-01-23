@@ -91,6 +91,8 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b p1,
         ++attempts;
     }
     while( attempts <= 5 && floodMatches->size() > 0.7*matHeight*matWidth );
+
+//    imshow( "updateFlood", floodMat );
 }
 
 void BotInfo::updateInventory( BotInfo *info )

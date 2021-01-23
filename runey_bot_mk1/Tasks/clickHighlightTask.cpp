@@ -16,7 +16,7 @@ ClickHighlightTask::ClickHighlightTask( Vec3b p1, Vec3b p2 ) :
 
 void ClickHighlightTask::execute( BotInfo *info )
 {
-    BotInfo::updateFlood( info->gameMat, &info->rsFloodMatches, _p1, _p2 );
+    BotInfo::updateFlood( info->gameMat( Rect( Point( 4, 4 ), Point( info->gameMat.cols, info->gameMat.rows ) ) ), &info->rsFloodMatches, _p1, _p2 );
 
 //    for( QPoint *p : info->rsFloodMatches )
 //    {

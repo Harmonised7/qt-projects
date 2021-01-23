@@ -72,6 +72,8 @@ MainWindow::MainWindow( QWidget *parent ) :
         {
             _botInstances.push_back( BotFactory::makeKillerBot( pos, loginInfo ) );
         }
+        else
+            qDebug() << "Invalid settings" << accountInfo;
 
         ui->accountsInfoLabel->setText( ui->accountsInfoLabel->text() + "\n" + accountInfoText );
     }

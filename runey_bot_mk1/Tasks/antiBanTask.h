@@ -9,14 +9,15 @@
 class AntiBanTask : public Task
 {
 public:
-    AntiBanTask( int region = 1 );
+    AntiBanTask( int region = 1, bool doMouse = true, bool doKeyboard = true );
 
     void execute( BotInfo *info ) override;
-    static void doAntiBan( BotInfo *info );
-    static void doAntiBan( cv::Rect area );
+    static void doAntiBan( BotInfo *info, bool doMouse = true, bool doKeyboard = true );
+    static void doAntiBan( cv::Rect area, bool doMouse = true, bool doKeyboard = true );
 
 private:
     int _region;
+    bool _doMouse, _doKeyboard;
 };
 
 #endif // ANTIBANTASK_H

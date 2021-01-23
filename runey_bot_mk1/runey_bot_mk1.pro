@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Conditions/chanceCondition.cpp \
+    Conditions/checkHighlightCondition.cpp \
     Conditions/imageCondition.cpp \
     Conditions/pixelsCondition.cpp \
     Conditions/stateCondition.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
 
 HEADERS += \
     Conditions/chanceCondition.h \
+    Conditions/checkHighlightCondition.h \
     Conditions/condition.h \
     Conditions/imageCondition.h \
     Conditions/pixelsCondition.h \
