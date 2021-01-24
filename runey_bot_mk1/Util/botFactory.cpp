@@ -154,7 +154,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         elseTasks = QList<Task *>();
         conditions.push_back( new TabCondition( 4, true ) );
         conditions.push_back( new StateCondition( BotState::Gather, false ) );
-        conditions.push_back( new InventoryCondition( 9001, true, 18, 24 ) );
+        conditions.push_back( new InventoryCondition( 9001, true, 18, 20 ) );
         tasks.push_back( new SetStateTask( BotState::Banking, true ) );
         bot->addModule( new Module( conditions, tasks, elseTasks ) );
 
@@ -175,6 +175,17 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         conditions.push_back( new TimeoutCondition( 1000, 6000 ) );
         conditions.push_back( new StateCondition( BotState::InBank, true ) );
         tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( EXIT_BANK_BUTTON_X1, EXIT_BANK_BUTTON_Y2 ), Point( EXIT_BANK_BUTTON_X2, EXIT_BANK_BUTTON_Y2 ) ) ) );
+        bot->addModule( new Module( conditions, tasks ) );
+
+        //If no path OR bank highlights while banking, click gather highlist as last resort
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+
+        conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
+        conditions.push_back( new CheckHighlightCondition( false, Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
+        conditions.push_back( new CheckHighlightCondition( false, Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
+        tasks.push_back( new ClickHighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
+
         bot->addModule( new Module( conditions, tasks ) );
 
         //If no path highlights, turn camera
