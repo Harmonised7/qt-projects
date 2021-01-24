@@ -114,10 +114,10 @@ void MainWindow::setRes()
         qDebug() << "Set resolution to 1600x1200";
 
         //Lubuntu 20.04
-        _rightX = 827;
-        _leftX = 0;
-        _botY = 666;
-        _topY = 32;
+        _rightX = 831;
+        _leftX = 4;
+        _botY = 693;
+        _topY = 59;
 
         //Debian 16.04
 //        _rightX = 831;
