@@ -18,5 +18,5 @@ void MouseTask::execute( BotInfo *info )
     else if( _type == MouseTaskType::LeftClick )
         MouseController::mc.mousePress( MouseState::Left );
     else if( _type == MouseTaskType::MoveRelative )
-        MouseController::mc.mouseMoveRelative( QPoint( Util::genRand( -20, 20 ), Util::genRand( -20, 20 ) ) );
+        MouseController::mc.mouseMoveRelative( QPoint( Util::genRand( -20, 20 ), Util::genRand( 0, 20 ) ) );
 }
