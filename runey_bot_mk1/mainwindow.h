@@ -8,7 +8,6 @@
 #include <QScreen>
 #include <QTimer>
 #include <QDebug>
-#include <QDesktopWidget>
 #include <QCursor>
 #include <QProcess>
 #include <QSet>

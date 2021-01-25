@@ -28,6 +28,7 @@
 #include "Tasks/takeBreakTask.h"
 #include "Tasks/timerTask.h"
 #include "Tasks/setMouseValuesTask.h"
+#include "Tasks/mouseTask.h"
 
 class BotFactory
 {

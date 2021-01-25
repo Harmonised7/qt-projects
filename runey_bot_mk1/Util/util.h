@@ -81,6 +81,9 @@ public:
     static bool pixelInRange( cv::Vec3b reference, cv::Vec3b p1, cv::Vec3b p2 );
 
     static qint64 getEpochMS();
+
+    static double min( double a, double b );
+    static double max( double a, double b );
 };
 
 #endif // UTIL_H

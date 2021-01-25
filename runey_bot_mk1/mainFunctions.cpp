@@ -18,14 +18,21 @@ void MainWindow::handleFrame()
         _frameFinished = false;
         if( _botsRunning )
         {
-            for( BotInstance *bot : _botInstances )
-            {
-                Mat mat = bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) ) );
-//                imshow( "bot", mat );
-            }
+//            try
+//            {
+                for( BotInstance *bot : _botInstances )
+                {
+                    Mat mat = bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) ) );
+    //                imshow( "bot", mat );
+                }
 
-            if( _timeoutCondition->checkCondition( _timer ) )
-                AntiBanTask::doAntiBan( _clickSafeArea );
+                if( _timeoutCondition->checkCondition( _timer ) )
+                    AntiBanTask::doAntiBan( _clickSafeArea );
+//            }
+//            catch( Exception e )
+//            {
+//                qDebug() << QString::fromStdString( e.msg );
+//            }
         }
         _frameFinished = true;
     }

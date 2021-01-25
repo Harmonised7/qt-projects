@@ -13,8 +13,8 @@ MouseController::MouseController( int screen ) :
     _mouseFPS( MOUSE_FPS ),
     _minSpeed( MOUSE_SPEED_MIN ),
     _maxSpeed( MOUSE_SPEED_MAX ),
-    _minDelay( MOUSE_DELAY_MIN ),
-    _maxDelay( MOUSE_DELAY_MAX ),
+    _minDelay( MOUSE_CLICK_DELAY_MIN ),
+    _maxDelay( MOUSE_CLICK_DELAY_MAX ),
     _minCurves( MOUSE_CURVES_MIN ),
     _maxCurves( MOUSE_CURVES_MAX ),
     _p0(0, 0),
@@ -25,7 +25,7 @@ MouseController::MouseController( int screen ) :
     _screen( screen )
 {
     xDoTool = xdo_new(nullptr);
-
+    xdo_get_mouse_location( xDoTool, &_lastX, &_lastY, SCREEN );
     qDebug() << "Initialized Mouse Controller...";
 }
 
@@ -244,12 +244,26 @@ void MouseController::setClickDelay( double newMinDelay, double newMaxDelay )
 
 void MouseController::resetClickDelay()
 {
-    _maxDelay = MOUSE_DELAY_MIN;
-    _minDelay = MOUSE_DELAY_MAX;
+    _maxDelay = MOUSE_CLICK_DELAY_MIN;
+    _minDelay = MOUSE_CLICK_DELAY_MAX;
+}
+
+void MouseController::setHijacked()
+{
+    _hijackSince = Util::getEpochMS();
 }
 
 bool MouseController::mouseHijacked()
 {
+    bool hijacked = Util::getEpochMS() - _hijackSince < MOUSE_HIJACK_FOR;
+    int currX, currY;
+    xdo_get_mouse_location( xDoTool, &currX, &currY, SCREEN );
+    if( hijacked && ( currX != _lastX || currY != _lastY ) )
+    {
+        _lastX = currX;
+        _lastY = currY;
+        _hijackSince = Util::getEpochMS();
+    }
 //    qDebug() << "Since Hijack" << Util::getEpochMS() - _hijackSince;
-    return Util::getEpochMS() - _hijackSince < MOUSE_HIJACK_FOR;
+    return hijacked;
 }

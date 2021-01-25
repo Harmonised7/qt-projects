@@ -33,7 +33,7 @@ void UseItemsTask::execute( BotInfo *info )
         itemsGroup1 = temp;
     }
 
-    times = cv::min( _times, itemsGroup1->size() );
+    times = Util::min( _times, itemsGroup1->size() );
 
     for( int i = 0; i < times; i++ )
     {

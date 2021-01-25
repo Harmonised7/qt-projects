@@ -125,7 +125,7 @@ void BotInfo::updateInventory( BotInfo *info )
 
     //Set Images
     QMap<int, cv::Mat> images = info->getImages();
-    QSet<Rect> matches;
+    QList<Rect> matches;
     for( int item : images.keys() )
     {
         for( Rect match : matches )
