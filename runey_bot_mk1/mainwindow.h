@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#define FPS 1
+#define FPS 0.7615
 
 //Qt Stuff
 #include <QMainWindow>
