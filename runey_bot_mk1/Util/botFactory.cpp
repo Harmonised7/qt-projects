@@ -122,10 +122,8 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         tasks = QList<Task *>();
         conditions.push_back( new TabCondition( 4, true ) );
         conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
-        tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, 0.01, 0.025 ) );
         tasks.push_back( new SetMouseValuesTask( MouseValueType::ClickDelay, 15, 35 ) );
         ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
-        tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, MOUSE_SPEED_MIN, MOUSE_SPEED_MAX ) );
         tasks.push_back( new SetMouseValuesTask( MouseValueType::ClickDelay, MOUSE_CLICK_DELAY_MIN, MOUSE_CLICK_DELAY_MAX ) );
         clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
         tasks.push_back( clickItemsTask );

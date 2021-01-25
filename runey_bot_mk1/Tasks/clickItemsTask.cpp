@@ -38,7 +38,7 @@ void ClickItemsTask::execute( BotInfo *info )
     Inventory *itemsToDrop = new Inventory();
     int item;
 
-    MouseController::mc.setSpeed( 0.01, 0.035 );
+    MouseController::mc.setSpeed( 0.02, 0.05 );
 
     for( int item : _items->keys() )
     {

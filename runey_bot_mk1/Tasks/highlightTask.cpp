@@ -29,8 +29,12 @@ void HighlightTask::execute( BotInfo *info )
 
 //    imshow( "flood result", info->rsMat );
 
+    int maxAttempts = Util::genRand( 3, 20 );
+    int attempts = 0;
+
+    move_and_click:
     int matchNumber = Util::genRand( info->rsFloodMatches.size() );
-    if( matchNumber == 0 )
+    if( matchNumber == 0 || attempts > maxAttempts )
         return;
     QSet<QPoint>::iterator iterator = info->rsFloodMatches.begin();
     int i = 0;
@@ -38,10 +42,10 @@ void HighlightTask::execute( BotInfo *info )
     {
         iterator = iterator.operator++();
     }
+
     QPoint clickPoint = iterator.operator*();
 
 //    rectangle( info->rsMat, Rect( clickPoint->x() - 3, clickPoint->y() - 3, 6, 6 ), Scalar( 255, 255, 255 ) );
-    move_and_click:
     MouseController::mc.mouseMove( info->x + 4 + clickPoint.x(), info->y + 4 + clickPoint.y() );
 
     info->processScreen();
@@ -51,32 +55,17 @@ void HighlightTask::execute( BotInfo *info )
     {
         QPoint mousePos = MouseController::mc.getMousePos();
         QPoint relativeMousePos = QPoint( mousePos.x() - info->x, mousePos.y() - info->y );
-//        qDebug() << "relative" << relativeMousePos;
-//        qDebug() << "size" << info->rsFloodMatches.size();
-//        if( info->rsFloodMatches.size() > 0 )
-//            qDebug() << "First Element" << info->rsFloodMatches.begin().operator*();
 
         if( info->rsFloodMatches.contains( relativeMousePos ) )
         {
-//            qDebug() << "match";
-//            Mat testMat = Mat( info->rsMat.rows, info->rsMat.cols, CV_8UC3, Scalar( 0 ) );
-
-//            for( QPoint pos : info->rsFloodMatches )
-//            {
-//                testMat.at<Vec3b>( pos.y(), pos.x() ) = Vec3b( 255 );
-//            }
-
-//            rectangle( testMat, Rect( relativeMousePos.x() - 5, relativeMousePos.y() - 5, 10, 10 ), Scalar( 255, 0, 255 ) );
-
-//            imshow( "debug", testMat );
             MouseController::mc.setClickDelay( 200, 400 );
             MouseController::mc.mousePress( MouseState::Left );
             MouseController::mc.resetClickDelay();
         }
-        else if( info->rsFloodMatches.size() > 0 )
+        else
         {
-//            Sleeper::msleep( Util::genRand( 50, 200 ) );
-//            goto move_and_click;
+            ++attempts;
+            goto move_and_click;
         }
     }
 
