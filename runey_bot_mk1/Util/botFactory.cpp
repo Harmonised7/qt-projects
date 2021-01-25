@@ -161,6 +161,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         tasks.push_back( new SetStateTask( BotState::Banking, false ) );
         tasks.push_back( new DelayTask( 200, 2000 ) );
         tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( DEPOSIT_ALL_BUTTON_X1, DEPOSIT_ALL_BUTTON_Y1 ), Point( DEPOSIT_ALL_BUTTON_X2, DEPOSIT_ALL_BUTTON_Y2 ) ) ) );
+        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( EXIT_BANK_BUTTON_X1, EXIT_BANK_BUTTON_Y2 ), Point( EXIT_BANK_BUTTON_X2, EXIT_BANK_BUTTON_Y2 ) ) ) );
         bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
         //Set Banking State when inv full, and not gathering
