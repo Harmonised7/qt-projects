@@ -38,12 +38,12 @@ QMap<int, cv::Mat> BotInfo::getImages()
     return _images;
 }
 
-void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b pixel )
+void BotInfo::updateFlood( Mat inputMat, QSet<QPoint> *floodMatches, Vec3b pixel )
 {
     updateFlood( inputMat, floodMatches, pixel, pixel );
 }
 
-void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b p1, Vec3b p2 )
+void BotInfo::updateFlood( Mat inputMat, QSet<QPoint> *floodMatches, Vec3b p1, Vec3b p2 )
 {
     Mat floodMat = Mat( inputMat.rows, inputMat.cols, CV_8UC3, Scalar( 0, 0, 0 ) );
     QList<Point> strayPixels;
@@ -81,7 +81,7 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b p1,
             {
                 if( floodMat.at<Vec3b>( i, j )[0] == 0 )
                 {
-                    floodMatches->insert( new QPoint( j, i ) );
+                    floodMatches->insert( QPoint( j, i ) );
                     floodMat.at<Vec3b>( i, j ) = Vec3b( 255, 255, 255 );
                 }
                 else
@@ -136,4 +136,51 @@ void BotInfo::updateInventory( BotInfo *info )
             info->invItems->insert( slot, item );
         }
     }
+}
+
+void BotInfo::processScreen()
+{
+    Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) );
+
+    rsMat = screen( Rect( x, y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
+    gameMat = rsMat( Rect( 0, 0, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone();
+    invMat = rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
+    invTabId = getCurrentTab( this );
+
+    states.insert( BotState::Run, false );
+
+    for( int i = 0; i < 10; i++ )
+    {
+        if( rsMat.at<Vec3b>( RUN_Y1 + 5, RUN_X1 + 5 + i )[1] > 200 )
+        {
+            states.insert( BotState::Run, true );
+            break;
+        }
+    }
+}
+
+int BotInfo::getCurrentTab( BotInfo *info )
+{
+    Rect tabRect;
+    int tab = 0;
+    Vec3b pixel;
+
+    for( int i = 1; i <= 14; i++ )
+    {
+        tabRect = Util::getInvTabRect( i );
+        for( int j = 5; j < INV_TAB_WIDTH - 5; j++ )
+        {
+//            info->rsMat.at<Vec3b>( tabRect.y, tabRect.x + j ) = Vec3b( 255, 255, 255 );
+            pixel = info->rsMat.at<Vec3b>( tabRect.y, tabRect.x + j );
+            if( pixel[2] > 90 && pixel[1] < 50 && pixel[0] < 50 )
+            {
+//                qDebug() << "current tab:" << i;
+                return i;
+            }
+        }
+    }
+
+//    if( tab == 0 )
+//        qDebug() << "Could not find current tab!";
+    return tab;
 }

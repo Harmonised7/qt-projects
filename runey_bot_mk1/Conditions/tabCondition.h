@@ -9,7 +9,6 @@ public:
     TabCondition( int tab, bool boolType = true );
 
     bool checkCondition( BotInfo *info ) override;
-    static int getCurrentTab( BotInfo *info );
 
 private:
     int _tab = 0;

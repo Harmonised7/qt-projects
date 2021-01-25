@@ -18,7 +18,7 @@
 #include "Tasks/task.h"
 #include "Tasks/clickItemsTask.h"
 #include "Tasks/clickImagesTask.h"
-#include "Tasks/clickHighlightTask.h"
+#include "Tasks/highlightTask.h"
 #include "Tasks/clickAreaTask.h"
 #include "Tasks/antiBanTask.h"
 #include "Tasks/changeTabTask.h"

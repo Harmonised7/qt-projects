@@ -139,12 +139,19 @@ void MouseController::mousePress( MouseState state, QPoint newPoint )
     mousePress( state, newPoint.x(), newPoint.y() );
 }
 
-void MouseController::mousePress( MouseState state, int newX, int newY)
+void MouseController::mousePress( MouseState state, int newX, int newY )
 {
     if( mouseHijacked() )
         return;
 
     mouseMove(newX, newY);
+    mousePress( state );
+}
+
+void MouseController::mousePress( MouseState state )
+{
+    if( mouseHijacked() )
+        return;
 
     Sleeper::msleep( Util::genRand( _minDelay, _maxDelay ) );
     xdo_mouse_down(xDoTool, CURRENTWINDOW, (int) state );

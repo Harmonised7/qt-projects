@@ -51,6 +51,7 @@ public:
     void mousePressRelative( MouseState state, int relativeX, int relativeY );
     void mousePress( MouseState state, QPoint newPoint );
     void mousePress( MouseState state, int newX, int newY );
+    void mousePress( MouseState state );
 
     void mouseDragRelative( MouseState state, QPoint p );
     void mouseDragRelative( MouseState state, int relativeX, int relativeY );

@@ -5,7 +5,9 @@
 
 enum class MouseTaskType
 {
-    MoveCamera
+    MoveCamera,
+    LeftClick,
+    MoveRelative
 };
 
 class MouseTask : public Task

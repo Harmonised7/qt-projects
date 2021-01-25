@@ -49,8 +49,8 @@ void BotFactory::addKillerModules( BotInstance *bot )
     conditions.push_back( new StateCondition( BotState::Combat, false ) );
     tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, 0.0075, 0.015 ) );
     //Click gate
-    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
-    tasks.push_back( new ClickHighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
+    tasks.push_back( new HighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
+    tasks.push_back( new HighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
     tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, MOUSE_SPEED_MIN, MOUSE_SPEED_MAX ) );
     bot->addModule( new Module( conditions, tasks ) );
 }
@@ -124,13 +124,12 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
         tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, 0.01, 0.025 ) );
         tasks.push_back( new SetMouseValuesTask( MouseValueType::ClickDelay, 15, 35 ) );
+        ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
         tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, MOUSE_SPEED_MIN, MOUSE_SPEED_MAX ) );
         tasks.push_back( new SetMouseValuesTask( MouseValueType::ClickDelay, MOUSE_CLICK_DELAY_MIN, MOUSE_CLICK_DELAY_MAX ) );
-
-        ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
         clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
         tasks.push_back( clickItemsTask );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 150, 10, 10 ), Vec3b( 255, 0, 0 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 150, 10, 10 ), Vec3b( 255, 0, 0 ) ) );
         bot->addModule( new Module( conditions, tasks ) );
     }
     else
@@ -173,7 +172,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
         conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
         conditions.push_back( new StateCondition( BotState::InBank, false ) );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
         bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
@@ -214,7 +213,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
         conditions.push_back( new StateCondition( BotState::InBank, false ) );
         conditions.push_back( new CheckHighlightCondition( false, Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
         bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
@@ -224,7 +223,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
         conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
         conditions.push_back( new CheckHighlightCondition( false, Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
         bot->addModule( new Module( conditions, tasks ) );
     }
@@ -265,9 +264,33 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
     conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
     conditions.push_back( new StateCondition( BotState::Gather, false ) );
-    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
+    tasks.push_back( new HighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ), true ) );
+    tasks.push_back( new DelayTask( 200, 500 ) );
 
     bot->addModule( new Module( conditions, tasks ) );
+
+//    //Click if cyan text available in tooltip
+//    conditions = QList<Condition *>();
+//    tasks = QList<Task *>();
+
+//    conditions.push_back( new StateCondition( BotState::Gather, false ) );
+//    conditions.push_back( new PixelsCondition( Rect( HOVER_TEXT_X, HOVER_TEXT_Y, 300, 1 ), Vec3b( 200, 200, 0 ), Vec3b( 255, 255, 30 ) ) );
+//    tasks.push_back( new MouseTask( MouseTaskType::LeftClick ) );
+
+//    bot->addModule( new Module( conditions, tasks ) );
+
+//    //Move away from click chance
+
+//    conditions = QList<Condition *>();
+//    tasks = QList<Task *>();
+
+//    conditions.push_back( new ChanceCondition( 60, 90 ) );
+//    conditions.push_back( new PixelsCondition( Rect( HOVER_TEXT_X, HOVER_TEXT_Y, 300, 1 ), Vec3b( 200, 200, 0 ), Vec3b( 255, 255, 30 ) ) );
+//    tasks.push_back( new SetMouseValuesTask( MouseValueType::Jitter, 0.5, 1.25 ) );
+//    tasks.push_back( new MouseTask( MouseTaskType::MoveRelative ) );
+//    tasks.push_back( new SetMouseValuesTask( MouseValueType::Jitter, MOUSE_JITTER - 1, MOUSE_JITTER + 1 ) );
+
+//    bot->addModule( new Module( conditions, tasks ) );
 
     //Color association
     bot->addColorItem( 'b', 9001 );

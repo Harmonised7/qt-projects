@@ -18,11 +18,12 @@ void MainWindow::handleFrame()
         _frameFinished = false;
         if( _botsRunning )
         {
+            Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) );
 //            try
 //            {
                 for( BotInstance *bot : _botInstances )
                 {
-                    Mat mat = bot->handleFrame( Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) ) );
+                    Mat mat = bot->handleFrame( screen.clone() );
     //                imshow( "bot", mat );
                 }
 
