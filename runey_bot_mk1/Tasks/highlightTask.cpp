@@ -29,7 +29,7 @@ void HighlightTask::execute( BotInfo *info )
 
 //    imshow( "flood result", info->rsMat );
 
-    int maxAttempts = Util::genRand( 3, 20 );
+    int maxAttempts = Util::genRand( 1, 5 );
     int attempts = 0;
 
     move_and_click:
@@ -64,7 +64,7 @@ void HighlightTask::execute( BotInfo *info )
         }
         else
         {
-            ++attempts;
+            attempts++;
             goto move_and_click;
         }
     }

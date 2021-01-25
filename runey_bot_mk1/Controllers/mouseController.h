@@ -3,7 +3,7 @@
 
 //Mouse Controller
 #define MOUSE_JITTER            4
-#define MOUSE_CURVES_MIN        3
+#define MOUSE_CURVES_MIN        1
 #define MOUSE_CURVES_MAX        60
 #define MOUSE_FPS               120
 #define MOUSE_SPEED_MIN         0.0025

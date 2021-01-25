@@ -91,6 +91,15 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
     QList<Task *> tasks;
     QList<Task *> elseTasks;
 
+    //Move Camera With Mouse
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    conditions.push_back( new TimeoutCondition( 1000, 90000 ) );
+    tasks.push_back( new MouseTask( MouseTaskType::MoveCamera ) );
+
+    bot->addModule( new Module( conditions, tasks ) );
+
     //Set Gather State
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
