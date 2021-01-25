@@ -29,12 +29,12 @@ void HighlightTask::execute( BotInfo *info )
 
 //    imshow( "flood result", info->rsMat );
 
-    int maxAttempts = Util::genRand( 1, 5 );
+    int maxAttempts = Util::genRand( 1, 8 );
     int attempts = 0;
 
     move_and_click:
     int matchNumber = Util::genRand( info->rsFloodMatches.size() );
-    if( matchNumber == 0 || attempts > maxAttempts )
+    if( matchNumber == 0 )
         return;
     QSet<QPoint>::iterator iterator = info->rsFloodMatches.begin();
     int i = 0;
@@ -53,20 +53,27 @@ void HighlightTask::execute( BotInfo *info )
 
     if( _click )
     {
-        QPoint mousePos = MouseController::mc.getMousePos();
-        QPoint relativeMousePos = QPoint( mousePos.x() - info->x, mousePos.y() - info->y );
+        if( attempts <= maxAttempts )
+        {
+            QPoint mousePos = MouseController::mc.getMousePos();
+            QPoint relativeMousePos = QPoint( mousePos.x() - info->x, mousePos.y() - info->y );
 
-        if( info->rsFloodMatches.contains( relativeMousePos ) )
-        {
-            MouseController::mc.setClickDelay( 200, 400 );
-            MouseController::mc.mousePress( MouseState::Left );
-            MouseController::mc.resetClickDelay();
+            if( info->rsFloodMatches.contains( relativeMousePos ) )
+            {
+                MouseController::mc.setClickDelay( 200, 400 );
+                MouseController::mc.mousePress( MouseState::Left );
+                MouseController::mc.resetClickDelay();
+            }
+            else
+            {
+                attempts++;
+                goto move_and_click;
+            }
         }
-        else
-        {
-            attempts++;
-            goto move_and_click;
-        }
+
+        if( attempts > maxAttempts )
+           MouseTask::execute( MouseTaskType::MoveCamera, Util::resizeRect( Rect( info->x + 4, info->y + 4, RS_INNER_WIDTH, RS_INNER_WIDTH ), -50 ) );
+
     }
 
     if( Util::genRand( 1, 20 ) == 1 )

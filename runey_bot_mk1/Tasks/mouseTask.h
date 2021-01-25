@@ -17,6 +17,8 @@ public:
 
     void execute( BotInfo *info ) override;
 
+    static void execute( MouseTaskType type, cv::Rect area );
+
 private:
     MouseTaskType _type;
 };

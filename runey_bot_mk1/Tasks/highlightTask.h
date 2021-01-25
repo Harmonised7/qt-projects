@@ -5,6 +5,7 @@
 #include <QSet>
 
 #include "Tasks/task.h"
+#include "Tasks/mouseTask.h"
 #include "antiBanTask.h"
 
 class HighlightTask : public Task

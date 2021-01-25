@@ -95,7 +95,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    conditions.push_back( new TimeoutCondition( 1000, 90000 ) );
+    conditions.push_back( new TimeoutCondition( 1000, 60000 ) );
     tasks.push_back( new MouseTask( MouseTaskType::MoveCamera ) );
 
     bot->addModule( new Module( conditions, tasks ) );
@@ -152,18 +152,6 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         elseTasks.push_back( new SetStateTask( BotState::InBank, false ) );
         bot->addModule( new Module( conditions, tasks, elseTasks ), ModuleType::Background );
 
-        //If Bank Interface Open
-        conditions = QList<Condition *>();
-        tasks = QList<Task *>();
-        conditions.push_back( new StateCondition( BotState::InBank, true ) );
-        //Atleast 5 highlighted Items
-        conditions.push_back( new InventoryCondition( 9001, true, 5 ) );
-        tasks.push_back( new SetStateTask( BotState::Banking, false ) );
-        tasks.push_back( new DelayTask( 200, 2000 ) );
-        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( DEPOSIT_ALL_BUTTON_X1, DEPOSIT_ALL_BUTTON_Y1 ), Point( DEPOSIT_ALL_BUTTON_X2, DEPOSIT_ALL_BUTTON_Y2 ) ) ) );
-        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( EXIT_BANK_BUTTON_X1, EXIT_BANK_BUTTON_Y2 ), Point( EXIT_BANK_BUTTON_X2, EXIT_BANK_BUTTON_Y2 ) ) ) );
-        bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
-
         //Set Banking State when inv full, and not gathering
         conditions = QList<Condition *>();
         tasks = QList<Task *>();
@@ -182,6 +170,18 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         conditions.push_back( new StateCondition( BotState::InBank, false ) );
         tasks.push_back( new HighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
+        bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
+
+        //If Bank Interface Open
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+        conditions.push_back( new StateCondition( BotState::InBank, true ) );
+        //Atleast 5 highlighted Items
+        conditions.push_back( new InventoryCondition( 9001, true, 5 ) );
+        tasks.push_back( new SetStateTask( BotState::Banking, false ) );
+        tasks.push_back( new DelayTask( 200, 2000 ) );
+        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( DEPOSIT_ALL_BUTTON_X1, DEPOSIT_ALL_BUTTON_Y1 ), Point( DEPOSIT_ALL_BUTTON_X2, DEPOSIT_ALL_BUTTON_Y2 ) ) ) );
+        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( EXIT_BANK_BUTTON_X1, EXIT_BANK_BUTTON_Y2 ), Point( EXIT_BANK_BUTTON_X2, EXIT_BANK_BUTTON_Y2 ) ) ) );
         bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
         //If Not Banking, but bank is open, exit Bank
