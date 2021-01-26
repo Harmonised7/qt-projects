@@ -124,6 +124,9 @@
 #define GATHER_STATE_X 30
 #define GATHER_STATE_Y 461
 
+#define HOVER_TEXT_X 9
+#define HOVER_TEXT_Y 15
+
 //Others
 #define MOUSE_MOVE_DISTANCE 15
 #define DEFAULT_THRESHOLD 0.9

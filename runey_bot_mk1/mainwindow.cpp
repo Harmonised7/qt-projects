@@ -42,7 +42,7 @@ MainWindow::MainWindow( QWidget *parent ) :
         }
     }
 
-    for( int i = 0; i < min( _accounts.size(), 4 ); i++ )
+    for( int i = 0; i < Util::min( _accounts.size(), 4 ); i++ )
     {
         QString account = _accounts[i];
         QList<QString> accountInfo = account.split( "\t" );
@@ -132,6 +132,7 @@ void MainWindow::setRes()
 void MainWindow::on_unpauseButton_clicked()
 {
     _botsRunning = true;
+    MouseController::mc.setHijacked();
 }
 
 void MainWindow::on_pauseButton_clicked()
@@ -149,7 +150,7 @@ void MainWindow::on_logoutButton_clicked()
 
 void MainWindow::on_showButton_clicked()
 {
-        Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( QDesktopWidget().winId() ) );
+        Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) );
 
         rectangle( screen, Rect( _leftX, _topY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );
         rectangle( screen, Rect( _leftX, _botY, RUNELITE_WIDTH, RUNELITE_HEIGHT ), Scalar( 255, 255, 255 ) );

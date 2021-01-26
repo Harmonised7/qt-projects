@@ -28,11 +28,12 @@ SOURCES += \
     Tasks/antiBanTask.cpp \
     Tasks/changeTabTask.cpp \
     Tasks/clickAreaTask.cpp \
-    Tasks/clickHighlightTask.cpp \
     Tasks/clickImagesTask.cpp \
     Tasks/clickItemsTask.cpp \
     Tasks/delayTask.cpp \
+    Tasks/highlightTask.cpp \
     Tasks/keyboardTask.cpp \
+    Tasks/mouseTask.cpp \
     Tasks/setMouseValuesTask.cpp \
     Tasks/setStateTask.cpp \
     Tasks/takeBreakTask.cpp \
@@ -64,11 +65,12 @@ HEADERS += \
     Tasks/antiBanTask.h \
     Tasks/changeTabTask.h \
     Tasks/clickAreaTask.h \
-    Tasks/clickHighlightTask.h \
     Tasks/clickImagesTask.h \
     Tasks/clickItemsTask.h \
     Tasks/delayTask.h \
+    Tasks/highlightTask.h \
     Tasks/keyboardTask.h \
+    Tasks/mouseTask.h \
     Tasks/setMouseValuesTask.h \
     Tasks/setStateTask.h \
     Tasks/takeBreakTask.h \

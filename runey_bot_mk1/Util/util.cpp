@@ -309,3 +309,13 @@ qint64 Util::getEpochMS()
 {
     return QDateTime::currentMSecsSinceEpoch();
 }
+
+double Util::min( double a, double b )
+{
+    return a > b ? b : a;
+}
+
+double Util::max( double a, double b )
+{
+    return a > b ? b : a;
+}

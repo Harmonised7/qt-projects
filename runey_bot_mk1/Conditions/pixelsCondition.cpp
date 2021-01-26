@@ -41,9 +41,11 @@ bool PixelsCondition::checkCondition( BotInfo *info )
         for ( int j = 0; j < _area.width; j++ )
         {
             pixel = info->rsMat.at<Vec3b>( _area.y + i, _area.x + j );
-//            qDebug() << "Blue:" << pixel[0] << "Green:" << pixel[1] << "Red:" << pixel[2];
             if( Util::pixelInRange( pixel, _p1, _p2 ) )
+            {
+//                qDebug() << "Blue:" << pixel[0] << "Green:" << pixel[1] << "Red:" << pixel[2];
                 return true;
+            }
         }
     }
     return false;

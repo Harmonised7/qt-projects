@@ -16,21 +16,8 @@ BotInstance::BotInstance( int x, int y, StrPair loginInfo ) :
 Mat BotInstance::handleFrame( const cv::Mat &screen )
 {
     //Prepare stuff for Modules
-    info->rsMat = screen( Rect( info->x, info->y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
-    info->gameMat = info->rsMat( Rect( 0, 0, RS_INNER_WIDTH, RS_INNER_HEIGHT ) ).clone();
-    info->invMat = info->rsMat( Rect( INV_SLOTS_X, INV_SLOTS_Y, INV_SLOT_WIDTH * 4, INV_SLOT_HEIGHT * 7 ) ).clone();
-    info->invTabId = TabCondition::getCurrentTab( info );
+    info->processScreen();
 
-    info->states.insert( BotState::Run, false );
-
-    for( int i = 0; i < 10; i++ )
-    {
-        if( info->rsMat.at<Vec3b>( RUN_Y1 + 5, RUN_X1 + 5 + i )[1] > 200 )
-        {
-            info->states.insert( BotState::Run, true );
-            break;
-        }
-    }
 //    qDebug() << "gather state" << info->states.value( BotState::Gather );
 
     //Login Modules

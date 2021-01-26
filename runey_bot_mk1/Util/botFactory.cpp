@@ -49,8 +49,8 @@ void BotFactory::addKillerModules( BotInstance *bot )
     conditions.push_back( new StateCondition( BotState::Combat, false ) );
     tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, 0.0075, 0.015 ) );
     //Click gate
-    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
-    tasks.push_back( new ClickHighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
+    tasks.push_back( new HighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
+    tasks.push_back( new HighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
     tasks.push_back( new SetMouseValuesTask( MouseValueType::Speed, MOUSE_SPEED_MIN, MOUSE_SPEED_MAX ) );
     bot->addModule( new Module( conditions, tasks ) );
 }
@@ -73,20 +73,32 @@ void BotFactory::addEssentialModules( BotInstance *bot )
     exitInterfacesTask->setCrop( Util::resizeRect( Rect( Point( CLOSE_INTERFACE_X_X1, CLOSE_INTERFACE_X_Y1 ), Point( CLOSE_INTERFACE_X_X2, CLOSE_INTERFACE_X_Y2 ) ), 5 ) );
     tasks.push_back( exitInterfacesTask );
 
-    ClickImagesTask *exitInterfacesTask2 = new ClickImagesTask( closeInterfaceXButton, DEFAULT_THRESHOLD );
-    exitInterfacesTask2->setCrop( Util::resizeRect( Rect( Point( CLOSE_INTERFACE_X_BUTTON_X1, CLOSE_INTERFACE_X_BUTTON_Y1 ), Point( CLOSE_INTERFACE_X_BUTTON_X2, CLOSE_INTERFACE_X_BUTTON_Y2 ) ), 5 ) );
+    ClickImagesTask *exitInterfacesTask2 = new ClickImagesTask( closeInterfaceXButton, 500 );
+    exitInterfacesTask2->setCrop( Util::resizeRect( Rect( Point( CLOSE_INTERFACE_X_BUTTON_X1 - 50, CLOSE_INTERFACE_X_BUTTON_Y1 - 10 ), Point( CLOSE_INTERFACE_X_BUTTON_X2 + 50, CLOSE_INTERFACE_X_BUTTON_Y2 + 50 ) ), 5 ) );
     tasks.push_back( exitInterfacesTask2 );
 
-    bot->addModule( new Module( conditions, tasks ) );
+    bot->addModule( new Module( conditions, tasks ), ModuleType::Background );
 }
 
 void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 {
+    int bankFromMin = 17;
+    int bankFromMax = 23;
+
     cv::Mat bankText = Util::pixMapToMat( QPixmap( ":/icons/Images/Bank_text.png" ) );
 
     QList<Condition *> conditions;
     QList<Task *> tasks;
     QList<Task *> elseTasks;
+
+    //Move Camera With Mouse
+    conditions = QList<Condition *>();
+    tasks = QList<Task *>();
+
+    conditions.push_back( new TimeoutCondition( 1000, 60000 ) );
+    tasks.push_back( new MouseTask( MouseTaskType::MoveCamera ) );
+
+    bot->addModule( new Module( conditions, tasks ) );
 
     //Set Gather State
     conditions = QList<Condition *>();
@@ -105,6 +117,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
     conditions.push_back( new ChanceCondition( 80, 92 ) );
     conditions.push_back( new TabCondition( 4, false ) );
+    conditions.push_back( new StateCondition( BotState::Banking, false ) );
     tasks.push_back( new ChangeTabTask( 4, TabType::Inventory ) );
 
     bot->addModule( new Module( conditions, tasks ) );
@@ -118,10 +131,12 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         tasks = QList<Task *>();
         conditions.push_back( new TabCondition( 4, true ) );
         conditions.push_back( new InventoryCondition( 9001, true, 10, 20 ) );
+        tasks.push_back( new SetMouseValuesTask( MouseValueType::ClickDelay, 15, 35 ) );
         ClickItemsTask *clickItemsTask = new ClickItemsTask( 9001, 5, 28 );
+        tasks.push_back( new SetMouseValuesTask( MouseValueType::ClickDelay, MOUSE_CLICK_DELAY_MIN, MOUSE_CLICK_DELAY_MAX ) );
         clickItemsTask->setFailRate( Util::genRand( 5, 25 ) );
         tasks.push_back( clickItemsTask );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 150, 10, 10 ), Vec3b( 255, 0, 0 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 150, 10, 10 ), Vec3b( 255, 0, 0 ) ) );
         bot->addModule( new Module( conditions, tasks ) );
     }
     else
@@ -137,24 +152,17 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         elseTasks.push_back( new SetStateTask( BotState::InBank, false ) );
         bot->addModule( new Module( conditions, tasks, elseTasks ), ModuleType::Background );
 
-        //If Bank Interface Open
-        conditions = QList<Condition *>();
-        tasks = QList<Task *>();
-        conditions.push_back( new StateCondition( BotState::InBank, true ) );
-        //Atleast 5 highlighted Items
-        conditions.push_back( new InventoryCondition( 9001, true, 5 ) );
-        tasks.push_back( new SetStateTask( BotState::Banking, false ) );
-        tasks.push_back( new DelayTask( 200, 2000 ) );
-        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( DEPOSIT_ALL_BUTTON_X1, DEPOSIT_ALL_BUTTON_Y1 ), Point( DEPOSIT_ALL_BUTTON_X2, DEPOSIT_ALL_BUTTON_Y2 ) ) ) );
-        bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
-
         //Set Banking State when inv full, and not gathering
         conditions = QList<Condition *>();
         tasks = QList<Task *>();
         elseTasks = QList<Task *>();
         conditions.push_back( new TabCondition( 4, true ) );
         conditions.push_back( new StateCondition( BotState::Gather, false ) );
+<<<<<<< HEAD
         conditions.push_back( new InventoryCondition( 9001, true, 18, 20 ) );
+=======
+        conditions.push_back( new InventoryCondition( 9001, true, bankFromMin, bankFromMax ) );
+>>>>>>> 4f1b0258dac5cad8a2da4c402308e76841005a33
         tasks.push_back( new SetStateTask( BotState::Banking, true ) );
         bot->addModule( new Module( conditions, tasks, elseTasks ) );
 
@@ -164,8 +172,20 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
         conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
         conditions.push_back( new StateCondition( BotState::InBank, false ) );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
+        bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
+
+        //If Bank Interface Open
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+        conditions.push_back( new StateCondition( BotState::InBank, true ) );
+        //Atleast 5 highlighted Items
+        conditions.push_back( new InventoryCondition( 9001, true, 5 ) );
+        tasks.push_back( new SetStateTask( BotState::Banking, false ) );
+        tasks.push_back( new DelayTask( 200, 2000 ) );
+        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( DEPOSIT_ALL_BUTTON_X1, DEPOSIT_ALL_BUTTON_Y1 ), Point( DEPOSIT_ALL_BUTTON_X2, DEPOSIT_ALL_BUTTON_Y2 ) ) ) );
+        tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( EXIT_BANK_BUTTON_X1, EXIT_BANK_BUTTON_Y2 ), Point( EXIT_BANK_BUTTON_X2, EXIT_BANK_BUTTON_Y2 ) ) ) );
         bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
         //If Not Banking, but bank is open, exit Bank
@@ -177,6 +197,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         tasks.push_back( new ClickAreaTask( MouseState::Left, Rect( Point( EXIT_BANK_BUTTON_X1, EXIT_BANK_BUTTON_Y2 ), Point( EXIT_BANK_BUTTON_X2, EXIT_BANK_BUTTON_Y2 ) ) ) );
         bot->addModule( new Module( conditions, tasks ) );
 
+<<<<<<< HEAD
         //If no path OR bank highlights while banking, click gather highlist as last resort
         conditions = QList<Condition *>();
         tasks = QList<Task *>();
@@ -189,15 +210,28 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         bot->addModule( new Module( conditions, tasks ) );
 
         //If no path highlights, turn camera
+=======
+        //If no path highlights and and not gathering, turn camera
+>>>>>>> 4f1b0258dac5cad8a2da4c402308e76841005a33
         conditions = QList<Condition *>();
         tasks = QList<Task *>();
 
         conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
         conditions.push_back( new StateCondition( BotState::Gather, false ) );
         conditions.push_back( new CheckHighlightCondition( false, Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
-        tasks.push_back( new AntiBanTask( 2, false, true ) );
+        tasks.push_back( new MouseTask( MouseTaskType::MoveCamera ) );
 
         bot->addModule( new Module( conditions, tasks ) );
+
+        //If banking and no path highlights, turn camera
+        conditions = QList<Condition *>();
+        tasks = QList<Task *>();
+
+        conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
+        conditions.push_back( new CheckHighlightCondition( false, Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
+        tasks.push_back( new MouseTask( MouseTaskType::MoveCamera ) );
+
+        bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
         //If Banking, but bank not open, and no bank in sight, click walk tile
         conditions = QList<Condition *>();
@@ -206,7 +240,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
         conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
         conditions.push_back( new StateCondition( BotState::InBank, false ) );
         conditions.push_back( new CheckHighlightCondition( false, Vec3b( 0, 150, 0 ), Vec3b( 10, 255, 10 ) ) );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
         bot->addModule( new Module( conditions, tasks ), ModuleType::Banking );
 
@@ -216,7 +250,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
         conditions.push_back( new TimeoutCondition( 1000, 10000 ) );
         conditions.push_back( new CheckHighlightCondition( false, Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
-        tasks.push_back( new ClickHighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
+        tasks.push_back( new HighlightTask( Vec3b( 0, 0, 150 ), Vec3b( 10, 10, 255 ) ) );
         tasks.push_back( new DelayTask( 1000, 3000 ) );
         bot->addModule( new Module( conditions, tasks ) );
     }
@@ -225,9 +259,9 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
     conditions = QList<Condition *>();
     tasks = QList<Task *>();
 
-    conditions.push_back( new TimeoutCondition( 30000, 150000 ) );
+    conditions.push_back( new TimeoutCondition( 30000, 300000 ) );
     tasks.push_back( new ChangeTabTask( IntPair( 1, 14 ), TabType::Inventory ) );
-    tasks.push_back( new AntiBanTask( 2 ) );
+    tasks.push_back( new AntiBanTask( 1 ) );
 
     bot->addModule( new Module( conditions, tasks ) );
 
@@ -247,7 +281,7 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
     conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
     conditions.push_back( new StateCondition( BotState::Gather, false ) );
     conditions.push_back( new CheckHighlightCondition( false, Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
-    tasks.push_back( new AntiBanTask( 2, false, true ) );
+    tasks.push_back( new MouseTask( MouseTaskType::MoveCamera ) );
 
     bot->addModule( new Module( conditions, tasks ) );
 
@@ -257,9 +291,33 @@ void BotFactory::addGathererModules( BotInstance *bot, bool dropper )
 
     conditions.push_back( new TimeoutCondition( 2500, 7500 ) );
     conditions.push_back( new StateCondition( BotState::Gather, false ) );
-    tasks.push_back( new ClickHighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ) ) );
+    tasks.push_back( new HighlightTask( Vec3b( 150, 0, 0 ), Vec3b( 255, 10, 10 ), true ) );
+    tasks.push_back( new DelayTask( 200, 500 ) );
 
     bot->addModule( new Module( conditions, tasks ) );
+
+//    //Click if cyan text available in tooltip
+//    conditions = QList<Condition *>();
+//    tasks = QList<Task *>();
+
+//    conditions.push_back( new StateCondition( BotState::Gather, false ) );
+//    conditions.push_back( new PixelsCondition( Rect( HOVER_TEXT_X, HOVER_TEXT_Y, 300, 1 ), Vec3b( 200, 200, 0 ), Vec3b( 255, 255, 30 ) ) );
+//    tasks.push_back( new MouseTask( MouseTaskType::LeftClick ) );
+
+//    bot->addModule( new Module( conditions, tasks ) );
+
+//    //Move away from click chance
+
+//    conditions = QList<Condition *>();
+//    tasks = QList<Task *>();
+
+//    conditions.push_back( new ChanceCondition( 60, 90 ) );
+//    conditions.push_back( new PixelsCondition( Rect( HOVER_TEXT_X, HOVER_TEXT_Y, 300, 1 ), Vec3b( 200, 200, 0 ), Vec3b( 255, 255, 30 ) ) );
+//    tasks.push_back( new SetMouseValuesTask( MouseValueType::Jitter, 0.5, 1.25 ) );
+//    tasks.push_back( new MouseTask( MouseTaskType::MoveRelative ) );
+//    tasks.push_back( new SetMouseValuesTask( MouseValueType::Jitter, MOUSE_JITTER - 1, MOUSE_JITTER + 1 ) );
+
+//    bot->addModule( new Module( conditions, tasks ) );
 
     //Color association
     bot->addColorItem( 'b', 9001 );
@@ -327,14 +385,14 @@ void BotFactory::addLoginModules( BotInstance *bot )
     Rect focusArea = Rect( Point( PLAY_BUTTON_X1, PLAY_BUTTON_Y1 + 80 ), Point( PLAY_BUTTON_X2, PLAY_BUTTON_Y2 ) );
     tasks.push_back( new ClickAreaTask( MouseState::Right, focusArea ) );
     tasks.push_back( new DelayTask( 1000, 2000 ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Escape" ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Escape" ) );
     tasks.push_back( new DelayTask( 1000, 2000 ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Return" ) );
     tasks.push_back( new DelayTask( 1000, 2000 ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.first ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Tab" ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Write, bot->loginInfo.second ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Press, "Return" ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Write, bot->loginInfo.first ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Tab" ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Write, bot->loginInfo.second ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Return" ) );
     tasks.push_back( new DelayTask( 3500, 8500 ) );
 
     bot->addModule( new Module( conditions, tasks ), ModuleType::Login );
@@ -347,9 +405,9 @@ void BotFactory::addLoginModules( BotInstance *bot )
     welcomeMessageCondition->setCrop( welcomeMessageArea );
     conditions.push_back( welcomeMessageCondition );
     ClickAreaTask *clickPlayButtonTask = new ClickAreaTask( MouseState::Left, Util::resizeRect( playButtonArea, -5 ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Down, "Up" ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Down, "Up" ) );
     tasks.push_back( new DelayTask( 1200, 2300 ) );
-    tasks.push_back( new KeyboardTask( KeyboardState::Up, "Up" ) );
+    tasks.push_back( new KeyboardTask( KeyboardTaskType::Up, "Up" ) );
     tasks.push_back( clickPlayButtonTask );
 
     bot->addModule( new Module( conditions, tasks ), ModuleType::Login );

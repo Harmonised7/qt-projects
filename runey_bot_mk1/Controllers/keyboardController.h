@@ -13,10 +13,10 @@
 
 enum class KeyboardState
 {
-    Press,
-    Up,
-    Down,
-    Write
+    Press = 0,
+    Up = 1,
+    Down = 2,
+    Write = 3
 };
 
 class KeyboardController

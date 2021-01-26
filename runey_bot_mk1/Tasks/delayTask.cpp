@@ -7,8 +7,8 @@ DelayTask::DelayTask( unsigned int ms ) :
 }
 
 DelayTask::DelayTask( unsigned int minMs, unsigned int maxMs ) :
-    _minMs( cv::min( minMs, maxMs ) ),
-    _maxMs( cv::max( minMs, maxMs ) )
+    _minMs( Util::min( minMs, maxMs ) ),
+    _maxMs( Util::max( minMs, maxMs ) )
 {
 }
 
