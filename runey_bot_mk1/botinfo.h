@@ -45,15 +45,15 @@ public:
     cv::Mat invMat;
 
     int x, y;
-    QSet<QPoint> rsFloodMatches;
+    QSet<QPoint *> rsFloodMatches;
 
     //Methods
     QPoint tl(){ return QPoint( x, y ); };
     QPoint br(){ return QPoint( x + RUNELITE_WIDTH, y + RUNELITE_HEIGHT ); };
     void addImage( const int &id, const cv::Mat image );
     QMap<int, cv::Mat> getImages();
-    static void updateFlood( cv::Mat inputMat, QSet<QPoint> *floodMatches, cv::Vec3b pixel );
-    static void updateFlood( cv::Mat inputMat, QSet<QPoint> *floodMatches, cv::Vec3b p1, cv::Vec3b p2 );
+    static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches, cv::Vec3b pixel );
+    static void updateFlood( cv::Mat inputMat, QSet<QPoint *> *floodMatches, cv::Vec3b p1, cv::Vec3b p2 );
     static void updateInventory( BotInfo *info );
     static int getCurrentTab( BotInfo *info );
 

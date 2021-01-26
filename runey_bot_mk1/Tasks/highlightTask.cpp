@@ -36,17 +36,17 @@ void HighlightTask::execute( BotInfo *info )
     int matchNumber = Util::genRand( info->rsFloodMatches.size() );
     if( matchNumber == 0 )
         return;
-    QSet<QPoint>::iterator iterator = info->rsFloodMatches.begin();
+    QSet<QPoint *>::iterator iterator = info->rsFloodMatches.begin();
     int i = 0;
     while( ++i < matchNumber )
     {
         iterator = iterator.operator++();
     }
 
-    QPoint clickPoint = iterator.operator*();
+    QPoint *clickPoint = iterator.operator*();
 
 //    rectangle( info->rsMat, Rect( clickPoint->x() - 3, clickPoint->y() - 3, 6, 6 ), Scalar( 255, 255, 255 ) );
-    MouseController::mc.mouseMove( info->x + 4 + clickPoint.x(), info->y + 4 + clickPoint.y() );
+    MouseController::mc.mouseMove( info->x + 4 + clickPoint->x(), info->y + 4 + clickPoint->y() );
 
     info->processScreen();
     BotInfo::updateFlood( info->gameMat( Rect( Point( 4, 4 ), Point( info->gameMat.cols, info->gameMat.rows ) ) ), &info->rsFloodMatches, _p1, _p2 );
@@ -58,7 +58,17 @@ void HighlightTask::execute( BotInfo *info )
             QPoint mousePos = MouseController::mc.getMousePos();
             QPoint relativeMousePos = QPoint( mousePos.x() - info->x, mousePos.y() - info->y );
 
-            if( info->rsFloodMatches.contains( relativeMousePos ) )
+            bool matched = false;
+            for( QPoint *pos : info->rsFloodMatches )
+            {
+                if( relativeMousePos == *pos )
+                {
+                    matched = true;
+                    break;
+                }
+            }
+
+            if( matched )
             {
                 MouseController::mc.setClickDelay( 200, 400 );
                 MouseController::mc.mousePress( MouseState::Left );

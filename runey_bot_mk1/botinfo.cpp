@@ -38,12 +38,12 @@ QMap<int, cv::Mat> BotInfo::getImages()
     return _images;
 }
 
-void BotInfo::updateFlood( Mat inputMat, QSet<QPoint> *floodMatches, Vec3b pixel )
+void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b pixel )
 {
     updateFlood( inputMat, floodMatches, pixel, pixel );
 }
 
-void BotInfo::updateFlood( Mat inputMat, QSet<QPoint> *floodMatches, Vec3b p1, Vec3b p2 )
+void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b p1, Vec3b p2 )
 {
     Mat floodMat = Mat( inputMat.rows, inputMat.cols, CV_8UC3, Scalar( 0, 0, 0 ) );
     QList<Point> strayPixels;
@@ -81,7 +81,7 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint> *floodMatches, Vec3b p1, V
             {
                 if( floodMat.at<Vec3b>( i, j )[0] == 0 )
                 {
-                    floodMatches->insert( QPoint( j, i ) );
+                    floodMatches->insert( new QPoint( j, i ) );
                     floodMat.at<Vec3b>( i, j ) = Vec3b( 255, 255, 255 );
                 }
                 else
