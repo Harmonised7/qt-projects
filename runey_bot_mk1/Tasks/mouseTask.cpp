@@ -18,6 +18,7 @@ void MouseTask::execute( MouseTaskType type, Rect area )
         Point middleClickPoint = Util::genRandPoint( area );
         MouseController::mc.mouseMove( Util::PointToQPoint( middleClickPoint ) );
         MouseController::mc.mouseDragRelative( MouseState::Middle, Util::genRandQPointOffset( Util::PointToQPoint( middleClickPoint ), 10 ) );
+        Sleeper::msleep( Util::genRand( 150, 300 ) );
     }
     else if( type == MouseTaskType::LeftClick )
         MouseController::mc.mousePress( MouseState::Left );

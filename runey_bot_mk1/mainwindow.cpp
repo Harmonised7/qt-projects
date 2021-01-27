@@ -27,10 +27,10 @@ MainWindow::MainWindow( QWidget *parent ) :
     QFile file( path );
     if( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
     {
-        _accounts.push_back( "s6cskills@mail.com\teinblicke\tgather\tdrop" );
-        _accounts.push_back( "s7cskills@mail.com\teinblicke\tgather\tdrop" );
-        _accounts.push_back( "s8cskills@mail.com\teinblicke\tgather\tdrop" );
-        _accounts.push_back( "s9cskills@mail.com\teinblicke\tgather\tdrop" );
+        _accounts.push_back( "s6cskills@mail.com\teinblicke\tpowergather" );
+        _accounts.push_back( "s7cskills@mail.com\teinblicke\tpowergather" );
+        _accounts.push_back( "s8cskills@mail.com\teinblicke\tpowergather" );
+        _accounts.push_back( "s9cskills@mail.com\teinblicke\tpowergather" );
 
         qDebug() << "file not found, loading default accounts";
     }

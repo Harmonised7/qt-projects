@@ -93,6 +93,8 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b p1,
     while( attempts <= 5 && floodMatches->size() > 0.7*matHeight*matWidth );
 
 //    imshow( "updateFlood", floodMat );
+
+    floodMat.release();
 }
 
 void BotInfo::updateInventory( BotInfo *info )
@@ -140,6 +142,10 @@ void BotInfo::updateInventory( BotInfo *info )
 
 void BotInfo::processScreen()
 {
+    rsMat.release();
+    gameMat.release();
+    invMat.release();
+
     Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) );
 
     rsMat = screen( Rect( x, y, RUNELITE_WIDTH, RUNELITE_HEIGHT ) ).clone();
@@ -157,6 +163,8 @@ void BotInfo::processScreen()
             break;
         }
     }
+
+    screen.release();
 }
 
 int BotInfo::getCurrentTab( BotInfo *info )

@@ -80,10 +80,8 @@ void HighlightTask::execute( BotInfo *info )
                 goto move_and_click;
             }
         }
-
         if( attempts > maxAttempts )
            MouseTask::execute( MouseTaskType::MoveCamera, Util::resizeRect( Rect( info->x + 4, info->y + 4, RS_INNER_WIDTH, RS_INNER_WIDTH ), -50 ) );
-
     }
 
     if( Util::genRand( 1, 20 ) == 1 )

@@ -19,8 +19,8 @@ void MainWindow::handleFrame()
         if( _botsRunning )
         {
             Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) );
-//            try
-//            {
+            try
+            {
                 for( BotInstance *bot : _botInstances )
                 {
                     Mat mat = bot->handleFrame( screen.clone() );
@@ -29,11 +29,13 @@ void MainWindow::handleFrame()
 
                 if( _timeoutCondition->checkCondition( _timer ) )
                     AntiBanTask::doAntiBan( _clickSafeArea );
-//            }
-//            catch( Exception e )
-//            {
-//                qDebug() << QString::fromStdString( e.msg );
-//            }
+            }
+            catch( Exception e )
+            {
+                qDebug() << QString::fromStdString( e.msg );
+            }
+
+            screen.release();
         }
         _frameFinished = true;
     }
