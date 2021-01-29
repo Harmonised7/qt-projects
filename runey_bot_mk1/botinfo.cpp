@@ -33,9 +33,9 @@ void BotInfo::addImage( const int &id, const cv::Mat image )
     _images.insert( id, image );
 }
 
-QMap<int, cv::Mat> BotInfo::getImages()
+QMap<int, cv::Mat> *BotInfo::getImages()
 {
-    return _images;
+    return &_images;
 }
 
 void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b pixel )
@@ -72,6 +72,10 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b p1,
         if( attempts > 0 )
             fillPoint = Util::genRandQPoint( QPoint( 0,0 ), QPoint( RS_INNER_WIDTH, RS_INNER_HEIGHT ) );
 
+        for( auto *a : *floodMatches )
+        {
+            delete a;
+        }
         floodMatches->clear();
         floodMat = backupMat.clone();
         floodFill( floodMat, Point( fillPoint.x(), fillPoint.y() ), Scalar( 255, 255, 255 ) );
@@ -89,12 +93,13 @@ void BotInfo::updateFlood( Mat inputMat, QSet<QPoint *> *floodMatches, Vec3b p1,
             }
         }
         ++attempts;
+        floodMat.release();
     }
     while( attempts <= 5 && floodMatches->size() > 0.7*matHeight*matWidth );
 
 //    imshow( "updateFlood", floodMat );
 
-    floodMat.release();
+    backupMat.release();
 }
 
 void BotInfo::updateInventory( BotInfo *info )
@@ -126,9 +131,9 @@ void BotInfo::updateInventory( BotInfo *info )
     }
 
     //Set Images
-    QMap<int, cv::Mat> images = info->getImages();
+    QMap<int, cv::Mat> *images = info->getImages();
     QList<Rect> matches;
-    for( int item : images.keys() )
+    for( int item : images->keys() )
     {
         for( Rect match : matches )
         {
@@ -191,4 +196,16 @@ int BotInfo::getCurrentTab( BotInfo *info )
 //    if( tab == 0 )
 //        qDebug() << "Could not find current tab!";
     return tab;
+}
+
+void BotInfo::releaseMemory()
+{
+    for( auto *a : rsFloodMatches )
+    {
+        delete a;
+    }
+    rsFloodMatches.clear();
+    rsMat.release();
+    gameMat.release();
+    invMat.release();
 }

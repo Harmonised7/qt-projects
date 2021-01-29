@@ -16,6 +16,7 @@ BotInstance::BotInstance( int x, int y, StrPair loginInfo ) :
 Mat BotInstance::handleFrame( const cv::Mat &screen )
 {
     //Prepare stuff for Modules
+    info->releaseMemory();
     info->processScreen();
 
 //    qDebug() << "gather state" << info->states.value( BotState::Gather );

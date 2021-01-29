@@ -260,6 +260,9 @@ QList<Rect> Util::findMatches( Mat imageMat, Mat targetMat, double threshold )
 //    if( imageMat.cols > 90 )
 //        imshow("final", imageMat);
 
+    res_32f.release();
+    res.release();
+
     return matches;
 }
 
