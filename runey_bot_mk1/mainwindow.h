@@ -14,6 +14,7 @@
 #include <QPixmap>
 #include <QDir>
 #include <QMap>
+#include <QList>
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"

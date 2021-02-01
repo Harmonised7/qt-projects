@@ -28,7 +28,7 @@ void MainWindow::handleFrame()
                     int botKey = botKeys[ botKeyIndex ];
                     /*Mat mat = */_botInstances.value( botKey )->handleFrame( screen.clone() );
 //                    imshow( "bot", mat );
-                    botKeys.remove( botKeyIndex );
+                    botKeys.removeAt( botKeyIndex );
 //                    qDebug() << botKey;
                 }
 
