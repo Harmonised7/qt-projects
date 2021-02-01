@@ -21,10 +21,15 @@ void MainWindow::handleFrame()
             Mat screen = Util::pixMapToMat( qApp->screens().at(0)->grabWindow( 0 ) );
             try
             {
-                for( BotInstance *bot : _botInstances )
+                QList<int> botKeys = _botInstances.keys();
+                while( botKeys.size() > 0 )
                 {
-                    Mat mat = bot->handleFrame( screen.clone() );
-    //                imshow( "bot", mat );
+                    int botKeyIndex = Util::genRand( 0, botKeys.size() - 1 );
+                    int botKey = botKeys[ botKeyIndex ];
+                    /*Mat mat = */_botInstances.value( botKey )->handleFrame( screen.clone() );
+//                    imshow( "bot", mat );
+                    botKeys.remove( botKeyIndex );
+//                    qDebug() << botKey;
                 }
 
                 if( _timeoutCondition->checkCondition( _timer ) )

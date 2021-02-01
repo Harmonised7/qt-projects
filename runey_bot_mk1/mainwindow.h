@@ -13,6 +13,7 @@
 #include <QSet>
 #include <QPixmap>
 #include <QDir>
+#include <QMap>
 
 //OpenCV Includes
 #include "opencv2/imgproc.hpp"
@@ -63,7 +64,7 @@ private:
     void init();
 
     //ObjectDeclarations
-    QList<BotInstance *> _botInstances;
+    QMap<int, BotInstance *> _botInstances;
 
     QScreen *_screen;
     QRect _screenGeometry;
@@ -78,7 +79,6 @@ private:
 
     //Methods
     void setRes();
-    void addBot( BotInstance *bot );
 
     //Objects
     int _leftX, _rightX;

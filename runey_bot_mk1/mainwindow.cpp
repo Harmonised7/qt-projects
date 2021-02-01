@@ -62,15 +62,15 @@ MainWindow::MainWindow( QWidget *parent ) :
 
         if( accountInfo[2] == "gather" )
         {
-            _botInstances.push_back( BotFactory::makeGathererBot( pos, loginInfo, false ) );
+            _botInstances.insert( i, BotFactory::makeGathererBot( pos, loginInfo, false ) );
         }
         else if( accountInfo[2] == "powergather" )
         {
-            _botInstances.push_back( BotFactory::makeGathererBot( pos, loginInfo, true ) );
+            _botInstances.insert( i, BotFactory::makeGathererBot( pos, loginInfo, true ) );
         }
         else if( accountInfo[2] == "kill" )
         {
-            _botInstances.push_back( BotFactory::makeKillerBot( pos, loginInfo ) );
+            _botInstances.insert( i, BotFactory::makeKillerBot( pos, loginInfo ) );
         }
         else
             qDebug() << "Invalid settings" << accountInfo;
@@ -89,11 +89,6 @@ MainWindow::MainWindow( QWidget *parent ) :
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::addBot( BotInstance *bot )
-{
-    _botInstances.push_back( bot );
 }
 
 void MainWindow::setRes()

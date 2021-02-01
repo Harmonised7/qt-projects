@@ -366,16 +366,16 @@ void BotFactory::addLoginModules( BotInstance *bot )
     conditions.push_back( enterYourCredentialsCondition );
     Rect focusArea = Rect( Point( PLAY_BUTTON_X1, PLAY_BUTTON_Y1 + 80 ), Point( PLAY_BUTTON_X2, PLAY_BUTTON_Y2 ) );
     tasks.push_back( new ClickAreaTask( MouseState::Right, focusArea ) );
-    tasks.push_back( new DelayTask( 1000, 2000 ) );
+    tasks.push_back( new DelayTask( 750, 1500 ) );
     tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Escape" ) );
-    tasks.push_back( new DelayTask( 1000, 2000 ) );
+    tasks.push_back( new DelayTask( 750, 1500 ) );
     tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Return" ) );
-    tasks.push_back( new DelayTask( 1000, 2000 ) );
+    tasks.push_back( new DelayTask( 750, 1500 ) );
     tasks.push_back( new KeyboardTask( KeyboardTaskType::Write, bot->loginInfo.first ) );
     tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Tab" ) );
     tasks.push_back( new KeyboardTask( KeyboardTaskType::Write, bot->loginInfo.second ) );
     tasks.push_back( new KeyboardTask( KeyboardTaskType::Press, "Return" ) );
-    tasks.push_back( new DelayTask( 3500, 8500 ) );
+    tasks.push_back( new DelayTask( 750, 1500 ) );
 
     bot->addModule( new Module( conditions, tasks ), ModuleType::Login );
 
